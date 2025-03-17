@@ -9,6 +9,8 @@ const Color appPurple = Color.fromARGB(255, 200, 153, 194);
 const Color appDarkPurple = Color.fromARGB(255, 109, 86, 105);
 Color textBlue = Colors.blue.shade300;
 Color appBlue = Colors.blue.shade200;
+Color appDarkBlue = Colors.blue.shade400;
+
 const Color white = Colors.white;
 const Color grey = Color(0xFFF0F0F0);
 const Color unselectedLableColor = Color.fromRGBO(47, 72, 83, 0.3);
