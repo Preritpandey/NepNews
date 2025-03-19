@@ -11,7 +11,9 @@ class DiscoverPage extends StatelessWidget {
         title: OpaqueBgIcon(icon: Icons.arrow_back),
       ),
       body: Column(
-        children: [],
+        children: [
+          
+        ],
       ),
     );
   }
