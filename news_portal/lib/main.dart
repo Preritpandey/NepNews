@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:news_portal/core/ScreenSizeConfig.dart';
+import 'package:news_portal/models/forex_data_model.dart';
 import 'package:news_portal/pages/Home/home.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(ForexRateAdapter());
+  await Hive.openBox<ForexRate>('forex_rates');
   runApp(const MyApp());
 }
 
@@ -22,6 +28,7 @@ class MyApp extends StatelessWidget {
           height: size.height,
           textScaleFactor: MediaQuery.textScaleFactorOf(context),
           child: MaterialApp(
+            debugShowCheckedModeBanner: false,
             home: Home(),
           ),
         );

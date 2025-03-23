@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_portal/resources/app_text.dart';
 import 'package:news_portal/widgets/opaque_bg_icon.dart';
 
 class DiscoverPage extends StatelessWidget {
@@ -8,12 +9,15 @@ class DiscoverPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: OpaqueBgIcon(icon: Icons.arrow_back),
+        automaticallyImplyLeading: false,
+        title: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: OpaqueBgIcon(icon: Icons.arrow_back)),
       ),
       body: Column(
-        children: [
-          
-        ],
+        children: [Center(child: AppText(text: "This is discover more page"))],
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:news_portal/pages/Browse/browse_page.dart';
 import 'package:news_portal/pages/Home/home_page.dart';
 import 'package:news_portal/pages/Home/news_details_page.dart';
+import 'package:news_portal/pages/Profile/profile_page.dart';
 import 'package:news_portal/pages/bookmark/bookmark_page.dart';
 
 class Home extends StatefulWidget {
@@ -12,11 +13,10 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   List pages = [
-    NewsDetailsPage(),
     const HomePage(),
     const BrowsePage(),
     const BookmarkPage(),
-    // const ProfilePage(),
+    const ProfilePage(),
   ];
 
   void _onItemTapped(int index) {

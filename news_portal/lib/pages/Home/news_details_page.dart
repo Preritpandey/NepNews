@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_portal/core/ScreenSizeConfig.dart';
 import 'package:news_portal/resources/app_text.dart';
 import 'package:news_portal/resources/constant.dart';
 import 'package:news_portal/resources/text_subheading.dart';
@@ -9,8 +10,9 @@ class NewsDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
+    final screenSize = ScreenSizeConfig.of(context);
+    double screenHeight = screenSize.height;
+    double screenWidth = screenSize.width;
 
     return Scaffold(
       backgroundColor: transparent,
@@ -96,14 +98,14 @@ class NewsDetailsPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                AppText(
+                const AppText(
                   fontSize: 16,
                   text: 'Alexander wears modified helmet in road races',
                   color: Colors.white,
                 ),
                 SizedBox(
                   width: screenWidth * 0.4,
-                  child: ListTile(
+                  child: const ListTile(
                     leading: TextSubHeading(
                       text: 'Trending',
                       size: 14,

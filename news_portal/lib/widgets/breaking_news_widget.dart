@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_portal/pages/Home/news_details_page.dart';
 import 'package:news_portal/resources/app_text.dart';
 
 class BreakingNewsSlider extends StatefulWidget {
@@ -88,80 +89,86 @@ class NewsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: Stack(
-        children: [
-          // Background Image
-          Container(
-            height: 180,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(news["imageUrl"]!),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          // Overlay for readability
-          Container(
-            height: 180,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                colors: [Colors.black.withOpacity(0.7), Colors.transparent],
-              ),
-            ),
-          ),
-          // Category Tag
-          Positioned(
-            top: 12,
-            left: 12,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => NewsDetailsPage()));
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Stack(
+          children: [
+            // Background Image
+            Container(
+              height: 180,
               decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: AppText(
-                  text: news["category"]!,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-          // News Content
-          Positioned(
-            bottom: 20,
-            left: 12,
-            right: 12,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // News Source and Time
-                Row(
-                  children: [
-                    AppText(
-                        text: news["source"]!,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                    SizedBox(width: 6),
-                    Icon(Icons.verified, color: Colors.blue, size: 16),
-                    SizedBox(width: 6),
-                    Text("• ${news["time"]!}",
-                        style: TextStyle(color: Colors.white70)),
-                  ],
+                image: DecorationImage(
+                  image: NetworkImage(news["imageUrl"]!),
+                  fit: BoxFit.cover,
                 ),
-                SizedBox(height: 8),
-                // News Headline
-                AppText(
-                    text: news["title"]!,
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold),
-              ],
+              ),
             ),
-          ),
-        ],
+            // Overlay for readability
+            Container(
+              height: 180,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [Colors.black.withOpacity(0.7), Colors.transparent],
+                ),
+              ),
+            ),
+            // Category Tag
+            Positioned(
+              top: 12,
+              left: 12,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: AppText(
+                    text: news["category"]!,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            // News Content
+            Positioned(
+              bottom: 20,
+              left: 12,
+              right: 12,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // News Source and Time
+                  Row(
+                    children: [
+                      AppText(
+                          text: news["source"]!,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                      SizedBox(width: 6),
+                      Icon(Icons.verified, color: Colors.blue, size: 16),
+                      SizedBox(width: 6),
+                      Text("• ${news["time"]!}",
+                          style: TextStyle(color: Colors.white70)),
+                    ],
+                  ),
+                  SizedBox(height: 8),
+                  // News Headline
+                  AppText(
+                      text: news["title"]!,
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
