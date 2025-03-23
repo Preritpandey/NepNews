@@ -17,7 +17,9 @@ class HomePage extends StatelessWidget {
     double screenHeight = screenSize.height;
     double screenWidth = screenSize.width;
     return Scaffold(
+      backgroundColor: white,
       appBar: AppBar(
+        backgroundColor: white,
         leading: IconButton(onPressed: () {}, icon: Icon(Icons.menu)),
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.search_rounded)),
@@ -25,41 +27,43 @@ class HomePage extends StatelessWidget {
               onPressed: () {}, icon: Icon(Icons.notifications_none_rounded)),
         ],
       ),
-      body: Column(
-        children: [
-          Container(
-              width: screenWidth * 0.95,
-              height: 88,
-              color: backgroundWhite,
-              child: ForexSlideshow()),
-          ListTile(
-            leading: TextHeading(text: 'Breaking News'),
-            trailing: GestureDetector(
-              onTap: () {},
-              child: AppText(
-                text: 'View all',
-                color: Colors.blue,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+                width: screenWidth * 0.95,
+                height: screenHeight * 0.1,
+                color: white,
+                child: ForexSlideshow()),
+            ListTile(
+              leading: TextHeading(text: 'Breaking News'),
+              trailing: GestureDetector(
+                onTap: () {},
+                child: AppText(
+                  text: 'View all',
+                  color: Colors.blue,
+                ),
               ),
             ),
-          ),
-          SizedBox(
-              height: MediaQuery.of(context).size.height * 0.27,
-              child: BreakingNewsSlider()),
-          ListTile(
-            leading: TextHeading(text: 'Trending'),
-            trailing: GestureDetector(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => DiscoverPage()));
-              },
-              child: AppText(
-                text: 'View all',
-                color: Colors.blue,
+            SizedBox(
+                height: MediaQuery.of(context).size.height * 0.27,
+                child: BreakingNewsSlider()),
+            ListTile(
+              leading: TextHeading(text: 'Trending'),
+              trailing: GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => DiscoverPage()));
+                },
+                child: AppText(
+                  text: 'View all',
+                  color: Colors.blue,
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 250, child: TrendingNewsCard()),
-        ],
+            SizedBox(height: screenHeight * 0.5, child: TrendingNewsCard()),
+          ],
+        ),
       ),
     );
   }

@@ -19,6 +19,14 @@ class TrendingNewsCard extends StatelessWidget {
       "imageUrl":
           "https://eu-images.contentstack.com/v3/assets/blta90d05ad41a54a71/bltd8fe70dac50fed5e/64a42ccdd715265747807768/La_Liga_EA_Sports.png",
     },
+    {
+      "category": "Sports",
+      "title": "What Training Do Volleyball Players Need?",
+      "author": "McKindney",
+      "date": "Feb 27, 2023",
+      "imageUrl":
+          "https://athlonsports.com/.image/c_limit%2Ccs_srgb%2Cq_auto:good%2Cw_700/MjEzMzAxMTMzNDI1MjU2Mjg1/lionel-messi-injury-concerns-grow-after-inter-miami-cavalier-news.webp",
+    },
   ];
 
   @override
@@ -28,7 +36,8 @@ class TrendingNewsCard extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView.builder(
-          itemCount: newsList.length,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: 3,
           itemBuilder: (context, index) {
             final news = newsList[index];
             return Padding(
