@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_portal/core/ScreenSizeConfig.dart';
 import 'package:news_portal/pages/Home/home.dart';
 
 void main() {
@@ -10,14 +11,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: Home(),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final size = MediaQueryData.fromView(
+          WidgetsBinding.instance.platformDispatcher.views.first,
+        ).size;
+
+        return ScreenSizeConfig(
+          width: size.width,
+          height: size.height,
+          textScaleFactor: MediaQuery.textScaleFactorOf(context),
+          child: MaterialApp(
+            home: Home(),
+          ),
+        );
+      },
     );
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:news_portal/pages/Browse/browse_page.dart';
 import 'package:news_portal/pages/Home/home_page.dart';
 import 'package:news_portal/pages/Home/news_details_page.dart';
-import 'package:news_portal/pages/bookmark/Profile/profile_page.dart';
 import 'package:news_portal/pages/bookmark/bookmark_page.dart';
 
 class Home extends StatefulWidget {
