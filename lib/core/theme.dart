@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   // Light Theme Colors
   static const lightPrimary = Color(0xFF2196F3); // Blue
-  static const lightBackground = Color(0xFFFFFFFF); // White
+  static const lightBackground = Color.fromARGB(255, 238, 235, 235); // White
   static const lightSurface = Color(0xFFF5F5F5); // Light Grey
   static const lightText = Color(0xFF1A1A1A); // Near Black
   static const lightSecondaryText = Color(0xFF757575); // Grey
