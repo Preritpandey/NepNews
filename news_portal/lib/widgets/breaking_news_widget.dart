@@ -10,6 +10,26 @@ class BreakingNewsSlider extends StatefulWidget {
 class _BreakingNewsSliderState extends State<BreakingNewsSlider> {
   final PageController _pageController =
       PageController(initialPage: 1, viewportFraction: 0.85);
+  int _currentPage = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController.addListener(() {
+      int next = _pageController.page!.round();
+      if (_currentPage != next) {
+        setState(() {
+          _currentPage = next;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   final List<Map<String, String>> newsList = [
     {
@@ -40,6 +60,8 @@ class _BreakingNewsSliderState extends State<BreakingNewsSlider> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -64,13 +86,16 @@ class _BreakingNewsSliderState extends State<BreakingNewsSlider> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
               newsList.length,
-              (index) => Container(
+              (index) => AnimatedContainer(
+                duration: Duration(milliseconds: 300),
                 margin: EdgeInsets.symmetric(horizontal: 4),
-                width: 8,
+                width: _currentPage == index ? 24 : 8,
                 height: 8,
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.grey.shade400,
+                  borderRadius: BorderRadius.circular(4),
+                  color: _currentPage == index
+                      ? theme.colorScheme.primary
+                      : theme.colorScheme.onBackground.withOpacity(0.2),
                 ),
               ),
             ),
@@ -78,7 +103,6 @@ class _BreakingNewsSliderState extends State<BreakingNewsSlider> {
         ),
       ],
     );
-    // );
   }
 }
 

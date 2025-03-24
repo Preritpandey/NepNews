@@ -67,7 +67,7 @@ class _ForexSlideshowState extends State<ForexSlideshow> {
                   child: CarouselSlider(
                     enableAutoSlider: true,
                     autoSliderTransitionTime: const Duration(milliseconds: 800),
-                    viewportFraction: 0.3,
+                    viewportFraction: 0.35,
                     autoSliderTransitionCurve: Curves.fastOutSlowIn,
                     autoSliderDelay: const Duration(milliseconds: 1500),
                     scrollDirection: Axis.horizontal,
@@ -114,7 +114,7 @@ class ForexCard extends StatelessWidget {
               fontSize: 12,
               color: Colors.blue,
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 15),
             const AppText(color: Colors.blue, text: 'Sell', fontSize: 12),
           ],
         ),
