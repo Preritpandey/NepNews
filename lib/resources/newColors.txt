@@ -1,0 +1,6 @@
+App Dark mode colors
+AppBar color = rgba(38,41,43,255)
+background/ body color = rgba(56,58,59,255)
+card background = rgba(46,49,50,255)
+icon color = rgba(196,193,195,255)
+active icon color = rgba(254,101,29,255)

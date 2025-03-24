@@ -26,23 +26,9 @@ const Color darkBlue = Color.fromARGB(255, 0, 98, 110);
 const Color darkBluishGreen = Color.fromRGBO(86, 126, 151, 1);
 const Color bluishGreen = Color.fromRGBO(0, 149, 125, 1);
 const Color buttonBlue = Color.fromRGBO(86, 130, 179, 1);
+const Color navBarIconColor = Color.fromARGB(255,196,193,195);
+const Color navBarActiveIconColor = Color.fromARGB(255,254,101,29);
 
-const MaterialColor materialHeraldGreen = MaterialColor(
-  _heraldGreenPrimary,
-  <int, Color>{
-    50: Color.fromRGBO(116, 192, 67, .1),
-    100: Color.fromRGBO(116, 192, 67, .2),
-    200: Color.fromRGBO(116, 192, 67, .3),
-    300: Color.fromRGBO(116, 192, 67, .4),
-    400: Color.fromRGBO(116, 192, 67, .5),
-    500: Color.fromRGBO(116, 192, 67, .6),
-    600: Color.fromRGBO(116, 192, 67, .7),
-    700: Color.fromRGBO(116, 192, 67, .8),
-    800: Color.fromRGBO(116, 192, 67, .9),
-    900: Color.fromRGBO(116, 192, 67, 1),
-  },
-);
-const int _heraldGreenPrimary = 0xFF74C043;
 
 const double fontSize10 = 7.5;
 const double fontSize12 = 9.3;

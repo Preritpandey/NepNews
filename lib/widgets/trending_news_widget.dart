@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_portal/core/ScreenSizeConfig.dart';
 import 'package:news_portal/resources/app_text.dart';
 
 class TrendingNewsCard extends StatelessWidget {
@@ -32,7 +33,9 @@ class TrendingNewsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+    final screenSize = ScreenSizeConfig.of(context);
+    double screenHeight = screenSize.height;
+    double screenWidth = screenSize.width;
     return Container(
       color: theme.colorScheme.background,
       child: Padding(
@@ -65,8 +68,8 @@ class TrendingNewsCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                       child: Image.network(
                         news["imageUrl"]!,
-                        width: 100,
-                        height: 80,
+                        width: screenWidth * 0.3,
+                        height: screenHeight * 0.14,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -88,7 +91,7 @@ class TrendingNewsCard extends StatelessWidget {
                               text: news["category"]!,
                               color: theme.colorScheme.primary,
                               fontSize: 12,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                           SizedBox(height: 8),

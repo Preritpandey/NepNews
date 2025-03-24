@@ -1,31 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:news_portal/resources/constant.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TextBody extends StatelessWidget {
-  final double size;
-  final String? text;
+  final String text;
+  final double? fontSize;
   final Color? color;
-  final FontWeight fontWeight;
-  final TextAlign textAlign;
-  final TextOverflow? overflow;
-  const TextBody(
-      {super.key,
-      this.size = 13,
-      required this.text,
-      this.color,
-      this.fontWeight = FontWeight.w600,
-      this.overflow,
-      this.textAlign = TextAlign.left});
+  final int? maxLines;
+
+  const TextBody({
+    Key? key,
+    required this.text,
+    this.fontSize,
+    this.color,
+    this.maxLines,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Text(text!,
-        textAlign: textAlign,
-        style: TextStyle(
-            color: color,
-            fontSize: size == 13 ? fontSize13 : size,
-            fontFamily: 'Montserrat',
-            fontWeight: fontWeight,
-            overflow: overflow));
+    final theme = Theme.of(context);
+    return Text(
+      text,
+      maxLines: maxLines,
+      overflow: maxLines != null ? TextOverflow.ellipsis : null,
+      style: GoogleFonts.poppins(
+        color: color ?? theme.colorScheme.onSurface,
+        fontSize: fontSize ?? 12,
+        fontWeight: FontWeight.normal,
+        height: 1.5,
+      ),
+    );
   }
 }

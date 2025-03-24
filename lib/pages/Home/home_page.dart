@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:news_portal/core/ScreenSizeConfig.dart';
 import 'package:news_portal/pages/Home/discover_page.dart';
 import 'package:news_portal/resources/app_text.dart';
@@ -7,7 +6,6 @@ import 'package:news_portal/resources/text_heading.dart';
 import 'package:news_portal/widgets/breaking_news_widget.dart';
 import 'package:news_portal/widgets/forex_slideshow.dart';
 import 'package:news_portal/widgets/trending_news_widget.dart';
-import 'package:news_portal/controllers/theme_controller.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,10 +18,8 @@ class HomePage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      
       backgroundColor: theme.colorScheme.background,
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.background,
         leading: IconButton(
           onPressed: () {},
           icon: Icon(Icons.menu, color: theme.colorScheme.onBackground),
@@ -50,7 +46,7 @@ class HomePage extends StatelessWidget {
           children: [
             Container(
               width: screenWidth * 0.95,
-              height: screenHeight * 0.1,
+              height: screenHeight * 0.085,
               color: theme.colorScheme.background,
               child: ForexSlideshow(),
             ),
@@ -69,7 +65,7 @@ class HomePage extends StatelessWidget {
               child: BreakingNewsSlider(),
             ),
             ListTile(
-              leading: TextHeading(text: 'Trending'),
+              leading: TextHeading(text: 'Trending', fontSize: 15),
               trailing: GestureDetector(
                 onTap: () {
                   Navigator.push(

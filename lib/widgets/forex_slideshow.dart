@@ -38,53 +38,57 @@ class _ForexSlideshowState extends State<ForexSlideshow> {
             return const Center(child: Text("No data available"));
           }
 
-          return SizedBox(
-            height: 50,
-            child: Row(
-              children: [
-                // Fixed leading card
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      bottomLeft: Radius.circular(8),
+          return Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: SizedBox(
+              height: 50,
+              child: Row(
+                children: [
+                  // Fixed leading card
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                      color: navBarActiveIconColor,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        bottomLeft: Radius.circular(8),
+                      ),
+                    ),
+                    alignment: Alignment.center,
+                    child: const Text(
+                      "Forex",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  alignment: Alignment.center,
-                  child: const Text(
-                    "Forex",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 5),
-                // Forex carousel
-                Expanded(
-                  child: CarouselSlider(
-                    enableAutoSlider: true,
-                    autoSliderTransitionTime: const Duration(milliseconds: 800),
-                    viewportFraction: 0.35,
-                    autoSliderTransitionCurve: Curves.fastOutSlowIn,
-                    autoSliderDelay: const Duration(milliseconds: 1500),
-                    scrollDirection: Axis.horizontal,
-                    unlimitedMode: true,
-                    children: snapshot.data!.map((forex) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            left: BorderSide(color: grey),
+                  const SizedBox(width: 5),
+                  // Forex carousel
+                  Expanded(
+                    child: CarouselSlider(
+                      enableAutoSlider: true,
+                      autoSliderTransitionTime:
+                          const Duration(milliseconds: 800),
+                      viewportFraction: 0.35,
+                      autoSliderTransitionCurve: Curves.fastOutSlowIn,
+                      autoSliderDelay: const Duration(milliseconds: 1500),
+                      scrollDirection: Axis.horizontal,
+                      unlimitedMode: true,
+                      children: snapshot.data!.map((forex) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              left: BorderSide(color: grey),
+                            ),
                           ),
-                        ),
-                        child: ForexCard(forex: forex),
-                      );
-                    }).toList(),
+                          child: ForexCard(forex: forex),
+                        );
+                      }).toList(),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

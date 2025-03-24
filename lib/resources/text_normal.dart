@@ -1,35 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:news_portal/resources/constant.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TextNormal extends StatelessWidget {
-  final double size;
-  final String? text;
+  final String text;
+  final double? fontSize;
   final Color? color;
-  final FontWeight fontWeight;
-  final TextAlign textAlign;
-  final TextOverflow? overflow;
   final int? maxLines;
-  const TextNormal(
-      {super.key,
-      this.size = 16,
-      required this.text,
-      this.color,
-      this.fontWeight = FontWeight.normal,
-      this.maxLines,
-      this.overflow,
-      this.textAlign = TextAlign.left});
+
+  const TextNormal({
+    Key? key,
+    required this.text,
+    this.fontSize,
+    this.color,
+    this.maxLines,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Text(text!,
-        textAlign: textAlign,
-        maxLines: maxLines,
-        style: TextStyle(
-          color: color,
-          fontSize: size == 16 ? fontSize16 : size,
-          fontWeight: fontWeight,
-          overflow: overflow,
-          fontFamily: fontFamily,
-        ));
+    final theme = Theme.of(context);
+    return Text(
+      text,
+      maxLines: maxLines,
+      overflow: maxLines != null ? TextOverflow.ellipsis : null,
+      style: GoogleFonts.poppins(
+        color: color ?? theme.colorScheme.onSurface,
+        fontSize: fontSize ?? 14,
+        fontWeight: FontWeight.normal,
+      ),
+    );
   }
 }

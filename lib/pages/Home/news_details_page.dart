@@ -105,16 +105,16 @@ class NewsDetailsPage extends StatelessWidget {
                 ),
                 SizedBox(
                   width: screenWidth * 0.4,
-                  child: const ListTile(
-                    leading: TextSubHeading(
+                  child: ListTile(
+                    leading: TextSubheading(
                       text: 'Trending',
-                      size: 14,
-                      color: Colors.white,
+                      fontSize: 8,
+                      color: white,
                     ),
-                    trailing: TextSubHeading(
+                    trailing: TextSubheading(
                       text: '6 Hrs ago',
                       color: Colors.white,
-                      size: 14,
+                      fontSize: 8,
                     ),
                   ),
                 ),

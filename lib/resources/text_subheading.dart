@@ -1,31 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:news_portal/resources/constant.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class TextSubHeading extends StatelessWidget {
-  final double size;
+class TextSubheading extends StatelessWidget {
   final String text;
+  final double? fontSize;
   final Color? color;
-  final TextAlign textAlign;
-  final int maxLines;
-  const TextSubHeading(
-      {super.key,
-      this.size = 14,
-      required this.text,
-      this.color,
-      this.maxLines = 3,
-      this.textAlign = TextAlign.left});
+  final int? maxLines;
+
+  const TextSubheading({
+    Key? key,
+    required this.text,
+    this.fontSize,
+    this.color,
+    this.maxLines,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Text(text,
-        textAlign: textAlign,
-        maxLines: maxLines,
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(
-          fontFamily: fontFamily,
-          color: color,
-          fontSize: size == 14 ? fontSize14 : size,
-          fontWeight: FontWeight.w400,
-        ));
+    final theme = Theme.of(context);
+    return Text(
+      text,
+      maxLines: maxLines,
+      overflow: maxLines != null ? TextOverflow.ellipsis : null,
+      style: GoogleFonts.poppins(
+        color: color ?? theme.colorScheme.onSurface,
+        fontSize: fontSize ?? 12,
+        fontWeight: FontWeight.w600,
+      ),
+    );
   }
 }

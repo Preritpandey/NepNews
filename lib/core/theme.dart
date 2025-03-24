@@ -10,9 +10,15 @@ class AppColors {
 
   // Dark Theme Colors
   static const darkPrimary = Color(0xFF64B5F6); // Light Blue
-  static const darkBackground = Color(0xFF121212); // Dark Grey
-  static const darkSurface = Color(0xFF1E1E1E); // Slightly lighter Dark Grey
+  // static const darkBackground = Color(0xFF121212); // Dark Grey
+  static const darkBackground = Color.fromARGB(255, 56, 58, 59); // Dark Grey
+
+  // static const darkSurface = Color(0xFF1E1E1E); // Slightly lighter Dark Grey
+  static const darkSurface =
+      Color.fromARGB(255, 46, 49, 50); // Slightly lighter Dark Grey
+  static const darkNavBar = Color.fromARGB(255, 38, 41, 43);
   static const darkText = Color(0xFFFFFFFF); // White
+
   static const darkSecondaryText = Color(0xFFB3B3B3); // Light Grey
 }
 
@@ -64,9 +70,10 @@ class AppTheme {
       onBackground: AppColors.darkText,
       onSurface: AppColors.darkText,
     ),
-    scaffoldBackgroundColor: AppColors.darkBackground,
+    scaffoldBackgroundColor: AppColors.darkNavBar,
     appBarTheme: AppBarTheme(
-      backgroundColor: AppColors.darkBackground,
+      color: AppColors.darkNavBar,
+      // backgroundColor: AppColors.darkNavBar,
       elevation: 0,
       iconTheme: IconThemeData(color: AppColors.darkText),
       titleTextStyle: TextStyle(

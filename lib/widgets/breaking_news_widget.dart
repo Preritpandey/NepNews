@@ -92,7 +92,7 @@ class _BreakingNewsSliderState extends State<BreakingNewsSlider> {
                 width: _currentPage == index ? 24 : 8,
                 height: 8,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(10),
                   color: _currentPage == index
                       ? theme.colorScheme.primary
                       : theme.colorScheme.onBackground.withOpacity(0.2),
@@ -119,7 +119,7 @@ class NewsCard extends StatelessWidget {
             MaterialPageRoute(builder: (context) => NewsDetailsPage()));
       },
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(15),
         child: Stack(
           children: [
             // Background Image
@@ -150,13 +150,13 @@ class NewsCard extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: const Color.fromARGB(255, 97, 110, 120),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: AppText(
                     text: news["category"]!,
                     color: Colors.white,
-                    fontWeight: FontWeight.bold),
+                    fontWeight: FontWeight.w600),
               ),
             ),
             // News Content
