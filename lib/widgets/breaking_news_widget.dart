@@ -46,7 +46,7 @@ class _BreakingNewsSliderState extends State<BreakingNewsSlider> {
       "time": "2 hours ago",
       "category": "Technology",
       "imageUrl":
-          "https://images.squarespace-cdn.com/content/v1/61782ecbf6567d12f08ba3b9/1647524339004-CU4RMQZ5B4BW66JYB1D7/pexels-nishant-das-3906333.jpg",
+          "https://www.infinite-uptime.com/wp-content/uploads/2024/08/AI-Predictive-Maintenance.jpg",
     },
     {
       "title": "Global markets react to economic downturn",

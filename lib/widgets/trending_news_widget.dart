@@ -38,117 +38,105 @@ class TrendingNewsCard extends StatelessWidget {
     double screenWidth = screenSize.width;
     return Container(
       color: theme.colorScheme.background,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: 3,
-          itemBuilder: (context, index) {
-            final news = newsList[index];
-            return Container(
-              margin: const EdgeInsets.only(bottom: 16.0),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surface,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: theme.shadowColor.withOpacity(0.1),
-                    blurRadius: 10,
-                    offset: Offset(0, 4),
+      child: ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: 3,
+        itemBuilder: (context, index) {
+          final news = newsList[index];
+          return Container(
+            child: Padding(
+              padding: EdgeInsets.only(
+                  right: screenWidth * 0.03,
+                  left: screenWidth * 0.03,
+                  bottom: screenHeight * 0.015),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // News Image
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      news["imageUrl"]!,
+                      width: screenWidth * 0.3,
+                      height: screenHeight * 0.14,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  SizedBox(width: 12),
+                  // News Content
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Category
+                        Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primary.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: AppText(
+                            text: news["category"]!,
+                            color: theme.colorScheme.primary,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        // News Title
+                        AppText(
+                          text: news["title"]!,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: theme.colorScheme.onSurface,
+                        ),
+                        SizedBox(height: 8),
+                        // Author and Date
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 10,
+                              backgroundColor:
+                                  theme.colorScheme.primary.withOpacity(0.2),
+                              child: Icon(
+                                Icons.person,
+                                size: 12,
+                                color: theme.colorScheme.primary,
+                              ),
+                            ),
+                            SizedBox(width: 6),
+                            AppText(
+                              text: news["author"]!,
+                              fontSize: 11,
+                              color:
+                                  theme.colorScheme.onSurface.withOpacity(0.7),
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              "•",
+                              style: TextStyle(
+                                color: theme.colorScheme.onSurface
+                                    .withOpacity(0.7),
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            AppText(
+                              text: news["date"]!,
+                              fontSize: 11,
+                              color:
+                                  theme.colorScheme.onSurface.withOpacity(0.7),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // News Image
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        news["imageUrl"]!,
-                        width: screenWidth * 0.3,
-                        height: screenHeight * 0.14,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    SizedBox(width: 12),
-                    // News Content
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Category
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: theme.colorScheme.primary.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: AppText(
-                              text: news["category"]!,
-                              color: theme.colorScheme.primary,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          // News Title
-                          AppText(
-                            text: news["title"]!,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: theme.colorScheme.onSurface,
-                          ),
-                          SizedBox(height: 8),
-                          // Author and Date
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 10,
-                                backgroundColor:
-                                    theme.colorScheme.primary.withOpacity(0.2),
-                                child: Icon(
-                                  Icons.person,
-                                  size: 12,
-                                  color: theme.colorScheme.primary,
-                                ),
-                              ),
-                              SizedBox(width: 6),
-                              AppText(
-                                text: news["author"]!,
-                                fontSize: 13,
-                                color: theme.colorScheme.onSurface
-                                    .withOpacity(0.7),
-                              ),
-                              SizedBox(width: 8),
-                              Text(
-                                "•",
-                                style: TextStyle(
-                                  color: theme.colorScheme.onSurface
-                                      .withOpacity(0.7),
-                                ),
-                              ),
-                              SizedBox(width: 8),
-                              AppText(
-                                text: news["date"]!,
-                                fontSize: 13,
-                                color: theme.colorScheme.onSurface
-                                    .withOpacity(0.7),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
