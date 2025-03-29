@@ -16,11 +16,11 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   final List<Widget> pages = [
-    LoginPage(),
-    // const NewsDetailsPage(),
+
     const HomePage(),
     const BrowsePage(),
-    // const BookmarkPage(),
+    const NewsDetailsPage(),
+    const BookmarkPage(),
     const ProfilePage(),
   ];
 

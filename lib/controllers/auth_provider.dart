@@ -1,29 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class AuthProvider extends ChangeNotifier {
+class AuthController extends GetxController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  bool _isLoading = false;
-  bool _rememberMe = false;
-
-  bool get isLoading => _isLoading;
-  bool get rememberMe => _rememberMe;
+  var isLoading = false.obs;
+  var rememberMe = false.obs;
+  final box = GetStorage();
 
   final String apiUrl = "http://localhost:8080/api/auth/login";
 
-  void toggleRememberMe() {
-    _rememberMe = !_rememberMe;
-    notifyListeners();
-  }
-
-  Future<void> login(BuildContext context) async {
-    _isLoading = true;
-    notifyListeners();
+  Future<void> login() async {
+    isLoading.value = true;
 
     try {
       var response = await http.post(
@@ -38,50 +30,35 @@ class AuthProvider extends ChangeNotifier {
       var responseData = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString("token", responseData["token"]);
-        await prefs.setString("user", jsonEncode(responseData["user"]));
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text("Logged in successfully"),
-              backgroundColor: Colors.green),
-        );
-
-        Navigator.pushReplacementNamed(context, "/home");
+        box.write("token", responseData["token"]);
+        box.write("user", responseData["user"]);
+        
+        Get.snackbar("Success", "Logged in successfully",
+            snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green, colorText: Colors.white);
+        
+        Get.offAllNamed('/home'); // Navigate to home screen
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text(responseData["msg"] ?? "Login failed"),
-              backgroundColor: Colors.red),
-        );
+        Get.snackbar("Error", responseData["msg"] ?? "Login failed",
+            snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red, colorText: Colors.white);
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text("Something went wrong. Try again later."),
-            backgroundColor: Colors.red),
-      );
+      Get.snackbar("Error", "Something went wrong. Try again later.",
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red, colorText: Colors.white);
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      isLoading.value = false;
     }
   }
 
-  Future<void> logout(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-    Navigator.pushReplacementNamed(context, "/login");
+  void logout() {
+    box.erase();
+    Get.offAllNamed('/login'); // Navigate back to login
   }
 
-  Future<String?> getToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString("token");
+  String? getToken() {
+    return box.read("token");
   }
 
-  Future<Map<String, dynamic>?> getUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userData = prefs.getString("user");
-    return userData != null ? jsonDecode(userData) : null;
+  Map<String, dynamic>? getUser() {
+    return box.read("user");
   }
 }
