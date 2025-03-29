@@ -17,11 +17,11 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   final List<Widget> pages = [
     LoginPage(),
-    // const ProfilePage(),
     // const NewsDetailsPage(),
     const HomePage(),
     const BrowsePage(),
-    const BookmarkPage(),
+    // const BookmarkPage(),
+    const ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
