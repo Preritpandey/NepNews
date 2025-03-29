@@ -41,8 +41,8 @@ dependencies:
   connectivity_plus: ^5.0.2
   flutter_carousel_slider:
   shared_preferences: ^2.2.2
-  provider: ^6.1.1
-
+  # provider: ^6.1.1
+  get: ^4.6.6
 dev_dependencies:
   flutter_test:
     sdk: flutter

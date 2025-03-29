@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:news_portal/controllers/theme_controller.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -8,7 +8,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final themeController = Provider.of<ThemeController>(context);
+    final themeController = Get.find<ThemeController>();
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
@@ -88,24 +88,26 @@ class ProfilePage extends StatelessWidget {
               color: theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: ListTile(
-              leading: Icon(
-                themeController.isDarkMode ? Icons.dark_mode : Icons.light_mode,
-                color: theme.colorScheme.primary,
-              ),
-              title: Text(
-                'Dark Mode',
-                style: TextStyle(
-                  color: theme.colorScheme.onSurface,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              trailing: Switch(
-                value: themeController.isDarkMode,
-                onChanged: (value) => themeController.toggleTheme(),
-                activeColor: theme.colorScheme.primary,
-              ),
-            ),
+            child: Obx(() => ListTile(
+                  leading: Icon(
+                    themeController.isDarkMode
+                        ? Icons.dark_mode
+                        : Icons.light_mode,
+                    color: theme.colorScheme.primary,
+                  ),
+                  title: Text(
+                    'Dark Mode',
+                    style: TextStyle(
+                      color: theme.colorScheme.onSurface,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  trailing: Switch(
+                    value: themeController.isDarkMode,
+                    onChanged: (_) => themeController.toggleTheme(),
+                    activeColor: theme.colorScheme.primary,
+                  ),
+                )),
           ),
 
           // Other Settings Options
