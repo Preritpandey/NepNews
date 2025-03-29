@@ -36,7 +36,7 @@ class NewsDetailsPage extends StatelessWidget {
                 child: Stack(
                   children: [
                     Image.network(
-                      'https://scontent.fktm10-1.fna.fbcdn.net/v/t39.30808-6/480498084_1078804920956979_8610893900327937131_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=127cfc&_nc_ohc=4QREK26lKJcQ7kNvgEK-dpm&_nc_oc=AdnlBER_kcpWJraJHFhrrxVJimvY49JiPPAJG49yJX3BTVGZog9a5NN5NOGUuvIDrBk&_nc_zt=23&_nc_ht=scontent.fktm10-1.fna&_nc_gid=0fI3mjzdwBQ2Mmbch2VfqA&oh=00_AYEbV_nWqmizn9cbHB7ydO9mHrjsQq4ZLCI_U-LqrzyEZA&oe=67E5276F',
+                      'https://images.squarespace-cdn.com/content/v1/61782ecbf6567d12f08ba3b9/1647524339004-CU4RMQZ5B4BW66JYB1D7/pexels-nishant-das-3906333.jpg',
                       fit: BoxFit.cover,
                       width: screenWidth,
                       height: screenHeight * 0.4,
