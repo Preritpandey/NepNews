@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_portal/controllers/theme_controller.dart';
+import 'package:news_portal/pages/auth/login_page.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -120,13 +121,17 @@ class ProfilePage extends StatelessWidget {
             child: Column(
               children: [
                 ListTile(
-                  leading: Icon(Icons.notifications_outlined,
-                      color: theme.colorScheme.primary),
-                  title: Text(
-                    'Notifications',
-                    style: TextStyle(
-                      color: theme.colorScheme.onSurface,
-                      fontWeight: FontWeight.w500,
+                  leading: Icon(Icons.login, color: theme.colorScheme.primary),
+                  title: GestureDetector(
+                    onTap: () {
+                      Get.to(LoginPage());
+                    },
+                    child: Text(
+                      'Login',
+                      style: TextStyle(
+                        color: theme.colorScheme.onSurface,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                   trailing: Icon(Icons.chevron_right,

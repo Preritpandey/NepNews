@@ -15,16 +15,25 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: Icon(Icons.arrow_back_ios))),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 70, horizontal: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              AppText(text: 'Welcome back', fontSize: 24, fontWeight: FontWeight.bold),
+              AppText(
+                  text: 'Welcome back',
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
               AppText(text: 'Enter your credentials', fontSize: 16),
               const SizedBox(height: 20),
-
               AppText(text: 'Email'),
               CustomTextField(
                 controller: authController.emailController,
@@ -33,7 +42,6 @@ class LoginPage extends StatelessWidget {
                 icon: const Icon(Icons.email),
               ),
               const SizedBox(height: 10),
-
               AppText(text: 'Password'),
               CustomTextField(
                 controller: authController.passwordController,
@@ -41,7 +49,6 @@ class LoginPage extends StatelessWidget {
                 isPassword: true,
               ),
               const SizedBox(height: 20),
-
               Row(
                 children: [
                   Obx(() => Checkbox(
@@ -58,9 +65,7 @@ class LoginPage extends StatelessWidget {
                   ),
                 ],
               ),
-
               const SizedBox(height: 20),
-
               Obx(() => authController.isLoading.value
                   ? const Center(child: CircularProgressIndicator())
                   : AppButton(

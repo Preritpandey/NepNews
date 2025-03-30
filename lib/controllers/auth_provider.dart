@@ -4,6 +4,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:news_portal/author/author.dart';
+
 class AuthController extends GetxController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -32,18 +34,24 @@ class AuthController extends GetxController {
       if (response.statusCode == 200) {
         box.write("token", responseData["token"]);
         box.write("user", responseData["user"]);
-        
+
         Get.snackbar("Success", "Logged in successfully",
-            snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green, colorText: Colors.white);
-        
-        Get.offAllNamed('/home'); // Navigate to home screen
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green,
+            colorText: Colors.white);
+        Get.to(AuthorNewsPage());
+        // Get.offAllNamed('/home'); // Navigate to home screen
       } else {
         Get.snackbar("Error", responseData["msg"] ?? "Login failed",
-            snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red, colorText: Colors.white);
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white);
       }
     } catch (e) {
       Get.snackbar("Error", "Something went wrong. Try again later.",
-          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red, colorText: Colors.white);
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white);
     } finally {
       isLoading.value = false;
     }

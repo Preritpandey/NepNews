@@ -16,10 +16,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   final List<Widget> pages = [
-
     const HomePage(),
     const BrowsePage(),
-    const NewsDetailsPage(),
+    // const NewsDetailsPage(),
     const BookmarkPage(),
     const ProfilePage(),
   ];
