@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_portal/author/author.dart';
 import 'package:news_portal/core/ScreenSizeConfig.dart';
 import 'package:news_portal/pages/Browse/browse_page.dart';
 import 'package:news_portal/pages/Home/home_page.dart';
@@ -16,7 +17,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   final List<Widget> pages = [
-    const HomePage(),
+    AuthorNewsPage(),
+    // const HomePage(),
     const BrowsePage(),
     // const NewsDetailsPage(),
     const BookmarkPage(),

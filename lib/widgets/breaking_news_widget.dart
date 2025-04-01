@@ -46,7 +46,7 @@ class _BreakingNewsSliderState extends State<BreakingNewsSlider> {
       "time": "2 hours ago",
       "category": "Technology",
       "imageUrl":
-          "https://amfg.ai/wp-content/uploads/2018/08/Industry-4.0-and-Manufacturing-Processes-e1533908951467-1200x647.jpg",
+          "https://images.squarespace-cdn.com/content/v1/61782ecbf6567d12f08ba3b9/1647524339004-CU4RMQZ5B4BW66JYB1D7/pexels-nishant-das-3906333.jpg",
     },
     {
       "title": "Global markets react to economic downturn",
