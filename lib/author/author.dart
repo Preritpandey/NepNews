@@ -9,9 +9,8 @@ class AuthorNewsPage extends StatefulWidget {
 }
 
 class _AuthorNewsPageState extends State<AuthorNewsPage> {
-  final NewsPostController newsPostController = Get.put(NewsPostController());
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
+  final ArticleController newsPostController = Get.put(ArticleController());
+
   final List<String> categories = [
     'Politics',
     'Sports',
@@ -19,29 +18,9 @@ class _AuthorNewsPageState extends State<AuthorNewsPage> {
     'Entertainment'
   ];
   String? selectedCategory;
-  // File? _image;
-
-  // Future<void> _pickImage() async {
-  //   final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-  //   if (pickedFile != null) {
-  //     setState(() {
-  //       _image = File(pickedFile.path);
-  //     });
-  //   }
-  // }
 
   void _publishNews() {
-    // if (titleController.text.isEmpty ||
-    //     descriptionController.text.isEmpty ||
-    //     selectedCategory == null) {
-    //   Get.snackbar("Error", "Please fill all fields and select an image",
-    //       backgroundColor: Colors.red, colorText: Colors.white);
-    //   return;
-    // }
-    newsPostController.postNews();
-    // Submit logic here
-    // Get.snackbar("Success", "News published successfully!",
-    //     backgroundColor: Colors.green, colorText: Colors.white);
+    newsPostController.postArticle();
   }
 
   @override
@@ -54,31 +33,18 @@ class _AuthorNewsPageState extends State<AuthorNewsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // this will be implemented after cloudinary setup is done in backend.
-              // GestureDetector(
-              //   onTap: _pickImage,
-              //   child: Container(
-              //     height: 200,
-              //     width: double.infinity,
-              //     decoration: BoxDecoration(
-              //       color: Colors.grey[300],
-              //       borderRadius: BorderRadius.circular(10),
-              //     ),
-              //     child: _image != null
-              //         ? Image.file(_image!, fit: BoxFit.cover)
-              //         : Icon(Icons.camera_alt, size: 50, color: Colors.grey[700]),
-              //   ),
-              // ),
-
               const SizedBox(height: 16),
+
+              ///title
               TextField(
-                controller: titleController,
+                controller: newsPostController.titleController,
                 decoration: InputDecoration(
                     labelText: "News Title", border: OutlineInputBorder()),
               ),
               SizedBox(height: 16),
+              //content controller
               TextField(
-                controller: descriptionController,
+                controller: newsPostController.contentController,
                 maxLines: 5,
                 decoration: InputDecoration(
                     labelText: "News Description",
@@ -102,12 +68,13 @@ class _AuthorNewsPageState extends State<AuthorNewsPage> {
               SizedBox(height: 20),
               // Newws summary
               TextField(
-                // controller: newsPostController.summaryController,
-                // decoration: const InputDecoration(
-                //     labelText: "News Summary", border: OutlineInputBorder()),
+                controller: newsPostController.summaryController,
+                decoration: const InputDecoration(
+                    labelText: "News Summary", border: OutlineInputBorder()),
               ),
+              SizedBox(height: 20),
               TextField(
-                // controller: newsPostController.imageUrlController,
+                controller: newsPostController.imageUrlController,
                 decoration: const InputDecoration(
                     labelText: "Image URL", border: OutlineInputBorder()),
               ),

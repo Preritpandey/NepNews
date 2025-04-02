@@ -12,7 +12,7 @@ class AuthController extends GetxController {
 
   var isLoading = false.obs;
   var rememberMe = false.obs;
-  final box = GetStorage();
+  final box = GetStorage();``
 
   final String apiUrl = "http://localhost:8080/api/auth/login";
 
