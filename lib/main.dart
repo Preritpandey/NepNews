@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:get/get.dart';
 import 'package:news_portal/core/ScreenSizeConfig.dart';
 import 'package:news_portal/models/forex_data_model.dart';
@@ -11,13 +10,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
-  Hive.registerAdapter(ForexRateAdapter());
-  await Hive.openBox<ForexRate>('forex_rates');
   final prefs = await SharedPreferences.getInstance();
   await GetStorage.init(); // Initialize GetStorage
 
-  // Initialize GetX theme controller
+  //  GetX theme controller initialization
   Get.put(ThemeController(prefs));
 
   runApp(const MyApp());

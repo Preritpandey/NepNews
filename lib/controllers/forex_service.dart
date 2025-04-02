@@ -1,41 +1,78 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:hive/hive.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:news_portal/models/forex_data_model.dart';
 
-class ForexService {
-  final String apiUrl = "https://www.nrb.org.np/api/forex/v1/rates?page=1&per_page=10&from=2024-03-23&to=2024-03-23";
+class ForexController extends GetxController {
+  final RxList<ForexRate> forexRates = <ForexRate>[].obs;
+  final RxBool isLoading = true.obs;
+  final RxBool hasError = false.obs;
+  final RxString errorMessage = ''.obs;
 
-  Future<List<ForexRate>> fetchForexData() async {
-    var connectivityResult = await Connectivity().checkConnectivity();
-    
-    if (connectivityResult != ConnectivityResult.none) {
-      // Fetch from API
-      final response = await http.get(Uri.parse(apiUrl));
+  final String apiUrl =
+      "https://www.nrb.org.np/api/forex/v1/rates?page=1&per_page=10&from=2024-03-23&to=2024-03-23";
+  final GetStorage storage = GetStorage();
 
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        List<dynamic> rates = data['data']['payload'][0]['rates'];
+  @override
+  void onInit() {
+    super.onInit();
+    fetchForexData();
+  }
 
-        List<ForexRate> forexRates = rates
-            .where((rate) => rate['buy'] != null && rate['sell'] != null)
-            .map((rate) => ForexRate.fromJson(rate))
-            .toList();
+  Future<void> fetchForexData() async {
+    isLoading(true);
+    hasError(false);
+    errorMessage('');
 
-        // Save to Hive
-        var box = Hive.box<ForexRate>('forex_rates');
-        await box.clear();
-        await box.addAll(forexRates);
+    try {
+      var connectivityResult = await Connectivity().checkConnectivity();
 
-        return forexRates;
+      if (connectivityResult != ConnectivityResult.none) {
+        // Fetch from API
+        final response = await http.get(Uri.parse(apiUrl));
+        if (response.statusCode == 200) {
+          final data = json.decode(response.body);
+          List<dynamic> rates = data['data']['payload'][0]['rates'];
+          List<ForexRate> fetchedRates = rates
+              .where((rate) => rate['buy'] != null && rate['sell'] != null)
+              .map((rate) => ForexRate.fromJson(rate))
+              .toList();
+
+          // Save to GetStorage
+          final List<Map<String, dynamic>> ratesJson =
+              fetchedRates.map((rate) => rate.toJson()).toList();
+          storage.write('forex_rates', ratesJson);
+
+          // Update controller state
+          forexRates.assignAll(fetchedRates);
+        } else {
+          throw Exception("Failed to fetch forex data");
+        }
       } else {
-        throw Exception("Failed to fetch forex data");
+        // No internet, return from GetStorage
+        final List<dynamic>? storedRates =
+            storage.read<List<dynamic>>('forex_rates');
+        if (storedRates != null && storedRates.isNotEmpty) {
+          final List<ForexRate> cachedRates = storedRates
+              .map((rateJson) => ForexRate.fromJson(rateJson))
+              .toList();
+          forexRates.assignAll(cachedRates);
+        } else {
+          hasError(true);
+          errorMessage('No cached data available');
+        }
       }
-    } else {
-      // No internet, return from Hive
-      var box = Hive.box<ForexRate>('forex_rates');
-      return box.values.toList();
+    } catch (e) {
+      hasError(true);
+      errorMessage(e.toString());
+    } finally {
+      isLoading(false);
     }
+  }
+
+  void refreshData() {
+    fetchForexData();
   }
 }

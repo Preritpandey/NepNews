@@ -1,98 +1,84 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_carousel_slider/carousel_slider.dart';
-import 'package:news_portal/controllers/forex_service.dart';
-import 'package:news_portal/core/ScreenSizeConfig.dart';
-import 'package:news_portal/models/forex_data_model.dart';
-import 'package:news_portal/resources/app_text.dart';
-import 'package:news_portal/resources/constant.dart';
 
-class ForexSlideshow extends StatefulWidget {
+import '../controllers/forex_service.dart';
+import '../models/forex_data_model.dart';
+import '../resources/app_text.dart';
+import '../resources/constant.dart';
+
+class ForexSlideshow extends StatelessWidget {
   const ForexSlideshow({super.key});
 
   @override
-  _ForexSlideshowState createState() => _ForexSlideshowState();
-}
-
-class _ForexSlideshowState extends State<ForexSlideshow> {
-  late Future<List<ForexRate>> _forexRates;
-
-  @override
-  void initState() {
-    super.initState();
-    _forexRates = ForexService().fetchForexData();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final screenSize = ScreenSizeConfig.of(context);
+    final ForexController forexController = Get.put(ForexController());
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
-      child: FutureBuilder<List<ForexRate>>(
-        future: _forexRates,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text("No data available"));
-          }
+      child: Obx(() {
+        if (forexController.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (forexController.hasError.value) {
+          return Center(
+              child: Text("Error: ${forexController.errorMessage.value}"));
+        } else if (forexController.forexRates.isEmpty) {
+          return const Center(child: Text("No data available"));
+        }
 
-          return Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: SizedBox(
-              height: 50,
-              child: Row(
-                children: [
-                  // Fixed leading card
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                      color: navBarActiveIconColor,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(8),
-                        bottomLeft: Radius.circular(8),
-                      ),
-                    ),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      "Forex",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+        return Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: SizedBox(
+            height: 50,
+            child: Row(
+              children: [
+                // Fixed leading card
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: const BoxDecoration(
+                    color: navBarActiveIconColor,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      bottomLeft: Radius.circular(8),
                     ),
                   ),
-                  const SizedBox(width: 5),
-                  // Forex carousel
-                  Expanded(
-                    child: CarouselSlider(
-                      enableAutoSlider: true,
-                      autoSliderTransitionTime:
-                          const Duration(milliseconds: 800),
-                      viewportFraction: 0.35,
-                      autoSliderTransitionCurve: Curves.fastOutSlowIn,
-                      autoSliderDelay: const Duration(milliseconds: 1500),
-                      scrollDirection: Axis.horizontal,
-                      unlimitedMode: true,
-                      children: snapshot.data!.map((forex) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              left: BorderSide(color: grey),
-                            ),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    "Forex",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 5),
+                // Forex carousel
+                Expanded(
+                  child: CarouselSlider(
+                    enableAutoSlider: true,
+                    autoSliderTransitionTime: const Duration(milliseconds: 800),
+                    viewportFraction: 0.35,
+                    autoSliderTransitionCurve: Curves.fastOutSlowIn,
+                    autoSliderDelay: const Duration(milliseconds: 1500),
+                    scrollDirection: Axis.horizontal,
+                    unlimitedMode: true,
+                    children: forexController.forexRates.map((forex) {
+                      return Container(
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            left: BorderSide(color: grey),
                           ),
-                          child: ForexCard(forex: forex),
-                        );
-                      }).toList(),
-                    ),
+                        ),
+                        child: ForexCard(forex: forex),
+                      );
+                    }).toList(),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      }),
     );
   }
 }
@@ -110,16 +96,16 @@ class ForexCard extends StatelessWidget {
           forex.currencyIso3,
           style: const TextStyle(fontSize: 12),
         ),
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const AppText(
+            AppText(
               text: 'Buy',
               fontSize: 12,
               color: Colors.blue,
             ),
-            const SizedBox(width: 15),
-            const AppText(color: Colors.blue, text: 'Sell', fontSize: 12),
+            SizedBox(width: 15),
+            AppText(color: Colors.blue, text: 'Sell', fontSize: 12),
           ],
         ),
         AppText(text: "${forex.buy} | ${forex.sell}", fontSize: 12),

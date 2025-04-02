@@ -1,21 +1,10 @@
-import 'package:hive/hive.dart';
-part "forex_data_model.g.dart";
+import 'package:get/get.dart';
 
-@HiveType(typeId: 0)
-class ForexRate extends HiveObject {
-  @HiveField(0)
+class ForexRate {
   String currencyIso3;
-
-  @HiveField(1)
   String currencyName;
-
-  @HiveField(2)
   int unit;
-
-  @HiveField(3)
   double buy;
-
-  @HiveField(4)
   double sell;
 
   ForexRate({
@@ -28,11 +17,48 @@ class ForexRate extends HiveObject {
 
   factory ForexRate.fromJson(Map<String, dynamic> json) {
     return ForexRate(
-      currencyIso3: json['currency']['iso3'],
-      currencyName: json['currency']['name'],
-      unit: json['currency']['unit'],
-      buy: json['buy'] != null ? double.parse(json['buy']) : 0.0,
-      sell: json['sell'] != null ? double.parse(json['sell']) : 0.0,
+      currencyIso3: json['currency'] != null
+          ? json['currency']['iso3'] ?? ''
+          : json['currencyIso3'] ?? '',
+      currencyName: json['currency'] != null
+          ? json['currency']['name'] ?? ''
+          : json['currencyName'] ?? '',
+      unit: json['currency'] != null
+          ? json['currency']['unit'] ?? 1
+          : json['unit'] ?? 1,
+      buy: json['buy'] != null
+          ? double.tryParse(json['buy'].toString()) ?? 0.0
+          : json['buy'] ?? 0.0,
+      sell: json['sell'] != null
+          ? double.tryParse(json['sell'].toString()) ?? 0.0
+          : json['sell'] ?? 0.0,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'currencyIso3': currencyIso3,
+      'currencyName': currencyName,
+      'unit': unit,
+      'buy': buy,
+      'sell': sell,
+    };
+  }
+
+  // Helper to create a copy with updated values
+  ForexRate copyWith({
+    String? currencyIso3,
+    String? currencyName,
+    int? unit,
+    double? buy,
+    double? sell,
+  }) {
+    return ForexRate(
+      currencyIso3: currencyIso3 ?? this.currencyIso3,
+      currencyName: currencyName ?? this.currencyName,
+      unit: unit ?? this.unit,
+      buy: buy ?? this.buy,
+      sell: sell ?? this.sell,
     );
   }
 }

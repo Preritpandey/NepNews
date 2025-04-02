@@ -12,7 +12,7 @@ class AuthController extends GetxController {
 
   var isLoading = false.obs;
   var rememberMe = false.obs;
-  final box = GetStorage();``
+  final box = GetStorage();
 
   final String apiUrl = "http://localhost:8080/api/auth/login";
 
@@ -40,7 +40,6 @@ class AuthController extends GetxController {
             backgroundColor: Colors.green,
             colorText: Colors.white);
         Get.to(AuthorNewsPage());
-        // Get.offAllNamed('/home'); // Navigate to home screen
       } else {
         Get.snackbar("Error", responseData["msg"] ?? "Login failed",
             snackPosition: SnackPosition.BOTTOM,

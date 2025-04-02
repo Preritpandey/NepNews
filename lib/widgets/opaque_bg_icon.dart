@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:news_portal/resources/constant.dart';
 
 class OpaqueBgIcon extends StatelessWidget {
   final IconData icon;
