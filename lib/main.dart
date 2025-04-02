@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
-import 'package:news_portal/core/ScreenSizeConfig.dart';
-import 'package:news_portal/models/forex_data_model.dart';
-import 'package:news_portal/pages/Home/home.dart';
-import 'package:news_portal/controllers/theme_controller.dart';
-import 'package:news_portal/core/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'controllers/theme_controller.dart';
+import 'core/ScreenSizeConfig.dart';
+import 'core/theme.dart';
+import 'pages/Home/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

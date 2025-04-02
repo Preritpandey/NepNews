@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:news_portal/controllers/auth_provider.dart';
+import 'package:news_portal/controllers/auth_controller.dart';
 
 class ArticleController extends GetxController {
   final TextEditingController titleController = TextEditingController();

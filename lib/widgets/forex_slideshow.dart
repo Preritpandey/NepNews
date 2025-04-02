@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_carousel_slider/carousel_slider.dart';
 
-import '../controllers/forex_service.dart';
+import '../controllers/forex_controller.dart';
 import '../models/forex_data_model.dart';
 import '../resources/app_text.dart';
 import '../resources/constant.dart';

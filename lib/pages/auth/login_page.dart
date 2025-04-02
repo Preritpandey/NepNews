@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:news_portal/controllers/auth_provider.dart';
+import 'package:news_portal/controllers/auth_controller.dart';
 
 import 'package:news_portal/resources/app_text.dart';
 import 'package:news_portal/resources/constant.dart';

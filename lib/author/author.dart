@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:news_portal/controllers/news_post_service.dart';
+import 'package:news_portal/controllers/news_post_controller.dart';
 
 class AuthorNewsPage extends StatefulWidget {
   @override
