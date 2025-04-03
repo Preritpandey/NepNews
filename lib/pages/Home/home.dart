@@ -8,6 +8,7 @@ import 'package:news_portal/pages/Profile/profile_page.dart';
 import 'package:news_portal/pages/auth/login_page.dart';
 import 'package:news_portal/pages/bookmark/bookmark_page.dart';
 import 'package:news_portal/resources/constant.dart';
+import 'package:news_portal/test.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -17,7 +18,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   final List<Widget> pages = [
-    const HomePage(),
+    AdsScreen(),
+    // const HomePage(),
     const BrowsePage(),
     const NewsDetailsPage(),
     // const BookmarkPage(),
