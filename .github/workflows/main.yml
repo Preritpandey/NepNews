@@ -1,13 +1,10 @@
 on:
   pull_request:
     branches:
-      - main
-      - master
+      - production
   push:
     branches:
-      - main
-      - master
-      - develop
+      - production
 
 name: "Build & Release"
 
