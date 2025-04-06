@@ -8,12 +8,12 @@ class TextNormal extends StatelessWidget {
   final int? maxLines;
 
   const TextNormal({
-    Key? key,
+    super.key,
     required this.text,
     this.fontSize,
     this.color,
     this.maxLines,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

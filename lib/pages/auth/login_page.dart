@@ -28,13 +28,13 @@ class LoginPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              AppText(
+          const     AppText(
                   text: 'Welcome back',
                   fontSize: 24,
                   fontWeight: FontWeight.bold),
-              AppText(text: 'Enter your credentials', fontSize: 16),
+              const AppText(text: 'Enter your credentials', fontSize: 16),
               const SizedBox(height: 20),
-              AppText(text: 'Email'),
+              const AppText(text: 'Email'),
               CustomTextField(
                 controller: authController.emailController,
                 hintText: 'Enter your email',
@@ -42,7 +42,7 @@ class LoginPage extends StatelessWidget {
                 icon: const Icon(Icons.email),
               ),
               const SizedBox(height: 10),
-              AppText(text: 'Password'),
+             const  AppText(text: 'Password'),
               CustomTextField(
                 controller: authController.passwordController,
                 hintText: 'Enter your password',

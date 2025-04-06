@@ -37,7 +37,7 @@ class ForexSlideshow extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: const BoxDecoration(
                     color: navBarActiveIconColor,
-                    borderRadius: const BorderRadius.only(
+                    borderRadius:  BorderRadius.only(
                       topLeft: Radius.circular(8),
                       bottomLeft: Radius.circular(8),
                     ),

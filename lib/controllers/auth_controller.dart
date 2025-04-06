@@ -39,7 +39,7 @@ class AuthController extends GetxController {
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.green,
             colorText: Colors.white);
-        Get.to(AuthorNewsPage());
+        Get.to(const AuthorNewsPage());
       } else {
         Get.snackbar("Error", responseData["msg"] ?? "Login failed",
             snackPosition: SnackPosition.BOTTOM,

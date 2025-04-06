@@ -11,7 +11,7 @@ import '../../widgets/forex_slideshow.dart';
 import '../../widgets/trending_news_widget.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+  HomePage({super.key});
 
   final AdController adController =
       Get.put(AdController()); // Inject controller
@@ -109,7 +109,7 @@ class HomePage extends StatelessWidget {
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.27,
-              child: BreakingNewsSlider(),
+              child: const BreakingNewsSlider(),
             ),
 
             // Trending News Section
@@ -119,7 +119,7 @@ class HomePage extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => DiscoverPage()),
+                    MaterialPageRoute(builder: (context) => const DiscoverPage()),
                   );
                 },
                 child: AppText(

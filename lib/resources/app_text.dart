@@ -10,14 +10,14 @@ class AppText extends StatelessWidget {
   final TextAlign? textAlign;
 
   const AppText({
-    Key? key,
+    super.key,
     required this.text,
     this.fontSize,
     this.color,
     this.fontWeight,
     this.maxLines,
     this.textAlign,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

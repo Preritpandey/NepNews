@@ -37,7 +37,7 @@ class ProfilePage extends StatelessWidget {
                 BoxShadow(
                   color: theme.shadowColor.withOpacity(0.1),
                   blurRadius: 10,
-                  offset: Offset(0, 4),
+                  offset: const Offset(0, 4),
                 ),
               ],
             ),
@@ -52,7 +52,7 @@ class ProfilePage extends StatelessWidget {
                     color: theme.colorScheme.primary,
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Text(
                   'Prit Pandey',
                   style: TextStyle(
@@ -70,7 +70,7 @@ class ProfilePage extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 24),
+          const SizedBox(height: 24),
 
           // Settings Section
           Text(
@@ -81,7 +81,7 @@ class ProfilePage extends StatelessWidget {
               color: theme.colorScheme.onSurface,
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
 
           // Theme Toggle
           Container(
@@ -112,7 +112,7 @@ class ProfilePage extends StatelessWidget {
           ),
 
           // Other Settings Options
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Container(
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
@@ -137,7 +137,7 @@ class ProfilePage extends StatelessWidget {
                   trailing: Icon(Icons.chevron_right,
                       color: theme.colorScheme.onSurface.withOpacity(0.5)),
                 ),
-                Divider(height: 1),
+                const Divider(height: 1),
                 ListTile(
                   leading: Icon(Icons.language_outlined,
                       color: theme.colorScheme.primary),
@@ -151,7 +151,7 @@ class ProfilePage extends StatelessWidget {
                   trailing: Icon(Icons.chevron_right,
                       color: theme.colorScheme.onSurface.withOpacity(0.5)),
                 ),
-                Divider(height: 1),
+                const Divider(height: 1),
                 ListTile(
                   leading: Icon(Icons.help_outline,
                       color: theme.colorScheme.primary),

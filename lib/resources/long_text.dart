@@ -7,11 +7,11 @@ class LongText extends StatelessWidget {
   final Color? color;
 
   const LongText({
-    Key? key,
+    super.key,
     required this.text,
     this.fontSize,
     this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:news_portal/resources/app_text.dart';
 
-import 'package:news_portal/controllers/news_post_controller.dart';
+import '../controllers/news_post_controller.dart';
 
 class AuthorNewsPage extends StatefulWidget {
+  const AuthorNewsPage({super.key});
+
   @override
-  _AuthorNewsPageState createState() => _AuthorNewsPageState();
+  AuthorNewsPageState createState() => AuthorNewsPageState();
 }
 
-class _AuthorNewsPageState extends State<AuthorNewsPage> {
+class AuthorNewsPageState extends State<AuthorNewsPage> {
   final ArticleController newsPostController = Get.put(ArticleController());
 
   final List<String> categories = [
@@ -26,7 +29,7 @@ class _AuthorNewsPageState extends State<AuthorNewsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Create News")),
+      appBar: AppBar(title:const AppText(text: "Create News")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -38,21 +41,21 @@ class _AuthorNewsPageState extends State<AuthorNewsPage> {
               ///title
               TextField(
                 controller: newsPostController.titleController,
-                decoration: InputDecoration(
+                decoration:const InputDecoration(
                     labelText: "News Title", border: OutlineInputBorder()),
               ),
-              SizedBox(height: 16),
+          const    SizedBox(height: 16),
               //content controller
               TextField(
                 controller: newsPostController.contentController,
                 maxLines: 5,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     labelText: "News Description",
                     border: OutlineInputBorder()),
               ),
-              SizedBox(height: 16),
+            const  SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(), labelText: "Category"),
                 value: selectedCategory,
                 items: categories.map((String category) {
@@ -65,14 +68,14 @@ class _AuthorNewsPageState extends State<AuthorNewsPage> {
                   });
                 },
               ),
-              SizedBox(height: 20),
+           const   SizedBox(height: 20),
               // Newws summary
               TextField(
                 controller: newsPostController.summaryController,
                 decoration: const InputDecoration(
                     labelText: "News Summary", border: OutlineInputBorder()),
               ),
-              SizedBox(height: 20),
+            const  SizedBox(height: 20),
               TextField(
                 controller: newsPostController.imageUrlController,
                 decoration: const InputDecoration(
@@ -83,7 +86,7 @@ class _AuthorNewsPageState extends State<AuthorNewsPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: _publishNews,
-                  child: Text("Publish News"),
+                  child:const Text("Publish News"),
                 ),
               ),
             ],

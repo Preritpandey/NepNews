@@ -8,11 +8,13 @@ import '../controllers/ads_controller.dart';
 import '../models/ads_data_model.dart';
 
 class BreakingNewsSlider extends StatefulWidget {
+  const BreakingNewsSlider({super.key});
+
   @override
-  _BreakingNewsSliderState createState() => _BreakingNewsSliderState();
+  BreakingNewsSliderState createState() => BreakingNewsSliderState();
 }
 
-class _BreakingNewsSliderState extends State<BreakingNewsSlider> {
+class BreakingNewsSliderState extends State<BreakingNewsSlider> {
   final PageController _pageController =
       PageController(initialPage: 0, viewportFraction: 0.85);
   int _currentPage = 0;
@@ -94,7 +96,7 @@ class _BreakingNewsSliderState extends State<BreakingNewsSlider> {
               },
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           // Dots
           Center(
             child: Row(
@@ -102,8 +104,8 @@ class _BreakingNewsSliderState extends State<BreakingNewsSlider> {
               children: List.generate(
                 combinedList.length,
                 (index) => AnimatedContainer(
-                  duration: Duration(milliseconds: 300),
-                  margin: EdgeInsets.symmetric(horizontal: 4),
+                  duration: const Duration(milliseconds: 300),
+                  margin: const EdgeInsets.symmetric(horizontal: 4),
                   width: _currentPage == index ? 24 : 8,
                   height: 8,
                   decoration: BoxDecoration(
@@ -229,14 +231,14 @@ class _BreakingNewsSliderState extends State<BreakingNewsSlider> {
 // NewsCard Widget
 class NewsCard extends StatelessWidget {
   final Map<String, String> news;
-  const NewsCard({required this.news});
+  const NewsCard({super.key, required this.news});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => NewsDetailsPage()));
+            MaterialPageRoute(builder: (context) => const NewsDetailsPage()));
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15),
@@ -268,7 +270,7 @@ class NewsCard extends StatelessWidget {
               top: 12,
               left: 12,
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 97, 110, 120),
                   borderRadius: BorderRadius.circular(20),
@@ -294,14 +296,14 @@ class NewsCard extends StatelessWidget {
                           text: news["source"]!,
                           color: Colors.white,
                           fontWeight: FontWeight.bold),
-                      SizedBox(width: 6),
-                      Icon(Icons.verified, color: Colors.blue, size: 16),
-                      SizedBox(width: 6),
+                      const SizedBox(width: 6),
+                      const Icon(Icons.verified, color: Colors.blue, size: 16),
+                      const SizedBox(width: 6),
                       Text("• ${news["time"]!}",
-                          style: TextStyle(color: Colors.white70)),
+                          style: const TextStyle(color: Colors.white70)),
                     ],
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   // News Headline
                   AppText(
                       text: news["title"]!,

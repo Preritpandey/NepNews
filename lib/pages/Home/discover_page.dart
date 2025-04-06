@@ -14,9 +14,9 @@ class DiscoverPage extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
             },
-            child: OpaqueBgIcon(icon: Icons.arrow_back)),
+            child: const OpaqueBgIcon(icon: Icons.arrow_back)),
       ),
-      body: Column(
+      body: const Column(
         children: [Center(child: AppText(text: "This is discover more page"))],
       ),
     );

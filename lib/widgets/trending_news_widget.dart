@@ -38,6 +38,8 @@ class TrendingNewsCard extends StatelessWidget {
   // Get AdController instance
   final adController = Get.find<AdController>();
 
+   TrendingNewsCard({super.key});
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -54,7 +56,7 @@ class TrendingNewsCard extends StatelessWidget {
         // If no ads available, just show news items
         if (allAds.isEmpty) {
           return ListView.separated(
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: newsList.length,
             separatorBuilder: (context, index) {
               return Divider(
@@ -79,7 +81,7 @@ class TrendingNewsCard extends StatelessWidget {
         int totalItems = totalNewsItems + totalAdsToShow;
 
         return ListView.separated(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: totalItems,
           separatorBuilder: (context, index) {
             return Divider(
@@ -114,7 +116,7 @@ class TrendingNewsCard extends StatelessWidget {
 
               // Check if newsIndex is within bounds
               if (newsIndex >= newsList.length) {
-                return SizedBox();
+                return const SizedBox();
               }
 
               // Show news
@@ -131,94 +133,92 @@ class TrendingNewsCard extends StatelessWidget {
   // Building news card widget
   Widget _buildNewsCard(BuildContext context, Map<String, String> news,
       double screenWidth, double screenHeight, ThemeData theme) {
-    return Container(
-      child: Padding(
-        padding: EdgeInsets.only(
-            right: screenWidth * 0.03,
-            left: screenWidth * 0.03,
-            top: screenHeight * 0.015,
-            bottom: screenHeight * 0.015),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // News Image
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.network(
-                news["imageUrl"]!,
-                width: screenWidth * 0.3,
-                height: screenHeight * 0.14,
-                fit: BoxFit.cover,
-              ),
+    return Padding(
+      padding: EdgeInsets.only(
+          right: screenWidth * 0.03,
+          left: screenWidth * 0.03,
+          top: screenHeight * 0.015,
+          bottom: screenHeight * 0.015),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // News Image
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.network(
+              news["imageUrl"]!,
+              width: screenWidth * 0.3,
+              height: screenHeight * 0.14,
+              fit: BoxFit.cover,
             ),
-            SizedBox(width: 12),
-            // News Content
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Category
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.primary.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: AppText(
-                      text: news["category"]!,
-                      color: theme.colorScheme.primary,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
+          ),
+          const SizedBox(width: 12),
+          // News Content
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Category
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  SizedBox(height: 8),
-                  // News Title
-                  AppText(
-                    text: news["title"]!,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: theme.colorScheme.onSurface,
+                  child: AppText(
+                    text: news["category"]!,
+                    color: theme.colorScheme.primary,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
                   ),
-                  SizedBox(height: 8),
-                  // Author and Date
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 10,
-                        backgroundColor:
-                            theme.colorScheme.primary.withOpacity(0.2),
-                        child: Icon(
-                          Icons.person,
-                          size: 12,
-                          color: theme.colorScheme.primary,
-                        ),
+                ),
+                const SizedBox(height: 8),
+                // News Title
+                AppText(
+                  text: news["title"]!,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: theme.colorScheme.onSurface,
+                ),
+                const SizedBox(height: 8),
+                // Author and Date
+                Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 10,
+                      backgroundColor:
+                          theme.colorScheme.primary.withOpacity(0.2),
+                      child: Icon(
+                        Icons.person,
+                        size: 12,
+                        color: theme.colorScheme.primary,
                       ),
-                      SizedBox(width: 6),
-                      AppText(
-                        text: news["author"]!,
-                        fontSize: 11,
+                    ),
+                    const SizedBox(width: 6),
+                    AppText(
+                      text: news["author"]!,
+                      fontSize: 11,
+                      color: theme.colorScheme.onSurface.withOpacity(0.7),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      "•",
+                      style: TextStyle(
                         color: theme.colorScheme.onSurface.withOpacity(0.7),
                       ),
-                      SizedBox(width: 8),
-                      Text(
-                        "•",
-                        style: TextStyle(
-                          color: theme.colorScheme.onSurface.withOpacity(0.7),
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      AppText(
-                        text: news["date"]!,
-                        fontSize: 11,
-                        color: theme.colorScheme.onSurface.withOpacity(0.7),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    const SizedBox(width: 8),
+                    AppText(
+                      text: news["date"]!,
+                      fontSize: 11,
+                      color: theme.colorScheme.onSurface.withOpacity(0.7),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -226,97 +226,95 @@ class TrendingNewsCard extends StatelessWidget {
   // Building ad card widget
   Widget _buildAdCard(BuildContext context, AdModel ad, double screenWidth,
       double screenHeight, ThemeData theme) {
-    return Container(
-      child: Padding(
-        padding: EdgeInsets.only(
-            right: screenWidth * 0.03,
-            left: screenWidth * 0.03,
-            top: screenHeight * 0.015,
-            bottom: screenHeight * 0.015),
-        child: Column(
-          children: [
-            // Ad Label
-            Row(
-              children: [],
-            ),
-            SizedBox(height: 8),
-            // Ad Content
-            InkWell(
-              onTap: () {
-                launch(ad.url);
-              },
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Ad Image
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      ad.avatar,
-                      width: screenWidth * 0.3,
-                      height: screenHeight * 0.14,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          width: screenWidth * 0.3,
-                          height: screenHeight * 0.14,
-                          color: theme.colorScheme.primary.withOpacity(0.1),
-                          child: Icon(Icons.image_not_supported),
-                        );
-                      },
-                    ),
+    return Padding(
+      padding: EdgeInsets.only(
+          right: screenWidth * 0.03,
+          left: screenWidth * 0.03,
+          top: screenHeight * 0.015,
+          bottom: screenHeight * 0.015),
+      child: Column(
+        children: [
+          // Ad Label
+          const Row(
+            children: [],
+          ),
+          const SizedBox(height: 8),
+          // Ad Content
+          InkWell(
+            onTap: () {
+              launch(ad.url);
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Ad Image
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(
+                    ad.avatar,
+                    width: screenWidth * 0.3,
+                    height: screenHeight * 0.14,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        width: screenWidth * 0.3,
+                        height: screenHeight * 0.14,
+                        color: theme.colorScheme.primary.withOpacity(0.1),
+                        child: const Icon(Icons.image_not_supported),
+                      );
+                    },
                   ),
-                  SizedBox(width: 12),
-                  // Ad Details
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Ad category
-                        Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.secondary.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: AppText(
-                            text: ad.category,
-                            color: theme.colorScheme.secondary,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
+                ),
+                const SizedBox(width: 12),
+                // Ad Details
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Ad category
+                      Container(
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.secondary.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        SizedBox(height: 8),
-                        // Ad Title
-                        AppText(
-                          text: ad.title,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: theme.colorScheme.onSurface,
+                        child: AppText(
+                          text: ad.category,
+                          color: theme.colorScheme.secondary,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
                         ),
-                        Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: Colors.amber.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: AppText(
-                            text: "SPONSORED",
-                            color: Colors.amber[800],
-                            fontSize: 10,
-                            fontWeight: FontWeight.w500,
-                          ),
+                      ),
+                      const SizedBox(height: 8),
+                      // Ad Title
+                      AppText(
+                        text: ad.title,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                      Container(
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: Colors.amber.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(4),
                         ),
-                      ],
-                    ),
+                        child: AppText(
+                          text: "SPONSORED",
+                          color: Colors.amber[800],
+                          fontSize: 10,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

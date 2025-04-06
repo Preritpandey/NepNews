@@ -8,11 +8,13 @@ import 'home_page.dart';
 import 'news_details_page.dart';
 
 class Home extends StatefulWidget {
+  const Home({super.key});
+
   @override
-  _HomeState createState() => _HomeState();
+  HomeState createState() => HomeState();
 }
 
-class _HomeState extends State<Home> {
+class HomeState extends State<Home> {
   int _selectedIndex = 0;
   final List<Widget> pages = [
     HomePage(),

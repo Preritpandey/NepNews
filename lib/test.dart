@@ -9,6 +9,8 @@ class AdsScreen extends StatelessWidget {
   // Initialize the controller directly in the widget
   final AdController adController = Get.put(AdController());
 
+   AdsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

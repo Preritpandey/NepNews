@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
               width: size.width,
               height: size.height,
               textScaleFactor: MediaQuery.textScaleFactorOf(context),
-              child: Home(),
+              child: const Home(),
             );
           },
         ),
