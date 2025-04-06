@@ -27,7 +27,7 @@ class NewsDetailsPage extends StatelessWidget {
           Positioned(
             top: 0,
             child: ClipRRect(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20)),
               child: SizedBox(
@@ -120,7 +120,7 @@ class NewsDetailsPage extends StatelessWidget {
                 ),
                 SizedBox(
                   width: screenWidth * 0.4,
-                  child: ListTile(
+                  child: const ListTile(
                     leading: TextSubheading(
                       text: 'Trending',
                       fontSize: 8,
@@ -149,7 +149,7 @@ class NewsDetailsPage extends StatelessWidget {
                   SizedBox(
                     height: screenHeight * 0.06,
                     width: screenWidth * 0.8,
-                    child: Row(
+                    child: const Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
@@ -168,7 +168,7 @@ class NewsDetailsPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  LongText(text: longString),
+                  const LongText(text: longString),
                 ],
               ),
             ),

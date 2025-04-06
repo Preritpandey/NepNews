@@ -1,5 +1,3 @@
-import 'package:get/get.dart';
-
 class ForexRate {
   String currencyIso3;
   String currencyName;

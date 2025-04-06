@@ -12,15 +12,7 @@ class AdsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Advertisements'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () => adController.refreshAds(),
-          ),
-        ],
-      ),
+
       body: Obx(() {
         // Show loading indicator while fetching data
         if (adController.isLoading.value) {
@@ -65,7 +57,7 @@ class AdsScreen extends StatelessWidget {
             ),
             itemCount: adController.ads.length,
             itemBuilder: (context, index) {
-              return _buildAdCard(adController.ads[index]);
+              return buildAdCard(adController.ads[index]);
             },
           ),
         );
@@ -74,7 +66,7 @@ class AdsScreen extends StatelessWidget {
   }
 
   // Ad card widget
-  Widget _buildAdCard(AdModel ad) {
+  Widget buildAdCard(AdModel ad) {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

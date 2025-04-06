@@ -21,7 +21,7 @@ class LoginPage extends StatelessWidget {
               onPressed: () {
                 Get.back();
               },
-              icon: Icon(Icons.arrow_back_ios))),
+              icon: const Icon(Icons.arrow_back_ios))),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 70, horizontal: 30),

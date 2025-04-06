@@ -12,7 +12,7 @@ class AdController extends GetxController {
   final RxString errorMessage = ''.obs;
 
   // API base URL
-  final String baseUrl = 'http://localhost:8080';
+  final String baseUrl = 'http://172.20.10.3:8080';
 
   @override
   void onInit() {

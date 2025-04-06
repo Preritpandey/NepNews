@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:news_portal/author/author.dart';
-import 'package:news_portal/core/ScreenSizeConfig.dart';
-import 'package:news_portal/pages/Browse/browse_page.dart';
-import 'package:news_portal/pages/Home/home_page.dart';
-import 'package:news_portal/pages/Home/news_details_page.dart';
-import 'package:news_portal/pages/Profile/profile_page.dart';
-import 'package:news_portal/pages/auth/login_page.dart';
-import 'package:news_portal/pages/bookmark/bookmark_page.dart';
-import 'package:news_portal/resources/constant.dart';
-import 'package:news_portal/test.dart';
+
+import '../../core/ScreenSizeConfig.dart';
+import '../../resources/constant.dart';
+import '../Browse/browse_page.dart';
+import '../Profile/profile_page.dart';
+import 'home_page.dart';
+import 'news_details_page.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -18,8 +15,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   final List<Widget> pages = [
-    AdsScreen(),
-    // const HomePage(),
+    HomePage(),
     const BrowsePage(),
     const NewsDetailsPage(),
     // const BookmarkPage(),
