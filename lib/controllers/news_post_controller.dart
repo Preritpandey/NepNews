@@ -11,7 +11,7 @@ class ArticleController extends GetxController {
   final TextEditingController summaryController = TextEditingController();
   final AuthController authController = Get.put(AuthController());
 
-  final String apiUrl = "http://localhost:8080/api/articles";
+  final String apiUrl = "http://192.168.1.93:8081/api/articles";
 
   Future<void> postArticle() async {
     final Map<String, dynamic> articleData = {

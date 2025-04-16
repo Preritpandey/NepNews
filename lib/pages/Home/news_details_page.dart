@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:news_portal/core/ScreenSizeConfig.dart';
-import 'package:news_portal/resources/app_text.dart';
-import 'package:news_portal/resources/constant.dart';
-import 'package:news_portal/resources/long_text.dart';
-import 'package:news_portal/resources/text.dart';
-import 'package:news_portal/resources/text_heading.dart';
-import 'package:news_portal/resources/text_subheading.dart';
-import 'package:news_portal/widgets/opaque_bg_icon.dart';
+
+import '../../core/ScreenSizeConfig.dart';
+import '../../resources/app_text.dart';
+import '../../resources/constant.dart';
+import '../../resources/long_text.dart';
+import '../../resources/text.dart';
+import '../../resources/text_heading.dart';
+import '../../resources/text_subheading.dart';
+import '../../widgets/opaque_bg_icon.dart';
 
 class NewsDetailsPage extends StatelessWidget {
   const NewsDetailsPage({super.key});

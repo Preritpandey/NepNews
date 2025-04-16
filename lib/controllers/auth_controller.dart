@@ -1,20 +1,27 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
-import 'package:news_portal/author/author.dart';
+import '../author/author.dart';
 
 class AuthController extends GetxController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final PageController pageController = Get.put(PageController());
 
   var isLoading = false.obs;
   var rememberMe = false.obs;
   final box = GetStorage();
 
   final String apiUrl = "http://localhost:8080/api/auth/login";
+
+  @override
+  void onInit() {
+    super.onInit();
+    checkLoginStatus();
+  }
 
   Future<void> login() async {
     isLoading.value = true;
@@ -32,14 +39,17 @@ class AuthController extends GetxController {
       var responseData = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
+        // Save login details
         box.write("token", responseData["token"]);
-        box.write("user", responseData["user"]);
+        box.write("user", responseData["user"]["role"]);
+        print("uswere is the name ${responseData["user"]}");
+        box.write("isLoggedIn", true);
 
         Get.snackbar("Success", "Logged in successfully",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.green,
             colorText: Colors.white);
-        Get.to(const AuthorNewsPage());
+        Get.offAll(() => const AuthorNewsPage()); // Replace stack
       } else {
         Get.snackbar("Error", responseData["msg"] ?? "Login failed",
             snackPosition: SnackPosition.BOTTOM,
@@ -58,7 +68,17 @@ class AuthController extends GetxController {
 
   void logout() {
     box.erase();
-    Get.offAllNamed('/login'); // Navigate back to login
+    Get.offAllNamed('/login');
+  }
+
+  void checkLoginStatus() {
+    bool isLoggedIn = box.read("isLoggedIn") ?? false;
+    if (isLoggedIn && getToken() != null) {
+      // Navigate to home if token and user exist
+      Future.delayed(Duration.zero, () {
+        Get.offAll(() => const AuthorNewsPage());
+      });
+    }
   }
 
   String? getToken() {

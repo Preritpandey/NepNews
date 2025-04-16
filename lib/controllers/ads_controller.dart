@@ -13,7 +13,7 @@ class AdController extends GetxController {
 
   // API base URL
   // final String baseUrl = 'http://172.20.10.3:8080';
-  final String baseUrl = 'http://172.20.10.3:8080';
+  final String baseUrl = 'http://192.168.1.93:8081';
 
   @override
   void onInit() {

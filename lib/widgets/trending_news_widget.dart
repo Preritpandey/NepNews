@@ -23,7 +23,7 @@ class TrendingNewsCard extends StatelessWidget {
       "author": "Rosemary",
       "date": "Feb 28, 2023",
       "imageUrl":
-          "https://eu-images.contentstack.com/v3/assets/blta90d05ad41a54a71/bltd8fe70dac50fed5e/64a42ccdd715265747807768/La_Liga_EA_Sports.png",
+          "https://athlonsports.com/.image/c_limit%2Ccs_srgb%2Cq_auto:good%2Cw_700/MjEzMzAxMTMzNDI1MjU2Mjg1/lionel-messi-injury-concerns-grow-after-inter-miami-cavalier-news.webp",
     },
     // {
     //   "category": "Sports",
@@ -38,7 +38,7 @@ class TrendingNewsCard extends StatelessWidget {
   // Get AdController instance
   final adController = Get.find<AdController>();
 
-   TrendingNewsCard({super.key});
+  TrendingNewsCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +160,8 @@ class TrendingNewsCard extends StatelessWidget {
               children: [
                 // Category
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: theme.colorScheme.primary.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(8),
@@ -273,8 +274,8 @@ class TrendingNewsCard extends StatelessWidget {
                     children: [
                       // Ad category
                       Container(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: theme.colorScheme.secondary.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(8),
@@ -295,8 +296,8 @@ class TrendingNewsCard extends StatelessWidget {
                         color: theme.colorScheme.onSurface,
                       ),
                       Container(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(
                           color: Colors.amber.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(4),

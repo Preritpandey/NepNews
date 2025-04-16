@@ -29,7 +29,10 @@ class AuthorNewsPageState extends State<AuthorNewsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title:const AppText(text: "Create News")),
+      appBar: AppBar(
+          leading: IconButton(
+              onPressed: () => Get.back(), icon: Icon(Icons.arrow_back_ios)),
+          title: const AppText(text: "Create News")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -41,10 +44,10 @@ class AuthorNewsPageState extends State<AuthorNewsPage> {
               ///title
               TextField(
                 controller: newsPostController.titleController,
-                decoration:const InputDecoration(
+                decoration: const InputDecoration(
                     labelText: "News Title", border: OutlineInputBorder()),
               ),
-          const    SizedBox(height: 16),
+              const SizedBox(height: 16),
               //content controller
               TextField(
                 controller: newsPostController.contentController,
@@ -53,7 +56,7 @@ class AuthorNewsPageState extends State<AuthorNewsPage> {
                     labelText: "News Description",
                     border: OutlineInputBorder()),
               ),
-            const  SizedBox(height: 16),
+              const SizedBox(height: 16),
               DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(), labelText: "Category"),
@@ -68,14 +71,14 @@ class AuthorNewsPageState extends State<AuthorNewsPage> {
                   });
                 },
               ),
-           const   SizedBox(height: 20),
+              const SizedBox(height: 20),
               // Newws summary
               TextField(
                 controller: newsPostController.summaryController,
                 decoration: const InputDecoration(
                     labelText: "News Summary", border: OutlineInputBorder()),
               ),
-            const  SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: newsPostController.imageUrlController,
                 decoration: const InputDecoration(
@@ -86,7 +89,7 @@ class AuthorNewsPageState extends State<AuthorNewsPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: _publishNews,
-                  child:const Text("Publish News"),
+                  child: const Text("Publish News"),
                 ),
               ),
             ],
