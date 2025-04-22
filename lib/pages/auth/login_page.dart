@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_portal/controllers/auth_controller.dart';
-
+import 'package:news_portal/pages/auth/signUp_page.dart';
 import 'package:news_portal/resources/app_text.dart';
 import 'package:news_portal/resources/constant.dart';
 import 'package:news_portal/widgets/button.dart';
@@ -16,38 +16,45 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: IconButton(
-              onPressed: () {
-                Get.back();
-              },
-              icon: const Icon(Icons.arrow_back_ios))),
+        automaticallyImplyLeading: false,
+        title: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 70, horizontal: 30),
+          padding: EdgeInsets.symmetric(vertical: 70, horizontal: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-          const     AppText(
+              const AppText(
                   text: 'Welcome back',
                   fontSize: 24,
                   fontWeight: FontWeight.bold),
               const AppText(text: 'Enter your credentials', fontSize: 16),
               const SizedBox(height: 20),
               const AppText(text: 'Email'),
-              CustomTextField(
-                controller: authController.emailController,
-                hintText: 'Enter your email',
-                isPassword: false,
-                icon: const Icon(Icons.email),
-              ),
+              Obx(() => CustomTextField(
+                    controller: authController.emailController,
+                    hintText: 'Enter your email',
+                    isPassword: false,
+                    icon: const Icon(Icons.email),
+                    errorText: authController.emailError.value,
+                  )),
               const SizedBox(height: 10),
-             const  AppText(text: 'Password'),
-              CustomTextField(
-                controller: authController.passwordController,
-                hintText: 'Enter your password',
-                isPassword: true,
-              ),
+              const AppText(text: 'Password'),
+              Obx(() => CustomTextField(
+                    controller: authController.passwordController,
+                    hintText: 'Enter your password',
+                    isPassword: true,
+                    obscureText: authController.obscurePassword.value,
+                    onToggleVisibility: () {
+                      authController.obscurePassword.toggle();
+                    },
+                  )),
               const SizedBox(height: 20),
               Row(
                 children: [
@@ -73,9 +80,15 @@ class LoginPage extends StatelessWidget {
                       buttonText: 'Login',
                       buttonColor: appOrange,
                       onTap: () {
-                        authController.login();
+                        authController.validateAndLogin();
                       },
                     )),
+              AppText(text: "Don't have and account?"),
+              TextButton(
+                  onPressed: () {
+                    Get.to(SignupPage());
+                  },
+                  child: Text("signup"))
             ],
           ),
         ),

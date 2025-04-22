@@ -1,20 +1,21 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:http/http.dart' as http;
 
 import '../author/author.dart';
 
 class AuthController extends GetxController {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final PageController pageController = Get.put(PageController());
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   var isLoading = false.obs;
   var rememberMe = false.obs;
-  final box = GetStorage();
+  var obscurePassword = true.obs;
+  var emailError = RxnString();
 
+  final box = GetStorage();
   final String apiUrl = "http://localhost:8080/api/auth/login";
 
   @override
@@ -23,11 +24,35 @@ class AuthController extends GetxController {
     checkLoginStatus();
   }
 
+  void validateAndLogin() {
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+
+    // Email regex validation
+    final emailRegex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+    if (!emailRegex.hasMatch(email)) {
+      emailError.value = "Invalid email format";
+      return;
+    } else {
+      emailError.value = null;
+    }
+
+    if (password.isEmpty) {
+      Get.snackbar("Error", "Password cannot be empty",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white);
+      return;
+    }
+
+    login();
+  }
+
   Future<void> login() async {
     isLoading.value = true;
 
     try {
-      var response = await http.post(
+      final response = await http.post(
         Uri.parse(apiUrl),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
@@ -36,20 +61,18 @@ class AuthController extends GetxController {
         }),
       );
 
-      var responseData = jsonDecode(response.body);
+      final responseData = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        // Save login details
         box.write("token", responseData["token"]);
         box.write("user", responseData["user"]["role"]);
-        print("uswere is the name ${responseData["user"]}");
         box.write("isLoggedIn", true);
 
         Get.snackbar("Success", "Logged in successfully",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.green,
             colorText: Colors.white);
-        Get.offAll(() => const AuthorNewsPage()); // Replace stack
+        Get.offAll(() => const AuthorNewsPage());
       } else {
         Get.snackbar("Error", responseData["msg"] ?? "Login failed",
             snackPosition: SnackPosition.BOTTOM,
@@ -74,7 +97,6 @@ class AuthController extends GetxController {
   void checkLoginStatus() {
     bool isLoggedIn = box.read("isLoggedIn") ?? false;
     if (isLoggedIn && getToken() != null) {
-      // Navigate to home if token and user exist
       Future.delayed(Duration.zero, () {
         Get.offAll(() => const AuthorNewsPage());
       });

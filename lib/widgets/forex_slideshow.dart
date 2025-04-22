@@ -25,7 +25,6 @@ class ForexSlideshow extends StatelessWidget {
         } else if (forexController.forexRates.isEmpty) {
           return const Center(child: Text("No data available"));
         }
-
         return Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: SizedBox(

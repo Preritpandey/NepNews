@@ -31,7 +31,10 @@ class AuthorNewsPageState extends State<AuthorNewsPage> {
     return Scaffold(
       appBar: AppBar(
           leading: IconButton(
-              onPressed: () => Get.back(), icon: Icon(Icons.arrow_back_ios)),
+              onPressed: () {
+                Get.back();
+              },
+              icon: Icon(Icons.arrow_back_ios)),
           title: const AppText(text: "Create News")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

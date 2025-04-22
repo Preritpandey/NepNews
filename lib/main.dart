@@ -12,16 +12,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   await GetStorage.init(); // Initialize GetStorage
-
-  //  GetX theme controller initialization
-  Get.put(ThemeController(prefs));
-
+  
+  Get.put(ThemeController(prefs));//GetX theme controller initialization
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     final themeController = Get.find<ThemeController>();
@@ -37,7 +33,6 @@ class MyApp extends StatelessWidget {
             final size = MediaQueryData.fromView(
               WidgetsBinding.instance.platformDispatcher.views.first,
             ).size;
-
             return ScreenSizeConfig(
               width: size.width,
               height: size.height,

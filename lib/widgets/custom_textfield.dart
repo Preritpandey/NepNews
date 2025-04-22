@@ -5,44 +5,47 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final bool isPassword;
+  final bool obscureText;
+  final VoidCallback? onToggleVisibility;
   final Icon? icon;
-  final ValueNotifier<bool>? obscureTextNotifier;
+  final String? errorText;
 
   const CustomTextField({
     super.key,
     required this.controller,
     required this.hintText,
     this.isPassword = false,
-    this.obscureTextNotifier,
+    this.obscureText = false,
+    this.onToggleVisibility,
     this.icon,
+    this.errorText,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<bool>(
-      valueListenable: obscureTextNotifier ?? ValueNotifier(true),
-      builder: (context, obscureText, child) {
-        return TextField(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextField(
           controller: controller,
           obscureText: isPassword ? obscureText : false,
           decoration: InputDecoration(
-            suffixIconColor: darkGrey,
             hintText: hintText,
+            suffixIconColor: darkGrey,
+            errorText: errorText,
             suffixIcon: isPassword
                 ? IconButton(
                     icon: Icon(
                         obscureText ? Icons.visibility_off : Icons.visibility),
-                    onPressed: () {
-                      obscureTextNotifier?.value = !obscureText;
-                    },
+                    onPressed: onToggleVisibility,
                   )
                 : icon,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
             ),
           ),
-        );
-      },
+        ),
+      ],
     );
   }
 }

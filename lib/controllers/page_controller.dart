@@ -11,7 +11,7 @@ class PageController extends GetxController {
     print("oninit triggred");
     if (box.read("user") == "author") {
       Get.snackbar("role", "your role is ${box.read("user")}");
-      print('hhhhhhhhhhhhhhh');
+      print('');
     }
   }
 
