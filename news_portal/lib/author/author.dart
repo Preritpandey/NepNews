@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:news_portal/pages/Home/home.dart';
 import 'package:news_portal/resources/app_text.dart';
 
 import '../controllers/news_post_controller.dart';
@@ -30,12 +31,19 @@ class AuthorNewsPageState extends State<AuthorNewsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          leading: IconButton(
-              onPressed: () {
-                Get.back();
-              },
-              icon: Icon(Icons.arrow_back_ios)),
-          title: const AppText(text: "Create News")),
+        actions: [
+          TextButton(
+              onPressed: () => Get.to(Home()),
+              child: AppText(text: "Readers mode"))
+        ],
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: Icon(Icons.arrow_back_ios),
+        ),
+        title: const AppText(text: "Create News"),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
