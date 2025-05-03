@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_portal/pages/Home/home.dart';
 import 'package:news_portal/resources/app_text.dart';
-
-import '../controllers/news_post_controller.dart';
+import 'package:news_portal/controllers/news_post_controller.dart';
+import 'package:news_portal/pages/Profile/profile_page.dart';
 
 class AuthorNewsPage extends StatefulWidget {
   const AuthorNewsPage({super.key});
@@ -21,11 +21,6 @@ class AuthorNewsPageState extends State<AuthorNewsPage> {
     'Technology',
     'Entertainment'
   ];
-  String? selectedCategory;
-
-  void _publishNews() {
-    newsPostController.postArticle();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +28,13 @@ class AuthorNewsPageState extends State<AuthorNewsPage> {
       appBar: AppBar(
         actions: [
           TextButton(
-              onPressed: () => Get.to(Home()),
-              child: AppText(text: "Readers mode"))
+            onPressed: () => Get.to(Home()),
+            child: AppText(text: "Readers mode")
+          )
         ],
         leading: IconButton(
           onPressed: () {
-            Get.back();
+            Get.to(ProfilePage());
           },
           icon: Icon(Icons.arrow_back_ios),
         ),
@@ -51,58 +47,118 @@ class AuthorNewsPageState extends State<AuthorNewsPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-
-              ///title
+              
+              // Title Field
               TextField(
                 controller: newsPostController.titleController,
                 decoration: const InputDecoration(
-                    labelText: "News Title", border: OutlineInputBorder()),
+                  labelText: "News Title", 
+                  border: OutlineInputBorder()
+                ),
               ),
               const SizedBox(height: 16),
-              //content controller
+              
+              // Content Field
               TextField(
                 controller: newsPostController.contentController,
                 maxLines: 5,
                 decoration: const InputDecoration(
-                    labelText: "News Description",
-                    border: OutlineInputBorder()),
-              ),
-              const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), labelText: "Category"),
-                value: selectedCategory,
-                items: categories.map((String category) {
-                  return DropdownMenuItem(
-                      value: category, child: Text(category));
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedCategory = value;
-                  });
-                },
-              ),
-              const SizedBox(height: 20),
-              // Newws summary
-              TextField(
-                controller: newsPostController.summaryController,
-                decoration: const InputDecoration(
-                    labelText: "News Summary", border: OutlineInputBorder()),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: newsPostController.imageUrlController,
-                decoration: const InputDecoration(
-                    labelText: "Image URL", border: OutlineInputBorder()),
-              ),
-
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _publishNews,
-                  child: const Text("Publish News"),
+                  labelText: "News Content",
+                  border: OutlineInputBorder()
                 ),
               ),
+              const SizedBox(height: 16),
+              
+              // Category Field
+              TextField(
+                controller: newsPostController.categoryController,
+                decoration: const InputDecoration(
+                  labelText: "Category", 
+                  border: OutlineInputBorder()
+                ),
+              ),
+              const SizedBox(height: 16),
+              
+              // Keywords Field
+              TextField(
+                controller: newsPostController.keywordsController,
+                decoration: const InputDecoration(
+                  labelText: "Keywords (e.g., AI, Technology)", 
+                  border: OutlineInputBorder()
+                ),
+              ),
+              const SizedBox(height: 24),
+              
+              // Image Upload Section
+              Obx(() => Container(
+                width: double.infinity,
+                height: 200,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: newsPostController.selectedImage.value != null
+                    ? Image.file(
+                        newsPostController.selectedImage.value!,
+                        fit: BoxFit.cover,
+                      )
+                    : Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.image, size: 50, color: Colors.grey),
+                            Text("No image selected")
+                          ],
+                        ),
+                      ),
+              )),
+              const SizedBox(height: 16),
+              
+              // Image Upload Button
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () => newsPostController.pickImage(),
+                  icon: Icon(Icons.upload_file),
+                  label: Text("Upload Image"),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              
+              // Publish Button
+              Obx(() => SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: newsPostController.isLoading.value
+                      ? null
+                      : () => newsPostController.postArticle(),
+                  child: newsPostController.isLoading.value
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Text("Publishing..."),
+                          ],
+                        )
+                      : Text("Publish News"),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 15),
+                    backgroundColor: Theme.of(context).primaryColor,
+                    foregroundColor: Colors.white,
+                  ),
+                ),
+              )),
             ],
           ),
         ),
