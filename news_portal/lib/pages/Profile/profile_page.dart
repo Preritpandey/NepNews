@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:news_portal/controllers/auth_controller.dart';
 import 'package:news_portal/controllers/theme_controller.dart';
+import 'package:news_portal/pages/Home/home.dart';
 import 'package:news_portal/pages/auth/login_page.dart';
 
+// ignore: must_be_immutable
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+  AuthController _authController = Get.put(AuthController());
+  ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +18,7 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: theme.colorScheme.surface,
         title: Text(
           'Profile',
@@ -22,6 +27,11 @@ class ProfilePage extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
+        leading: IconButton(
+            onPressed: () {
+              Get.to(const Home());
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
         elevation: 0,
       ),
       body: ListView(
@@ -164,6 +174,24 @@ class ProfilePage extends StatelessWidget {
                   ),
                   trailing: Icon(Icons.chevron_right,
                       color: theme.colorScheme.onSurface.withOpacity(0.5)),
+                ),
+                ListTile(
+                  leading: Icon(Icons.help_outline,
+                      color: theme.colorScheme.primary),
+                  title: Text(
+                    'Logout',
+                    style: TextStyle(
+                      color: theme.colorScheme.onSurface,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.logout_outlined),
+                    color: theme.colorScheme.onSurface.withOpacity(0.5),
+                    onPressed: () {
+                      _authController.logout();
+                    },
+                  ),
                 ),
               ],
             ),

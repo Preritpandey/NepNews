@@ -21,7 +21,7 @@ class HomeState extends State<Home> {
     const BrowsePage(),
     const NewsDetailsPage(),
     // const BookmarkPage(),
-    const ProfilePage(),
+     ProfilePage(),
   ];
 
   void _onItemTapped(int index) {

@@ -13,6 +13,7 @@ class SignupController extends GetxController {
   final obscurePassword = true.obs;
 
   final String signupUrl = "http://localhost:8080/api/auth/register";
+  // final String signupUrl = "http://192.168.1.85:8080/api/auth/register";
 
   void registerUser() async {
     final name = nameController.text.trim();

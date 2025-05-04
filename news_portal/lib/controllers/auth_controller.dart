@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:news_portal/editor/editor_page.dart';
+import 'package:news_portal/pages/auth/login_page.dart';
 
 import '../author/author.dart';
 
@@ -16,6 +18,7 @@ class AuthController extends GetxController {
   var emailError = RxnString();
 
   final box = GetStorage();
+  // final String apiUrl = "http://192.168.1.85:8080/api/auth/login";
   final String apiUrl = "http://localhost:8080/api/auth/login";
 
   @override
@@ -72,7 +75,9 @@ class AuthController extends GetxController {
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.green,
             colorText: Colors.white);
-        Get.offAll(() => const AuthorNewsPage());
+        // Get.offAll(() => const AuthorNewsPage());
+        checkUserScope(responseData["user"]["role"]);
+        print(responseData["user"]["role"]);
       } else {
         Get.snackbar("Error", responseData["msg"] ?? "Login failed",
             snackPosition: SnackPosition.BOTTOM,
@@ -91,7 +96,7 @@ class AuthController extends GetxController {
 
   void logout() {
     box.erase();
-    Get.offAllNamed('/login');
+    Get.to(LoginPage());
   }
 
   void checkLoginStatus() {
@@ -100,6 +105,29 @@ class AuthController extends GetxController {
       Future.delayed(Duration.zero, () {
         Get.offAll(() => const AuthorNewsPage());
       });
+    }
+  }
+
+  void checkUserScope(String role) {
+    switch (role) {
+      case "editor":
+        {
+          Get.to(DraftArticlesScreen());
+          print("editor role ");
+          break;
+        }
+      case "author":
+        {
+          Get.to(AuthorNewsPage());
+          print("author role ");
+
+          break;
+        }
+      default:
+        {
+          print("Unknown role: $role");
+          break;
+        }
     }
   }
 
