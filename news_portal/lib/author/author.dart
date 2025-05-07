@@ -28,7 +28,7 @@ class AuthorNewsPageState extends State<AuthorNewsPage> {
       appBar: AppBar(
         actions: [
           TextButton(
-            onPressed: () => Get.to(Home()),
+            onPressed: () => Get.to(const Home()),
             child: AppText(text: "Readers mode")
           )
         ],

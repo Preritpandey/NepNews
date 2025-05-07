@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
+import 'package:news_portal/core/main_binding.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'controllers/theme_controller.dart';
 import 'core/ScreenSizeConfig.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
           textScaleFactor: textScaleFactor,
           child: GetBuilder<ThemeController>(
             builder: (_) => GetMaterialApp(
+              initialBinding: MainBinding(),
               debugShowCheckedModeBanner: false,
               theme: AppTheme.lightTheme,
               darkTheme: AppTheme.darkTheme,

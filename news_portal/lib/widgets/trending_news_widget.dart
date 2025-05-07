@@ -25,14 +25,7 @@ class TrendingNewsCard extends StatelessWidget {
       "imageUrl":
           "https://athlonsports.com/.image/c_limit%2Ccs_srgb%2Cq_auto:good%2Cw_700/MjEzMzAxMTMzNDI1MjU2Mjg1/lionel-messi-injury-concerns-grow-after-inter-miami-cavalier-news.webp",
     },
-    // {
-    //   "category": "Sports",
-    //   "title": "What Training Do Volleyball Players Need?",
-    //   "author": "McKindney",
-    //   "date": "Feb 27, 2023",
-    //   "imageUrl":
-    //       "https://athlonsports.com/.image/c_limit%2Ccs_srgb%2Cq_auto:good%2Cw_700/MjEzMzAxMTMzNDI1MjU2Mjg1/lionel-messi-injury-concerns-grow-after-inter-miami-cavalier-news.webp",
-    // },
+  
   ];
 
   // Get AdController instance

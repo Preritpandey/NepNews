@@ -3,9 +3,10 @@ import 'package:get/get.dart';
 import 'package:news_portal/pages/Home/news_details_page.dart';
 import 'package:news_portal/resources/app_text.dart';
 import 'package:news_portal/widgets/ad_card.dart';
-
 import '../controllers/ads_controller.dart';
+import '../controllers/get_article_controller.dart';
 import '../models/ads_data_model.dart';
+import '../models/article_model.dart';
 
 class BreakingNewsSlider extends StatefulWidget {
   const BreakingNewsSlider({super.key});
@@ -19,39 +20,18 @@ class BreakingNewsSliderState extends State<BreakingNewsSlider> {
       PageController(initialPage: 0, viewportFraction: 0.85);
   int _currentPage = 0;
 
-  final AdController adController = Get.put(AdController());
-
-  final List<Map<String, String>> newsList = [
-    {
-      "title": "Alexander wears modified helmet in road races",
-      "source": "CNN Indonesia",
-      "time": "6 hours ago",
-      "category": "Sports",
-      "imageUrl": "assets/splash.png",
-    },
-    {
-      "title": "New AI tech revolutionizing modern industries",
-      "source": "Tech Crunch",
-      "time": "2 hours ago",
-      "category": "Technology",
-      "imageUrl": "assets/splash.png",
-    },
-    {
-      "title": "Global markets react to economic downturn",
-      "source": "BBC News",
-      "time": "10 hours ago",
-      "category": "Finance",
-      "imageUrl": "assets/splash.png",
-    },
-  ];
+  final AdController adController = Get.find<AdController>();
+  final GetArticleController articleController =
+      Get.find<GetArticleController>();
 
   List<dynamic> getCombinedList() {
     final List<dynamic> combined = [];
     final List<AdModel> ads = adController.ads;
+    final List<ArticleModel> breakingNews = articleController.getBreakingNews();
 
     int adIndex = 0;
-    for (int i = 0; i < newsList.length; i++) {
-      combined.add(newsList[i]);
+    for (int i = 0; i < breakingNews.length; i++) {
+      combined.add(breakingNews[i]);
       if ((i + 1) % 2 == 0 && adIndex < ads.length) {
         combined.add(ads[adIndex]);
         adIndex++;
@@ -66,7 +46,26 @@ class BreakingNewsSliderState extends State<BreakingNewsSlider> {
     final theme = Theme.of(context);
 
     return Obx(() {
+      if (articleController.isLoading.value) {
+        return const Center(child: CircularProgressIndicator());
+      }
+
+      if (articleController.hasError.value) {
+        return Center(
+          child: Text(
+            'Error: ${articleController.errorMessage.value}',
+            style: TextStyle(color: theme.colorScheme.error),
+          ),
+        );
+      }
+
       final combinedList = getCombinedList();
+
+      if (combinedList.isEmpty) {
+        return const Center(
+          child: Text('No breaking news available'),
+        );
+      }
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,8 +85,8 @@ class BreakingNewsSliderState extends State<BreakingNewsSlider> {
                 final item = combinedList[index];
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: item is Map<String, String>
-                      ? NewsCard(news: item)
+                  child: item is ArticleModel
+                      ? NewsCard(article: item)
                       : AdCard(ad: item as AdModel),
                 );
               },
@@ -123,15 +122,40 @@ class BreakingNewsSliderState extends State<BreakingNewsSlider> {
 
 // NewsCard Widget
 class NewsCard extends StatelessWidget {
-  final Map<String, String> news;
-  const NewsCard({super.key, required this.news});
+  final ArticleModel article;
+  const NewsCard({super.key, required this.article});
 
   @override
   Widget build(BuildContext context) {
+    // Format the time to show how long ago the article was published
+    String timeAgo = '';
+    if (article.publishDate != null) {
+      final publishDateTime = DateTime.parse(article.publishDate!);
+      final now = DateTime.now();
+      final difference = now.difference(publishDateTime);
+
+      if (difference.inDays > 0) {
+        timeAgo =
+            '${difference.inDays} ${difference.inDays == 1 ? 'day' : 'days'} ago';
+      } else if (difference.inHours > 0) {
+        timeAgo =
+            '${difference.inHours} ${difference.inHours == 1 ? 'hour' : 'hours'} ago';
+      } else if (difference.inMinutes > 0) {
+        timeAgo =
+            '${difference.inMinutes} ${difference.inMinutes == 1 ? 'minute' : 'minutes'} ago';
+      } else {
+        timeAgo = 'Just now';
+      }
+    }
+
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const NewsDetailsPage()));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NewsDetailsPage(articleId: article.id),
+          ),
+        );
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15),
@@ -142,8 +166,9 @@ class NewsCard extends StatelessWidget {
               height: 180,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(news["imageUrl"]!),
+                  image: NetworkImage(article.avatar),
                   fit: BoxFit.cover,
+                  onError: (_, __) => const AssetImage('assets/splash.png'),
                 ),
               ),
             ),
@@ -170,7 +195,7 @@ class NewsCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: AppText(
-                    text: news["category"]!,
+                    text: article.category,
                     color: Colors.white,
                     fontWeight: FontWeight.w600),
               ),
@@ -187,20 +212,20 @@ class NewsCard extends StatelessWidget {
                   Row(
                     children: [
                       AppText(
-                          text: news["source"]!,
+                          text: article.author.name,
                           color: Colors.white,
                           fontWeight: FontWeight.bold),
                       const SizedBox(width: 6),
                       const Icon(Icons.verified, color: Colors.blue, size: 16),
                       const SizedBox(width: 6),
-                      Text("• ${news["time"]!}",
+                      Text("• $timeAgo",
                           style: const TextStyle(color: Colors.white70)),
                     ],
                   ),
                   const SizedBox(height: 8),
                   // News Headline
                   AppText(
-                      text: news["title"]!,
+                      text: article.title,
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.bold),

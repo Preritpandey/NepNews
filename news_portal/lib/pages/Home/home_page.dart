@@ -72,7 +72,7 @@ class HomePage extends StatelessWidget {
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.27,
-                  child: const BreakingNewsSlider(),
+                  child:  BreakingNewsSlider(),
                 ),
                 ListTile(
                   leading: const TextHeading(text: 'Trending', fontSize: 15),
