@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_portal/pages/Home/category_page.dart';
+import 'package:news_portal/pages/bookmark/bookmark_page.dart';
 
 import '../../core/ScreenSizeConfig.dart';
 import '../../resources/constant.dart';
@@ -17,11 +18,10 @@ class Home extends StatefulWidget {
 class HomeState extends State<Home> {
   int _selectedIndex = 0;
   final List<Widget> pages = [
-    CategoryPage(),
     HomePage(),
-    const BrowsePage(),
+    CategoryPage(),
+    BookmarkedArticlesPage(),
     ProfilePage(),
-    // ProfilePage(),
   ];
 
   void _onItemTapped(int index) {

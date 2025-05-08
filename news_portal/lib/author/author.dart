@@ -29,14 +29,14 @@ class AuthorNewsPageState extends State<AuthorNewsPage> {
         actions: [
           TextButton(
             onPressed: () => Get.to(const Home()),
-            child: AppText(text: "Readers mode")
+            child: const AppText(text: "Readers mode")
           )
         ],
         leading: IconButton(
           onPressed: () {
             Get.to(ProfilePage());
           },
-          icon: Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_ios),
         ),
         title: const AppText(text: "Create News"),
       ),
@@ -102,7 +102,7 @@ class AuthorNewsPageState extends State<AuthorNewsPage> {
                         newsPostController.selectedImage.value!,
                         fit: BoxFit.cover,
                       )
-                    : Center(
+                    : const Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -119,10 +119,10 @@ class AuthorNewsPageState extends State<AuthorNewsPage> {
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: () => newsPostController.pickImage(),
-                  icon: Icon(Icons.upload_file),
-                  label: Text("Upload Image"),
+                  icon: const Icon(Icons.upload_file),
+                  label: const Text("Upload Image"),
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 12),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                   ),
                 ),
               ),
@@ -135,8 +135,9 @@ class AuthorNewsPageState extends State<AuthorNewsPage> {
                   onPressed: newsPostController.isLoading.value
                       ? null
                       : () => newsPostController.postArticle(),
+                  // ignore: sort_child_properties_last
                   child: newsPostController.isLoading.value
-                      ? Row(
+                      ?  const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(
@@ -148,12 +149,12 @@ class AuthorNewsPageState extends State<AuthorNewsPage> {
                               ),
                             ),
                             SizedBox(width: 10),
-                            Text("Publishing..."),
+                             Text("Publishing..."),
                           ],
                         )
-                      : Text("Publish News"),
+                      : const Text("Publish News"),
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 15),
+                    padding: const EdgeInsets.symmetric(vertical: 15),
                     backgroundColor: Theme.of(context).primaryColor,
                     foregroundColor: Colors.white,
                   ),

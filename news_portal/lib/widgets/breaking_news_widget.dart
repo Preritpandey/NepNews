@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:news_portal/pages/Home/news_details_page.dart';
+import 'package:news_portal/pages/Home/article_detail_page.dart';
 import 'package:news_portal/resources/app_text.dart';
 import 'package:news_portal/widgets/ad_card.dart';
 import '../controllers/ads_controller.dart';
@@ -153,7 +153,7 @@ class NewsCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => NewsDetailsPage(articleId: article.id),
+            builder: (context) => ArticleDetailPage(articleId: article.id),
           ),
         );
       },

@@ -33,18 +33,18 @@ class CategoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('News App'),
+        title: const Text('News App'),
         elevation: 0,
         actions: [
           IconButton(
-            icon: Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh),
             onPressed: () => articleController.refreshArticles(),
           ),
         ],
       ),
       body: Obx(() {
         if (articleController.isLoading.value) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child:  CircularProgressIndicator());
         }
 
         if (articleController.hasError.value) {
@@ -52,16 +52,16 @@ class CategoryPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   'Error loading articles',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(articleController.errorMessage.value),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () => articleController.refreshArticles(),
-                  child: Text('Try Again'),
+                  child: const Text('Try Again'),
                 ),
               ],
             ),
@@ -113,7 +113,7 @@ class CategoryPage extends StatelessWidget {
     }
 
     if (filteredArticles.isEmpty) {
-      return Center(
+      return const Center(
         child: Text(
           'No articles found in this category',
           style: TextStyle(fontSize: 16),
@@ -122,7 +122,7 @@ class CategoryPage extends StatelessWidget {
     }
 
     return ListView.builder(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       itemCount: filteredArticles.length,
       itemBuilder: (context, index) {
         final article = filteredArticles[index];
@@ -157,7 +157,7 @@ class CategoryNavBar extends StatelessWidget {
               onTap: () => controller.changeCategory(category),
               child: Container(
                 alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
@@ -206,7 +206,7 @@ class ArticleCard extends StatelessWidget {
     }
 
     return Card(
-      margin: EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 16),
       elevation: 2,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
@@ -231,7 +231,7 @@ class ArticleCard extends StatelessWidget {
                   return Container(
                     height: 120,
                     color: Colors.grey[300],
-                    child: Center(
+                    child: const Center(
                       child: Icon(Icons.image_not_supported, size: 40),
                     ),
                   );
@@ -261,31 +261,31 @@ class ArticleCard extends StatelessWidget {
                   // Category badge
                   if (article.category != null && article.category!.isNotEmpty)
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: Colors.blue.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
                         article.category!,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
                         ),
                       ),
                     ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
                   // Article title
                   Text(
                     article.title ?? 'Untitled Article',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
                   // Article content preview
                   if (article.content != null && article.content!.isNotEmpty)
@@ -298,7 +298,7 @@ class ArticleCard extends StatelessWidget {
                         fontSize: 14,
                       ),
                     ),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
 
                   // Article metadata
                   Row(
@@ -308,7 +308,7 @@ class ArticleCard extends StatelessWidget {
                       if (article.author != null)
                         Text(
                           'By ${article.author!.name ?? 'Unknown'}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 12,
                           ),
@@ -337,13 +337,13 @@ class ArticleCard extends StatelessWidget {
                             .map((keyword) => Chip(
                                   label: Text(
                                     keyword,
-                                    style: TextStyle(fontSize: 10),
+                                    style: const TextStyle(fontSize: 10),
                                   ),
                                   materialTapTargetSize:
                                       MaterialTapTargetSize.shrinkWrap,
                                   padding: EdgeInsets.zero,
                                   labelPadding:
-                                      EdgeInsets.symmetric(horizontal: 8),
+                                      const EdgeInsets.symmetric(horizontal: 8),
                                 ))
                             .toList(),
                       ),

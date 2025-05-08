@@ -1,26 +1,121 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:get_storage/get_storage.dart';
+import '../core/api_constants.dart';
 import '../models/article_model.dart';
 
 class GetArticleController extends GetxController {
   // Observable list of articles
   final RxList<ArticleModel> articles = <ArticleModel>[].obs;
 
+  // Search results
+  final RxList<ArticleModel> searchResults = <ArticleModel>[].obs;
+
+  // Bookmarked articles
+  final RxList<String> bookmarkedArticleIds = <String>[].obs;
+  final RxList<ArticleModel> bookmarkedArticles = <ArticleModel>[].obs;
+
+  // Search query
+  final RxString searchQuery = ''.obs;
+
   // Loading state
   final RxBool isLoading = false.obs;
+
+  // Search loading state
+  final RxBool isSearching = false.obs;
+
+  // Bookmarks loading state
+  final RxBool isLoadingBookmarks = false.obs;
 
   // Error state
   final RxBool hasError = false.obs;
   final RxString errorMessage = ''.obs;
 
-  // API URL
-  final String apiUrl = 'http://localhost:8080/api/articles';
+  // Storage reference
+  final GetStorage _storage = GetStorage();
+  final String _bookmarksKey = 'bookmarked_articles';
 
   @override
   void onInit() {
     super.onInit();
     fetchArticles();
+
+    // Load bookmarked articles from local storage
+    loadBookmarkedArticles();
+
+    // Debounce search to prevent too many filter operations while typing
+    debounce(
+      searchQuery,
+      (_) => performSearch(),
+      time: const Duration(milliseconds: 500),
+    );
+  }
+
+  // Load bookmarked article IDs from storage
+  void loadBookmarkedArticles() {
+    try {
+      final List<dynamic>? savedIds =
+          _storage.read<List<dynamic>>(_bookmarksKey);
+      if (savedIds != null) {
+        bookmarkedArticleIds.value =
+            savedIds.map((id) => id.toString()).toList();
+        updateBookmarkedArticlesList();
+      }
+    } catch (e) {
+      print('Error loading bookmarked articles: $e');
+    }
+  }
+
+  // Save bookmarked article IDs to storage
+  void _saveBookmarkedArticlesToStorage() {
+    try {
+      _storage.write(_bookmarksKey, bookmarkedArticleIds.toList());
+    } catch (e) {
+      print('Error saving bookmarked articles: $e');
+    }
+  }
+
+  // Toggle bookmark status for an article
+  void toggleBookmark(String articleId) {
+    if (isArticleBookmarked(articleId)) {
+      bookmarkedArticleIds.remove(articleId);
+    } else {
+      bookmarkedArticleIds.add(articleId);
+    }
+
+    // Update bookmarked articles list
+    updateBookmarkedArticlesList();
+
+    // Save to storage
+    _saveBookmarkedArticlesToStorage();
+  }
+
+  // Check if an article is bookmarked
+  bool isArticleBookmarked(String articleId) {
+    return bookmarkedArticleIds.contains(articleId);
+  }
+
+  // Update the list of bookmarked articles
+  void updateBookmarkedArticlesList() {
+    isLoadingBookmarks(true);
+
+    try {
+      final List<ArticleModel> bookmarked = [];
+
+      for (final id in bookmarkedArticleIds) {
+        final article = getArticleById(id);
+        if (article != null) {
+          bookmarked.add(article);
+        }
+      }
+
+      bookmarkedArticles.value = bookmarked;
+    } catch (e) {
+      print('Error updating bookmarked articles list: $e');
+    } finally {
+      isLoadingBookmarks(false);
+    }
   }
 
   // Fetch articles from API
@@ -30,7 +125,7 @@ class GetArticleController extends GetxController {
       hasError(false);
       errorMessage('');
 
-      final response = await http.get(Uri.parse(apiUrl));
+      final response = await http.get(Uri.parse(articleUrl));
 
       if (response.statusCode == 200) {
         final List<dynamic> articlesJson = json.decode(response.body);
@@ -42,6 +137,9 @@ class GetArticleController extends GetxController {
 
         // Update the observable list
         articles.value = fetchedArticles;
+
+        // Update bookmarked articles list with the newly fetched data
+        updateBookmarkedArticlesList();
       } else {
         hasError(true);
         errorMessage('Failed to load articles: ${response.statusCode}');
@@ -52,6 +150,34 @@ class GetArticleController extends GetxController {
     } finally {
       isLoading(false);
     }
+  }
+
+  // Perform local search based on article title
+  void performSearch() {
+    isSearching(true);
+
+    final query = searchQuery.value.toLowerCase().trim();
+
+    // If query is empty, clear search results
+    if (query.isEmpty) {
+      searchResults.clear();
+      isSearching(false);
+      return;
+    }
+
+    // Filter articles by title containing the search query
+    final results = articles.where((article) {
+      return article.title?.toLowerCase().contains(query) ?? false;
+    }).toList();
+
+    searchResults.value = results;
+    isSearching(false);
+  }
+
+  // Clear search and results
+  void clearSearch() {
+    searchQuery.value = '';
+    searchResults.clear();
   }
 
   // Get breaking news (latest articles)

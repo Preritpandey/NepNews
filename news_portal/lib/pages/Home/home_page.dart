@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:news_portal/widgets/article_search_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../controllers/hamburger_menu_controller.dart';
 import '../../widgets/categories_menu.dart';
@@ -36,16 +37,7 @@ class HomePage extends StatelessWidget {
           icon: Icon(Icons.menu, color: theme.colorScheme.onBackground),
         ),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.search_rounded,
-                color: theme.colorScheme.onBackground),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.notifications_none_rounded,
-                color: theme.colorScheme.onBackground),
-          ),
+          ArticleSearchWidget(),
         ],
       ),
       body: Stack(
@@ -72,7 +64,7 @@ class HomePage extends StatelessWidget {
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.27,
-                  child:  BreakingNewsSlider(),
+                  child: const BreakingNewsSlider(),
                 ),
                 ListTile(
                   leading: const TextHeading(text: 'Trending', fontSize: 15),
@@ -110,7 +102,7 @@ class HomePage extends StatelessWidget {
                       child: Container(color: Colors.black.withOpacity(0.3)),
                     ),
                   )
-                : SizedBox.shrink();
+                : const SizedBox.shrink();
           }),
         ],
       ),

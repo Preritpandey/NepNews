@@ -1,4 +1,4 @@
-String ipAddress = "localhost";
+String ipAddress = "192.168.1.126";
 String baseUrl = 'http://$ipAddress:8080';
 String signUpUrl = "$baseUrl/api/auth/register";
 String loginUrl = "$baseUrl/api/auth/login";
