@@ -29,7 +29,7 @@ class DraftController extends GetxController {
       }
 
       final response = await http.get(
-        Uri.parse(approveArticleUrl),
+        Uri.parse(articleStatusUrl),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
