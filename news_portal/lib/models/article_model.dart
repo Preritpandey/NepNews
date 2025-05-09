@@ -49,6 +49,25 @@ class ArticleModel {
       publishDate: json['publishDate'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      '_id': id,
+      'title': title,
+      'content': content,
+      'category': category,
+      'avatar': avatar,
+      'cloudinary_id': cloudinaryId,
+      'keywords': keywords,
+      'status': status,
+      'author': author.toJson(),
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+      '__v': v,
+      'editor': editor?.toJson(),
+      'publishDate': publishDate,
+    };
+  }
 }
 
 class Author {
@@ -66,6 +85,13 @@ class Author {
       name: json['name'] ?? '',
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      '_id': id,
+      'name': name,
+    };
+  }
 }
 
 class Editor {
@@ -82,5 +108,12 @@ class Editor {
       id: json['_id'] ?? '',
       name: json['name'] ?? '',
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      '_id': id,
+      'name': name,
+    };
   }
 }

@@ -32,13 +32,19 @@ class GetArticleController extends GetxController {
   final RxBool hasError = false.obs;
   final RxString errorMessage = ''.obs;
 
+  // Offline state
+  final RxBool isOffline = false.obs;
+
   // Storage reference
   final GetStorage _storage = GetStorage();
   final String _bookmarksKey = 'bookmarked_articles';
+  final String _articlesCacheKey = 'cached_articles';
+  final String _lastFetchTimeKey = 'last_fetch_time';
 
   @override
   void onInit() {
     super.onInit();
+    loadCachedArticles();
     fetchArticles();
 
     // Load bookmarked articles from local storage
@@ -50,6 +56,55 @@ class GetArticleController extends GetxController {
       (_) => performSearch(),
       time: const Duration(milliseconds: 500),
     );
+  }
+
+  // Load cached articles from storage
+  void loadCachedArticles() {
+    try {
+      final dynamic cachedData = _storage.read(_articlesCacheKey);
+      if (cachedData != null) {
+        if (cachedData is String) {
+          final List<dynamic> articlesJson = json.decode(cachedData);
+          final List<ArticleModel> cachedArticles = articlesJson
+              .map((articleJson) => ArticleModel.fromJson(articleJson))
+              .toList();
+          articles.value = cachedArticles;
+        } else if (cachedData is List) {
+          final List<ArticleModel> cachedArticles = cachedData
+              .map((articleJson) => ArticleModel.fromJson(articleJson))
+              .toList();
+          articles.value = cachedArticles;
+        }
+      }
+    } catch (e) {
+      print('Error loading cached articles: $e');
+    }
+  }
+
+  // Save articles to local storage
+  void _saveArticlesToCache(List<ArticleModel> articlesToCache) {
+    try {
+      final String articlesJson = json
+          .encode(articlesToCache.map((article) => article.toJson()).toList());
+      _storage.write(_articlesCacheKey, articlesJson);
+      _storage.write(_lastFetchTimeKey, DateTime.now().toIso8601String());
+    } catch (e) {
+      print('Error saving articles to cache: $e');
+    }
+  }
+
+  // Check if cache is stale (older than 1 hour)
+  bool _isCacheStale() {
+    try {
+      final String? lastFetchTime = _storage.read<String>(_lastFetchTimeKey);
+      if (lastFetchTime == null) return true;
+
+      final DateTime lastFetch = DateTime.parse(lastFetchTime);
+      final DateTime now = DateTime.now();
+      return now.difference(lastFetch).inHours >= 1;
+    } catch (e) {
+      return true;
+    }
   }
 
   // Load bookmarked article IDs from storage
@@ -124,6 +179,13 @@ class GetArticleController extends GetxController {
       isLoading(true);
       hasError(false);
       errorMessage('');
+      isOffline(false);
+
+      // If we have cached data and it's not stale, use it
+      if (articles.isNotEmpty && !_isCacheStale()) {
+        isLoading(false);
+        return;
+      }
 
       final response = await http.get(Uri.parse(articleUrl));
 
@@ -138,6 +200,9 @@ class GetArticleController extends GetxController {
         // Update the observable list
         articles.value = fetchedArticles;
 
+        // Cache the articles
+        _saveArticlesToCache(fetchedArticles);
+
         // Update bookmarked articles list with the newly fetched data
         updateBookmarkedArticlesList();
       } else {
@@ -145,8 +210,14 @@ class GetArticleController extends GetxController {
         errorMessage('Failed to load articles: ${response.statusCode}');
       }
     } catch (e) {
-      hasError(true);
-      errorMessage('An error occurred: $e');
+      // If there's an error and we have cached data, use it
+      if (articles.isNotEmpty) {
+        isOffline(true);
+        errorMessage('Using cached data: No internet connection');
+      } else {
+        hasError(true);
+        errorMessage('An error occurred: $e');
+      }
     } finally {
       isLoading(false);
     }

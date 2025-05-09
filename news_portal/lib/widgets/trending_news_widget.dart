@@ -203,7 +203,6 @@ class TrendingNewsCard extends StatelessWidget {
         onTap: () {
           // Navigate to article detail page
           if (article.id != null) {
-            // Get.toNamed('/article/${article.id}');
             Get.to(() => ArticleDetailPage(articleId: article.id));
           }
         },

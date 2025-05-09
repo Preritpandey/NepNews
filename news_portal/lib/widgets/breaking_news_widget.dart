@@ -17,7 +17,7 @@ class BreakingNewsSlider extends StatefulWidget {
 
 class BreakingNewsSliderState extends State<BreakingNewsSlider> {
   final PageController _pageController =
-      PageController(initialPage: 0, viewportFraction: 0.85);
+      PageController(initialPage: 1, viewportFraction: 0.85);
   int _currentPage = 0;
 
   final AdController adController = Get.find<AdController>();

@@ -18,6 +18,8 @@ class CategoryPage extends StatelessWidget {
   final GetArticleController articleController =
       Get.put(GetArticleController());
 
+   CategoryPage({super.key});
+
   // Get unique categories from articles
   List<String> getCategories() {
     final Set<String> uniqueCategories = {'All'};
@@ -33,7 +35,6 @@ class CategoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('News App'),
         elevation: 0,
         actions: [
           IconButton(
@@ -44,7 +45,7 @@ class CategoryPage extends StatelessWidget {
       ),
       body: Obx(() {
         if (articleController.isLoading.value) {
-          return const Center(child:  CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (articleController.hasError.value) {
@@ -137,14 +138,14 @@ class CategoryNavBar extends StatelessWidget {
   final CategoryController controller;
 
   const CategoryNavBar({
-    Key? key,
+    super.key,
     required this.categories,
     required this.controller,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 48,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -261,7 +262,8 @@ class ArticleCard extends StatelessWidget {
                   // Category badge
                   if (article.category != null && article.category!.isNotEmpty)
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: Colors.blue.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(4),
