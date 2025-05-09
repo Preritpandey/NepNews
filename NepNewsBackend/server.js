@@ -15,6 +15,8 @@ const adRoutes = require("./routes/adRoutes");
 const userRoutes = require("./routes/userRoutes");
 
 const app = express();
+const commentRoutes = require("./routes/commentRoutes");
+app.use("/api/comments", commentRoutes);
 
 app.use(session({
   secret: "your-secret",
