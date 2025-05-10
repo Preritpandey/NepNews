@@ -247,3 +247,74 @@ exports.editDraftedArticle = async (req, res) => {
     res.status(500).json({ msg: "Server error" });
   }
 };
+
+/**
+ * Archive a published article (for Admin role only)
+ */
+exports.archiveArticle = async (req, res) => {
+  try {
+    const { search } = req.query;
+
+    // Ensure the user is an admin
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ msg: "Access denied" });
+    }
+
+    // Search for the article by ID or title
+    const article = await Article.findOne({
+      $or: [
+        { _id: search }, // Search by ID
+        { title: { $regex: search, $options: "i" } }, // Search by title (case-insensitive)
+      ],
+      status: "published", // Only published articles can be archived
+    });
+
+    if (!article) {
+      return res.status(404).json({ msg: "Published article not found" });
+    }
+
+    // Archive the article by changing its status
+    article.status = "archived";
+    await article.save();
+
+    res.status(200).json({ msg: "Article archived successfully", article });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
+
+/**
+ * Delete a published article (for Admin role only)
+ */
+exports.deleteArticle = async (req, res) => {
+  try {
+    const { search } = req.query;
+
+    // Ensure the user is an admin
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ msg: "Access denied" });
+    }
+
+    // Search for the article by ID or title
+    const article = await Article.findOne({
+      $or: [
+        { _id: search }, // Search by ID
+        { title: { $regex: search, $options: "i" } }, // Search by title (case-insensitive)
+      ],
+      status: "published", // Only published articles can be deleted
+    });
+
+    if (!article) {
+      return res.status(404).json({ msg: "Published article not found" });
+    }
+
+    // Delete the article
+    await article.remove();
+
+    res.status(200).json({ msg: "Article deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
