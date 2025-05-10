@@ -190,3 +190,60 @@ exports.getArticles = async (req, res) => {
     res.status(500).json({ msg: "Server error" });
   }
 };
+
+/**
+ * Fetch all drafted articles (Editor only)
+ */
+exports.getDraftedArticles = async (req, res) => {
+  try {
+    // Ensure the user is an editor
+    if (req.user.role !== "editor") {
+      return res.status(403).json({ msg: "Access denied" });
+    }
+
+    // Fetch all articles with status "draft"
+    const drafts = await Article.find({ status: "draft" })
+      .populate("author", "name email") // Populate author details
+      .sort({ createdAt: -1 }); // Sort by most recent
+
+    res.status(200).json({ drafts });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
+
+/**
+ * Edit a drafted article (Editor only)
+ */
+exports.editDraftedArticle = async (req, res) => {
+  try {
+    const { articleId } = req.params;
+    const { title, content, category, keywords } = req.body;
+
+    // Ensure the user is an editor
+    if (req.user.role !== "editor") {
+      return res.status(403).json({ msg: "Access denied" });
+    }
+
+    // Find the draft article
+    const article = await Article.findById(articleId);
+    if (!article || article.status !== "draft") {
+      return res.status(404).json({ msg: "Draft article not found" });
+    }
+
+    // Update the draft article fields
+    if (title) article.title = title;
+    if (content) article.content = content;
+    if (category) article.category = category;
+    if (keywords) article.keywords = keywords;
+
+    // Save the updated draft
+    await article.save();
+
+    res.status(200).json({ msg: "Draft article updated successfully", article });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
