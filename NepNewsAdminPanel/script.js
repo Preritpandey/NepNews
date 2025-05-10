@@ -1,9 +1,9 @@
 // State Management
 let state = {
-    users: JSON.parse(localStorage.getItem('users')) || [],
-    articles: JSON.parse(localStorage.getItem('articles')) || [],
-    ads: JSON.parse(localStorage.getItem('ads')) || [],
-    logs: JSON.parse(localStorage.getItem('logs')) || []
+    users: [],
+    articles: [],
+    ads: [],
+    logs: []
 };
 
 // Theme Management
@@ -32,19 +32,28 @@ function initializeTheme() {
 }
 
 // Navigation
-function navigate(section) {
+function navigate(section, event) {
     // Remove active class from all nav links
     document.querySelectorAll('.nav-link').forEach(link => {
         link.classList.remove('active');
     });
-    
-    // Add active class to clicked nav link
-    event.currentTarget.classList.add('active');
-    
+
+    // Add active class to clicked nav link (only if event is provided)
+    if (event && event.currentTarget) {
+        event.currentTarget.classList.add('active');
+    } else {
+        // Optionally, set the active class based on section
+        document.querySelectorAll('.nav-link').forEach(link => {
+            if (link.getAttribute('onclick') && link.getAttribute('onclick').includes(section)) {
+                link.classList.add('active');
+            }
+        });
+    }
+
     // Load content based on section
     const content = document.getElementById('content');
     content.innerHTML = ''; // Clear existing content
-    
+
     switch(section) {
         case 'dashboard':
             loadDashboard();
@@ -56,10 +65,10 @@ function navigate(section) {
             loadArticles();
             break;
         case 'ads':
-        loadAds();
+            loadAds();
             break;
         case 'logs':
-        loadLogs();
+            loadLogs();
             break;
     }
 }
@@ -133,9 +142,64 @@ function initializeTrafficChart() {
     });
 }
 
+// API Functions
+async function fetchUsers() {
+    try {
+        const response = await fetch(`${config.API_URL}/users`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        const data = await response.json();
+        state.users = data;
+        return data;
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        return [];
+    }
+}
+
+async function fetchArticles() {
+    try {
+        const response = await fetch(`${config.API_URL}/articles`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        const data = await response.json();
+        state.articles = data;
+        return data;
+    } catch (error) {
+        console.error('Error fetching articles:', error);
+        return [];
+    }
+}
+
+async function fetchAds() {
+    try {
+        const response = await fetch(`${config.API_URL}/ads`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        const data = await response.json();
+        state.ads = data;
+        return data;
+    } catch (error) {
+        console.error('Error fetching ads:', error);
+        return [];
+    }
+}
+
 // Users Management
-function loadUsers() {
+async function loadUsers() {
     const content = document.getElementById('content');
+    
+    // Show loading state
+    content.innerHTML = '<div class="loading">Loading users...</div>';
+    
+    // Fetch users from API
+    await fetchUsers();
     
     content.innerHTML = `
         <div class="content-header">
@@ -154,17 +218,17 @@ function loadUsers() {
                 </tr>
             </thead>
             <tbody>
-                ${state.users.map((user, index) => `
+                ${state.users.map((user) => `
                     <tr>
                         <td>${user.name}</td>
                         <td>${user.email}</td>
                         <td>${user.role}</td>
                         <td>
                             <div class="action-buttons-vertical">
-                                <button class="btn btn-edit" onclick="editUser(${index})">
+                                <button class="btn btn-edit" onclick="editUser('${user._id}')">
                                     <i class="fas fa-edit"></i> Edit
                                 </button>
-                                <button class="btn btn-delete" onclick="deleteUser(${index})">
+                                <button class="btn btn-delete" onclick="deleteUser('${user._id}')">
                                     <i class="fas fa-trash"></i> Delete
                                 </button>
                             </div>
@@ -217,32 +281,48 @@ function showAddUserModal() {
     };
 }
 
-function addUser(user) {
-    state.users.push(user);
-    localStorage.setItem('users', JSON.stringify(state.users));
-    logAction(`Added user: ${user.name}`);
-    loadUsers();
+async function addUser(user) {
+    try {
+        const response = await fetch(`${config.API_URL}/users`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify(user)
+        });
+        
+        if (response.ok) {
+            await fetchUsers(); // Refresh the users list
+            hideModal();
+            logAction(`Added new user: ${user.name}`);
+        } else {
+            throw new Error('Failed to add user');
+        }
+    } catch (error) {
+        console.error('Error adding user:', error);
+        alert('Failed to add user. Please try again.');
+    }
 }
 
-function editUser(index) {
-    const user = state.users[index];
+function editUser(userId) {
     showModal(`
         <h3>Edit User</h3>
         <form id="editUserForm">
             <div class="form-group">
                 <label>Name</label>
-                <input type="text" class="form-control" name="name" value="${user.name}" required>
+                <input type="text" class="form-control" name="name" required>
             </div>
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" class="form-control" name="email" value="${user.email}" required>
+                <input type="email" class="form-control" name="email" required>
             </div>
             <div class="form-group">
                 <label>Role</label>
                 <select class="form-control" name="role" required>
-                    <option value="Editor" ${user.role === 'Editor' ? 'selected' : ''}>Editor</option>
-                    <option value="Author" ${user.role === 'Author' ? 'selected' : ''}>Author</option>
-                    <option value="Ads Manager" ${user.role === 'Ads Manager' ? 'selected' : ''}>Ads Manager</option>
+                    <option value="Editor">Editor</option>
+                    <option value="Author">Author</option>
+                    <option value="Ads Manager">Ads Manager</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -264,13 +344,26 @@ function editUser(index) {
     };
 }
 
-function deleteUser(index) {
-    if (confirm('Are you sure you want to delete this user?')) {
-        const user = state.users[index];
-        state.users.splice(index, 1);
-        localStorage.setItem('users', JSON.stringify(state.users));
-        logAction(`Deleted user: ${user.name}`);
-        loadUsers();
+async function deleteUser(userId) {
+    if (!confirm('Are you sure you want to delete this user?')) return;
+    
+    try {
+        const response = await fetch(`${config.API_URL}/users/${userId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        
+        if (response.ok) {
+            await fetchUsers(); // Refresh the users list
+            logAction('Deleted a user');
+        } else {
+            throw new Error('Failed to delete user');
+        }
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        alert('Failed to delete user. Please try again.');
     }
 }
 
@@ -312,15 +405,104 @@ function hideModal() {
     document.getElementById('modal').style.display = 'none';
 }
 
-// Initialize
+// Authentication Functions
+async function login(email, password) {
+    try {
+        const response = await fetch(`${config.API_URL}/auth/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+        
+        if (response.ok) {
+            // Store the token in localStorage
+            localStorage.setItem('token', data.token);
+            // Store user info if needed
+            localStorage.setItem('user', JSON.stringify(data.user));
+            // Show admin panel
+            showAdminPanel();
+            navigate('dashboard');
+            return true;
+        } else {
+            throw new Error(data.message || 'Login failed');
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        alert(error.message || 'Login failed. Please try again.');
+        return false;
+    }
+}
+
+function logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    showLoginPage();
+}
+
+function showLoginPage() {
+    const content = document.getElementById('content');
+    content.innerHTML = `
+        <div class="login-container">
+            <h2>Admin Login</h2>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    `;
+}
+
+async function handleLogin(event) {
+    event.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    const success = await login(email, password);
+    if (success) {
+        // Login successful, the login function will handle showing the admin panel
+    }
+}
+
+function showAdminPanel() {
+    document.getElementById('login-container').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'flex';
+}
+
+// Check authentication status on page load
+function checkAuth() {
+    const token = localStorage.getItem('token');
+    if (token) {
+        showAdminPanel();
+        navigate('dashboard');
+    } else {
+        showLoginPage();
+    }
+}
+
+// Initialize the app
 document.addEventListener('DOMContentLoaded', () => {
+    checkAuth();
     initializeTheme();
     loadDashboard(); // Load dashboard by default
 
     // Modal close button
-    document.querySelector('.close-modal').onclick = () => {
-        document.getElementById('modal').style.display = 'none';
-    };
+    const closeModalBtn = document.querySelector('.close-modal');
+    if (closeModalBtn) {
+        closeModalBtn.onclick = () => {
+            document.getElementById('modal').style.display = 'none';
+        };
+    }
 
     // Click outside modal to close
     window.onclick = (event) => {

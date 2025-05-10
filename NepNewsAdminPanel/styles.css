@@ -1162,3 +1162,108 @@ textarea.form-control {
 [data-theme="dark"] .mobile-toggle:hover {
     background: rgba(255, 255, 255, 0.05);
 }
+
+/* Modern Login Page Styles */
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(120deg, #2980b9 0%, #6dd5fa 100%);
+}
+
+.login-box {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2.5rem 2rem 2rem 2rem;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(44, 62, 80, 0.18);
+    width: 100%;
+    max-width: 370px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 0.7s;
+}
+
+.login-box h2 {
+    margin-bottom: 2rem;
+    color: #2980b9;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.login-box .form-group {
+    width: 100%;
+    margin-bottom: 1.3rem;
+}
+
+.login-box label {
+    color: #34495e;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+    display: block;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 1.5px solid #d0d7de;
+    border-radius: 7px;
+    background: #f7fbff;
+    color: #34495e;
+    font-size: 1rem;
+    transition: border 0.2s;
+}
+
+.login-box input:focus {
+    border-color: #2980b9;
+    outline: none;
+    background: #eaf6fb;
+}
+
+.login-box .btn {
+    width: 100%;
+    padding: 0.8rem;
+    background: linear-gradient(90deg, #2980b9 0%, #6dd5fa 100%);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+    transition: background 0.2s, transform 0.2s;
+    margin-top: 0.5rem;
+}
+
+.login-box .btn:hover {
+    background: linear-gradient(90deg, #2574a9 0%, #43c6f7 100%);
+    transform: translateY(-2px) scale(1.03);
+}
+
+@media (max-width: 500px) {
+    .login-box {
+        padding: 1.5rem 0.7rem 1.2rem 0.7rem;
+        max-width: 95vw;
+    }
+}
+
+[data-theme="dark"] .login-box {
+    background: rgba(34, 40, 49, 0.98);
+    box-shadow: 0 8px 32px rgba(44, 62, 80, 0.28);
+}
+[data-theme="dark"] .login-box h2 {
+    color: #6dd5fa;
+}
+[data-theme="dark"] .login-box label {
+    color: #eaf6fb;
+}
+[data-theme="dark"] .login-box input {
+    background: #232931;
+    color: #eaf6fb;
+    border: 1.5px solid #393e46;
+}
+[data-theme="dark"] .login-box input:focus {
+    background: #393e46;
+    border-color: #6dd5fa;
+}
