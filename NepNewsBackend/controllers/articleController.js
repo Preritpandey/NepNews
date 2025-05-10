@@ -5,7 +5,7 @@ const cloudinary = require("../config/cloudinary");
 const uploads = require("../config/multer");
 
 /**
- * Create draft article (Author only)
+ * Create draft article (for Author role only)
  */
 exports.createArticle = async (req, res) => {
   try {
@@ -192,7 +192,7 @@ exports.getArticles = async (req, res) => {
 };
 
 /**
- * Fetch all drafted articles (Editor only)
+ * Fetch all drafted articles (for Editor role only)
  */
 exports.getDraftedArticles = async (req, res) => {
   try {
@@ -214,7 +214,7 @@ exports.getDraftedArticles = async (req, res) => {
 };
 
 /**
- * Edit a drafted article (Editor only)
+ * Edit a drafted article ( for Editor role only)
  */
 exports.editDraftedArticle = async (req, res) => {
   try {
