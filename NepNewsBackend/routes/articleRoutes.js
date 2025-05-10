@@ -7,6 +7,8 @@ const {
   createArticle,
   publishArticle,
   getArticles,
+  getDraftedArticles,
+  editDraftedArticle,
 } = require("../controllers/articleController");
 const Article = require("../models/articleModel");
 
@@ -40,5 +42,11 @@ const updatePublishedArticle = async (req, res) => {
 };
 
 router.put("/admin-update/:articleId", auth, uploads.single("image"), updatePublishedArticle);
+
+// Fetch all drafted articles (Editor only)
+router.get("/editor/drafts", auth, getDraftedArticles);
+
+// Edit a drafted article (Editor only)
+router.put("/editor/drafts/:articleId", auth, editDraftedArticle);
 
 module.exports = router;
