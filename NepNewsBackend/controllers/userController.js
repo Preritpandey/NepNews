@@ -9,7 +9,7 @@ exports.getAllUsers = async (req, res) => {
       return res.status(403).json({ msg: "Access denied" });
     }
 
-    const users = await User.find().select("-password"); // Exclude password
+    const users = await User.find().select("-password");
     res.json(users);
   } catch (error) {
     console.error(error);
@@ -18,27 +18,78 @@ exports.getAllUsers = async (req, res) => {
 };
 
 // Update user role (Admin only)
+// exports.updateUserRole = async (req, res) => {
+//   try {
+//     if (req.user.role !== "admin") {
+//       return res.status(403).json({ msg: "Access denied" });
+//     }
+
+//     const { userId } = req.params;
+//     const { newRole } = req.body;
+
+//     const user = await User.findById(userId);
+//     if (!user) return res.status(404).json({ msg: "User not found" });
+
+//     user.role = newRole;
+//     await user.save();
+
+//     res.json({ msg: "User role updated", user });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ msg: "Server error" });
+//   }
+// };
+// Update user role (Admin only)
 exports.updateUserRole = async (req, res) => {
   try {
     if (req.user.role !== "admin") {
       return res.status(403).json({ msg: "Access denied" });
     }
 
-    const { userId } = req.params;
-    const { newRole } = req.body;
+    const { email } = req.params; // Get the email from the request parameters
+    const { newRole } = req.body; // Get the new role from the request body
 
-    const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ msg: "User not found" });
+    console.log("Email from request:", email); // Log the email from the request
 
-    user.role = newRole;
-    await user.save();
+    // Find the user by email (case-insensitive)
+    const user = await User.findOne({ email: { $regex: new RegExp(`^${email}$`, "i") } });
+    console.log("User found:", user); // Log the user object
 
-    res.json({ msg: "User role updated", user });
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    user.role = newRole; // Update the user's role
+    await user.save(); // Save the updated user
+
+    res.json({ msg: "User role updated successfully", user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Server error" });
   }
 };
+
+// // Delete a user (Admin only)
+// exports.deleteUser = async (req, res) => {
+//   try {
+//     if (req.user.role !== "admin") {
+//       return res.status(403).json({ msg: "Access denied" });
+//     }
+
+//     const { userId } = req.params;
+
+//     const user = await User.findById(userId);
+//     if (!user) {
+//       return res.status(404).json({ msg: "User not found" });
+//     }
+
+//     await user.remove();
+//     res.json({ msg: "User deleted successfully" });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ msg: "Server error" });
+//   }
+// };
 
 // Delete a user (Admin only)
 exports.deleteUser = async (req, res) => {
@@ -47,14 +98,22 @@ exports.deleteUser = async (req, res) => {
       return res.status(403).json({ msg: "Access denied" });
     }
 
-    const { userId } = req.params;
+    const { email } = req.params; // Get the email from the request parameters
+    const { newRole } = req.body; // Get the new role from the request body
 
-    const user = await User.findById(userId);
+    console.log("Email from request:", email); // Log the email from the request
+
+
+    // Find the user by email (case-insensitive)
+    const user = await User.findOne({ email: { $regex: new RegExp(`^${email}$`, "i") } });
+    console.log("User found:", user); // Log the user object
+
+
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
 
-    await user.remove();
+    await user.remove(); // Remove the user
     res.json({ msg: "User deleted successfully" });
   } catch (error) {
     console.error(error);
@@ -100,28 +159,3 @@ exports.createUser = async (req, res) => {
     res.status(500).json({ msg: "Server error" });
   }
 };
-
-// routes/userRoutes.js
-const express = require("express");
-const router = express.Router();
-const auth = require("../middlewares/authMiddleware");
-const {
-  getAllUsers,
-  updateUserRole,
-  deleteUser,
-  createUser,
-} = require("../controllers/userController");
-
-// Get all users (Admin only)
-router.get("/", auth, getAllUsers);
-
-// Update user role (Admin only)
-router.put("/:userId/role", auth, updateUserRole);
-
-// Delete a user (Admin only)
-router.delete("/:userId", auth, deleteUser);
-
-// Create a new user (Admin only)
-router.post("/", auth, createUser);
-
-module.exports = router;
