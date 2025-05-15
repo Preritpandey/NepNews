@@ -32,6 +32,8 @@ app.use("/api/articles", require("./routes/articleRoutes"));
 app.use("/api/comments", require("./routes/commentRoutes")); // now sees parsed body
 app.use("/api/ad",       require("./routes/adRoutes"));
 app.use("/api/users",    require("./routes/userRoutes"));
+const logRoutes = require("./routes/logRoutes");
+app.use("/api/logs", logRoutes);
 
 /* ---------- MISC ---------- */
 app.get("/", (_req, res) => {
