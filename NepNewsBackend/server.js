@@ -6,7 +6,7 @@ const authMiddleware = require("./middlewares/authMiddleware");
 const session = require("express-session");
 const passport = require('passport'); 
  require("./config/passport")(passport);
-
+const cors = require("cors");
 
 // Import routes
 const authRoutes = require("./routes/authRoutes");
@@ -29,7 +29,7 @@ app.use(passport.session());
 
 app.use("/auth", require("./routes/authRoutes"));
 
-
+app.use(cors());
 app.use(express.json());
 // Database connection
 connectDB();

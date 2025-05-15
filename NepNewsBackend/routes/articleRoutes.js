@@ -40,6 +40,9 @@ const updatePublishedArticle = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+router.post("/", auth, uploads.single("image"), createArticle);
+router.put("/publish/:articleId", auth, publishArticle);
+router.get("/", getArticles);
 
 router.put("/admin-update/:articleId", auth, uploads.single("image"), updatePublishedArticle);
 
