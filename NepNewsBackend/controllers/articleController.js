@@ -262,7 +262,7 @@ exports.editDraftedArticle = async (req, res) => {
  */
 exports.archiveArticle = async (req, res) => {
   try {
-    const { search } = req.query;
+    const { search } = req.body; // Use req.body instead of req.query
 
     // Ensure the user is an admin
     if (req.user.role !== "admin") {
@@ -304,7 +304,7 @@ exports.archiveArticle = async (req, res) => {
  */
 exports.deleteArticle = async (req, res) => {
   try {
-    const { search } = req.query;
+    const { search } = req.body;
 
     // Ensure the user is an admin
     if (req.user.role !== "admin") {
