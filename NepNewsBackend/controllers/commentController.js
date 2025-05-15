@@ -15,6 +15,9 @@ exports.addComment = [
   
   async (req, res) => {
     try {
+      // Log the request body
+      console.log("Request Body:", req.body);
+
       // Check for validation errors
       const errors = validationResult(req);
       if (!errors.isEmpty()) {

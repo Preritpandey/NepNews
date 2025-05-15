@@ -317,7 +317,7 @@ exports.deleteArticle = async (req, res) => {
         { _id: search }, // Search by ID
         { title: { $regex: search, $options: "i" } }, // Search by title (case-insensitive)
       ],
-      status: "archived", // Only published articles can be deleted
+      status: "published", // Only published articles can be deleted
     });
 
     if (!article) {
