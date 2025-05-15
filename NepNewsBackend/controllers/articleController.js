@@ -262,7 +262,7 @@ exports.editDraftedArticle = async (req, res) => {
  */
 exports.archiveArticle = async (req, res) => {
   try {
-    const { search } = req.body; // Use req.body instead of req.query
+    const { search } = req.query; // Use req.body instead of req.query
 
     // Ensure the user is an admin
     if (req.user.role !== "admin") {
@@ -304,7 +304,7 @@ exports.archiveArticle = async (req, res) => {
  */
 exports.deleteArticle = async (req, res) => {
   try {
-    const { search } = req.body;
+    const { search } = req.body; // Use req.body instead of req.query
 
     // Ensure the user is an admin
     if (req.user.role !== "admin") {
@@ -317,7 +317,7 @@ exports.deleteArticle = async (req, res) => {
         { _id: search }, // Search by ID
         { title: { $regex: search, $options: "i" } }, // Search by title (case-insensitive)
       ],
-      status: "published", // Only published articles can be deleted
+      status: "archived", // Only published articles can be deleted
     });
 
     if (!article) {
@@ -325,7 +325,7 @@ exports.deleteArticle = async (req, res) => {
     }
 
     // Delete the article
-    await article.remove();
+    await article.deleteOne();
 
     res.status(200).json({ msg: "Article deleted successfully" });
   } catch (error) {
