@@ -25,11 +25,11 @@ exports.createArticle = async (req, res) => {
       author: authorId,
       status: "draft",
     });
-    await article.save();
 
+    await article.save();
     res.status(201).json({ msg: "Draft article created", article });
   } catch (error) {
-    console.error(error);
+    console.error("Error in createArticle:", error);
     res.status(500).json({ msg: "Server error" });
   }
 };
@@ -41,8 +41,14 @@ exports.publishArticle = async (req, res) => {
   try {
     const { articleId } = req.params;
     const editorId = req.user.userId;
-    // Editor finds the draft
+
+    console.log("Article ID:", articleId); // Log the article ID
+    console.log("Editor ID:", editorId);   // Log the editor ID
+
+    // Find the draft article
     let article = await Article.findById(articleId);
+    console.log("Article found:", article); // Log the article object
+
     if (!article) {
       return res.status(404).json({ msg: "Article not found" });
     }
@@ -53,6 +59,7 @@ exports.publishArticle = async (req, res) => {
     article.publishDate = new Date();
 
     await article.save();
+    console.log("Article published successfully");
 
     // Log action
     const log = new Log({
@@ -61,10 +68,11 @@ exports.publishArticle = async (req, res) => {
       changedBy: editorId,
     });
     await log.save();
+    console.log("Log saved successfully");
 
     res.json({ msg: "Article published", article });
   } catch (error) {
-    console.error(error);
+    console.error("Error in publishArticle:", error);
     res.status(500).json({ msg: "Server error" });
   }
 };
