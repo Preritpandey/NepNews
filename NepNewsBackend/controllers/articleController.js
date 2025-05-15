@@ -3,6 +3,7 @@ const Article = require("../models/articleModel");
 const Log = require("../models/logModel");
 const cloudinary = require("../config/cloudinary");
 const uploads = require("../config/multer");
+const mongoose = require("mongoose");
 
 /**
  * Create draft article (for Author role only)
@@ -268,12 +269,18 @@ exports.archiveArticle = async (req, res) => {
       return res.status(403).json({ msg: "Access denied" });
     }
 
-    // Search for the article by ID or title
+    // Validate the search parameter
+    if (!search || typeof search !== "string") {
+      return res.status(400).json({ msg: "Invalid search parameter" });
+    }
+
+    const query = mongoose.isValidObjectId(search)
+      ? { _id: search } // Search by ID if valid ObjectId
+      : { title: { $regex: search, $options: "i" } }; // Otherwise, search by title
+
+    // Search for the article
     const article = await Article.findOne({
-      $or: [
-        { _id: search }, // Search by ID
-        { title: { $regex: search, $options: "i" } }, // Search by title (case-insensitive)
-      ],
+      ...query,
       status: "published", // Only published articles can be archived
     });
 
