@@ -9,8 +9,13 @@ const {
   getArticles,
   getDraftedArticles,
   editDraftedArticle,
+  archiveArticle,
+  deleteArticle,
 } = require("../controllers/articleController");
 const Article = require("../models/articleModel");
+
+
+
 
 const updatePublishedArticle = async (req, res) => {
   try {
@@ -51,5 +56,11 @@ router.get("/editor/drafts", auth, getDraftedArticles);
 
 // Edit a drafted article (Editor only)
 router.put("/editor/drafts/:articleId", auth, editDraftedArticle);
+
+// Archive a published article (Admin only)
+router.put("/admin/archive", auth, archiveArticle);
+
+// Delete a published article (Admin only)
+router.delete("/admin/delete", auth, deleteArticle);
 
 module.exports = router;
