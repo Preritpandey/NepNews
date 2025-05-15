@@ -14,8 +14,7 @@ const {
 } = require("../controllers/articleController");
 const Article = require("../models/articleModel");
 
-
-
+console.log("Article routes loaded");
 
 const updatePublishedArticle = async (req, res) => {
   try {
