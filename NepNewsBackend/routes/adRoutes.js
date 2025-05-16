@@ -5,7 +5,7 @@ const uploads = require("../config/multer");
 const Ad = require("../models/adModel");
 
 //categories allowed for ads
-const validCategories = ["education", "politics", "sports", "health", "other"];
+const validCategories = ["education", "politics", "sports", "health", "entertainment", "other"];
 router.post("/", uploads.single("image"), async (req, res) => {
   try {
     const { title, url, category } = req.body;
@@ -102,8 +102,5 @@ router.put("/:id", uploads.single("image"), async (req, res) => {
     console.log(err);
   }
 });
-
-const auth = require("../middlewares/authMiddleware");
-
 
 module.exports = router;
