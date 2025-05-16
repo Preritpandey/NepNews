@@ -10,7 +10,7 @@ const mongoose = require("mongoose");
  */
 exports.createArticle = async (req, res) => {
   try {
-    // Assume `req.user` is attached by auth middleware with userId, role
+    //  `req.user` is attached by auth middleware with userId, role
     const { title, content, category, keywords} = req.body;
     const authorId = req.user.userId;
     // ------ Image upload handled by Ayusha Karki ----- //
