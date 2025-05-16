@@ -22,7 +22,7 @@ const articleSchema = new mongoose.Schema(
     publishDate: { type: Date },
     status: {
       type: String,
-      enum: ["draft", "published"],
+      enum: ["draft", "published","archived"],
       default: "draft",
     },
     author: {

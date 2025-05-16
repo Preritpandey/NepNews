@@ -104,15 +104,6 @@ router.put("/:id", uploads.single("image"), async (req, res) => {
 });
 
 const auth = require("../middlewares/authMiddleware");
-const {
-  archiveArticle,
-  deleteArticle,
-} = require("../controllers/articleController");
 
-// Archive a published article (Admin only)
-router.put("/admin/archive", auth, archiveArticle);
-
-// Delete a published article (Admin only)
-router.delete("/admin/delete", auth, deleteArticle);
 
 module.exports = router;

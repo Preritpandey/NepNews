@@ -5,44 +5,42 @@ const Article = require("../models/articleModel");
 
 // Add a comment to an article
 exports.addComment = [
-  // Validation middleware
+  // 1. validation
   body("text")
     .trim()
-    .isLength({ min: 1 })
-    .withMessage("Comment text is required")
-    .isString()
-    .withMessage("Comment text must be a string"),
-  
+    .notEmpty().withMessage("Comment text is required")
+    .isString().withMessage("Comment text must be a string"),
+
+  // 2. controller
   async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { articleId } = req.params;
+    const { text }      = req.body;
+
     try {
-      // Check for validation errors
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-      }
-
-      const { articleId } = req.params;
-      const { text } = req.body;
-
-      // Ensure the article exists
+      // make sure the article exists
       const article = await Article.findById(articleId);
       if (!article) {
         return res.status(404).json({ message: "Article not found" });
       }
 
-      // Create a new comment
-      const comment = new Comment({
+      // create the comment
+      const comment = await Comment.create({
         text,
         article: articleId,
-        user: req.user.userId,
+        user:   req.user.userId   // comes from authMiddleware
       });
 
-      await comment.save();
-      res.status(201).json({ message: "Comment added successfully", comment });
-    } catch (error) {
-      res.status(500).json({ message: "Server error", error: error.message });
+      return res.status(201).json({ message: "Comment added", comment });
+    } catch (err) {
+      console.error("Error in addComment:", err);
+      return res.status(500).json({ message: "Server error" });
     }
-  },
+  }
 ];
 
 // Get all comments for a specific article
@@ -72,7 +70,7 @@ exports.deleteComment = async (req, res) => {
       return res.status(403).json({ message: "Access denied" });
     }
 
-    await comment.remove();
+    await comment.deleteOne();
     res.status(200).json({ message: "Comment deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });

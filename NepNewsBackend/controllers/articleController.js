@@ -3,6 +3,7 @@ const Article = require("../models/articleModel");
 const Log = require("../models/logModel");
 const cloudinary = require("../config/cloudinary");
 const uploads = require("../config/multer");
+const mongoose = require("mongoose");
 
 /**
  * Create draft article (for Author role only)
@@ -25,11 +26,11 @@ exports.createArticle = async (req, res) => {
       author: authorId,
       status: "draft",
     });
-    await article.save();
 
+    await article.save();
     res.status(201).json({ msg: "Draft article created", article });
   } catch (error) {
-    console.error(error);
+    console.error("Error in createArticle:", error);
     res.status(500).json({ msg: "Server error" });
   }
 };
@@ -41,8 +42,14 @@ exports.publishArticle = async (req, res) => {
   try {
     const { articleId } = req.params;
     const editorId = req.user.userId;
-    // Editor finds the draft
+
+    console.log("Article ID:", articleId); // Log the article ID
+    console.log("Editor ID:", editorId);   // Log the editor ID
+
+    // Find the draft article
     let article = await Article.findById(articleId);
+    console.log("Article found:", article); // Log the article object
+
     if (!article) {
       return res.status(404).json({ msg: "Article not found" });
     }
@@ -53,6 +60,7 @@ exports.publishArticle = async (req, res) => {
     article.publishDate = new Date();
 
     await article.save();
+    console.log("Article published successfully");
 
     // Log action
     const log = new Log({
@@ -61,10 +69,11 @@ exports.publishArticle = async (req, res) => {
       changedBy: editorId,
     });
     await log.save();
+    console.log("Log saved successfully");
 
     res.json({ msg: "Article published", article });
   } catch (error) {
-    console.error(error);
+    console.error("Error in publishArticle:", error);
     res.status(500).json({ msg: "Server error" });
   }
 };
@@ -253,19 +262,25 @@ exports.editDraftedArticle = async (req, res) => {
  */
 exports.archiveArticle = async (req, res) => {
   try {
-    const { search } = req.query;
+    const { search } = req.query; // Use req.body instead of req.query
 
     // Ensure the user is an admin
     if (req.user.role !== "admin") {
       return res.status(403).json({ msg: "Access denied" });
     }
 
-    // Search for the article by ID or title
+    // Validate the search parameter
+    if (!search || typeof search !== "string") {
+      return res.status(400).json({ msg: "Invalid search parameter" });
+    }
+
+    const query = mongoose.isValidObjectId(search)
+      ? { _id: search } // Search by ID if valid ObjectId
+      : { title: { $regex: search, $options: "i" } }; // Otherwise, search by title
+
+    // Search for the article
     const article = await Article.findOne({
-      $or: [
-        { _id: search }, // Search by ID
-        { title: { $regex: search, $options: "i" } }, // Search by title (case-insensitive)
-      ],
+      ...query,
       status: "published", // Only published articles can be archived
     });
 
@@ -289,7 +304,7 @@ exports.archiveArticle = async (req, res) => {
  */
 exports.deleteArticle = async (req, res) => {
   try {
-    const { search } = req.query;
+    const { search } = req.query; // Use req.body instead of req.query
 
     // Ensure the user is an admin
     if (req.user.role !== "admin") {
@@ -310,7 +325,7 @@ exports.deleteArticle = async (req, res) => {
     }
 
     // Delete the article
-    await article.remove();
+    await article.deleteOne();
 
     res.status(200).json({ msg: "Article deleted successfully" });
   } catch (error) {
