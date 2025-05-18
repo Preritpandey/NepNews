@@ -25,16 +25,20 @@ const zodiacSigns = [
 // Allowed periods
 const periods = ["daily", "weekly", "monthly"];
 
-// Helper to generate timeframe string
+// Helper to generate timeframe label and cache key suffix
 function getTimeframe(period) {
   const now = new Date();
 
   if (period === "daily") {
-    return `for today (${now.toLocaleDateString("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    })})`;
+    const dateStr = now.toISOString().slice(0, 10); // "YYYY-MM-DD"
+    return {
+      label: `for today (${now.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      })})`,
+      keySuffix: dateStr,
+    };
   }
 
   if (period === "weekly") {
@@ -43,22 +47,33 @@ function getTimeframe(period) {
     const end = new Date(start);
     end.setDate(start.getDate() + 6); // Saturday
 
+    const weekKey = start.toISOString().slice(0, 10); // e.g. 2025-05-12
     const options = { month: "long", day: "numeric" };
 
-    return `for the week of ${start.toLocaleDateString(
-      "en-US",
-      options
-    )} to ${end.toLocaleDateString("en-US", { ...options, year: "numeric" })}`;
+    return {
+      label: `for the week of ${start.toLocaleDateString(
+        "en-US",
+        options
+      )} to ${end.toLocaleDateString("en-US", {
+        ...options,
+        year: "numeric",
+      })}`,
+      keySuffix: weekKey,
+    };
   }
 
   if (period === "monthly") {
-    return `for the month of ${now.toLocaleDateString("en-US", {
-      month: "long",
-      year: "numeric",
-    })}`;
+    const monthKey = `${now.getFullYear()}-${now.getMonth() + 1}`; // e.g. 2025-5
+    return {
+      label: `for the month of ${now.toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric",
+      })}`,
+      keySuffix: monthKey,
+    };
   }
 
-  return "";
+  return { label: "", keySuffix: "" };
 }
 
 // Main function to get horoscope — on-demand generate + cache
@@ -71,10 +86,13 @@ async function getHoroscope(req, res) {
     return res.status(400).json({ error: "Invalid zodiac sign." });
   }
   if (!periods.includes(period)) {
-    return res.status(400).json({ error: "Invalid period. Use daily, weekly or monthly." });
+    return res
+      .status(400)
+      .json({ error: "Invalid period. Use daily, weekly or monthly." });
   }
 
-  const cacheKey = `${sign}_${period}`;
+  const { label: timeframe, keySuffix } = getTimeframe(period);
+  const cacheKey = `${sign}_${period}_${keySuffix}`;
 
   // Return from cache if exists
   if (cache.has(cacheKey)) {
@@ -83,7 +101,6 @@ async function getHoroscope(req, res) {
   }
 
   // Generate on-demand if not cached
-  const timeframe = getTimeframe(period);
   const prompt = `Give a ${period} horoscope ${timeframe} for the zodiac sign ${sign}, covering love, career, mood, and health. Include a lucky color and number.`;
 
   try {
