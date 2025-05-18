@@ -7,6 +7,7 @@ const uploads = require("../config/multer");
 /**
  * Create draft article (Author only)
  */
+//valid category issue fixed
 const validCategories = ["education", "politics", "sports", "health", "entertainment", "other"];
 exports.createArticle = async (req, res) => {
   try {
