@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../core/api_constants.dart';
 import '../models/horoscope_model.dart';
 
 class HoroscopeService {
-  static const String baseUrl = 'http://192.168.119.148:8082/api/horoscope';
+  static const String baseUrl = 'http://192.168.1.105:8082/api/horoscope';
 
   Future<HoroscopeModel> getDailyHoroscope(String sign) async {
     try {

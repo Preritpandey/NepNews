@@ -1,4 +1,7 @@
-String ipAddress = "192.168.119.148";
+String ipAddress = "192.168.1.105";
+
+// const String ipAddress = "192.168.172.148"; //phone
+
 // String ipAddress = "localhost";
 String baseUrl = 'http://$ipAddress:8080';
 String signUpUrl = "$baseUrl/api/auth/register";

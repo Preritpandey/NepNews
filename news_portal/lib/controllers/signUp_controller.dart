@@ -51,7 +51,7 @@ class SignupController extends GetxController {
 
       final data = jsonDecode(response.body);
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         Get.snackbar("Success", data["msg"] ?? "User registered",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.green,

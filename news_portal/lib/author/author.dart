@@ -28,9 +28,8 @@ class AuthorNewsPageState extends State<AuthorNewsPage> {
       appBar: AppBar(
         actions: [
           TextButton(
-            onPressed: () => Get.to(const Home()),
-            child: const AppText(text: "Readers mode")
-          )
+              onPressed: () => Get.to(const Home()),
+              child: const AppText(text: "Readers mode"))
         ],
         leading: IconButton(
           onPressed: () {
@@ -47,73 +46,66 @@ class AuthorNewsPageState extends State<AuthorNewsPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-              
+
               // Title Field
               TextField(
                 controller: newsPostController.titleController,
                 decoration: const InputDecoration(
-                  labelText: "News Title", 
-                  border: OutlineInputBorder()
-                ),
+                    labelText: "News Title", border: OutlineInputBorder()),
               ),
               const SizedBox(height: 16),
-              
+
               // Content Field
               TextField(
                 controller: newsPostController.contentController,
                 maxLines: 5,
                 decoration: const InputDecoration(
-                  labelText: "News Content",
-                  border: OutlineInputBorder()
-                ),
+                    labelText: "News Content", border: OutlineInputBorder()),
               ),
               const SizedBox(height: 16),
-              
+
               // Category Field
               TextField(
                 controller: newsPostController.categoryController,
                 decoration: const InputDecoration(
-                  labelText: "Category", 
-                  border: OutlineInputBorder()
-                ),
+                    labelText: "Category", border: OutlineInputBorder()),
               ),
               const SizedBox(height: 16),
-              
+
               // Keywords Field
               TextField(
                 controller: newsPostController.keywordsController,
                 decoration: const InputDecoration(
-                  labelText: "Keywords (e.g., AI, Technology)", 
-                  border: OutlineInputBorder()
-                ),
+                    labelText: "Keywords (e.g., AI, Technology)",
+                    border: OutlineInputBorder()),
               ),
               const SizedBox(height: 24),
-              
+
               // Image Upload Section
               Obx(() => Container(
-                width: double.infinity,
-                height: 200,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: newsPostController.selectedImage.value != null
-                    ? Image.file(
-                        newsPostController.selectedImage.value!,
-                        fit: BoxFit.cover,
-                      )
-                    : const Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.image, size: 50, color: Colors.grey),
-                            Text("No image selected")
-                          ],
-                        ),
-                      ),
-              )),
+                    width: double.infinity,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: newsPostController.selectedImage.value != null
+                        ? Image.file(
+                            newsPostController.selectedImage.value!,
+                            fit: BoxFit.cover,
+                          )
+                        : const Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.image, size: 50, color: Colors.grey),
+                                Text("No image selected")
+                              ],
+                            ),
+                          ),
+                  )),
               const SizedBox(height: 16),
-              
+
               // Image Upload Button
               SizedBox(
                 width: double.infinity,
@@ -127,39 +119,39 @@ class AuthorNewsPageState extends State<AuthorNewsPage> {
                 ),
               ),
               const SizedBox(height: 24),
-              
+
               // Publish Button
               Obx(() => SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: newsPostController.isLoading.value
-                      ? null
-                      : () => newsPostController.postArticle(),
-                  // ignore: sort_child_properties_last
-                  child: newsPostController.isLoading.value
-                      ?  const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                             Text("Publishing..."),
-                          ],
-                        )
-                      : const Text("Publish News"),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    backgroundColor: Theme.of(context).primaryColor,
-                    foregroundColor: Colors.white,
-                  ),
-                ),
-              )),
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: newsPostController.isLoading.value
+                          ? null
+                          : () => newsPostController.postArticle(),
+                      // ignore: sort_child_properties_last
+                      child: newsPostController.isLoading.value
+                          ? const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                                Text("Publishing..."),
+                              ],
+                            )
+                          : const Text("Publish News"),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        backgroundColor: Theme.of(context).primaryColor,
+                        foregroundColor: Colors.white,
+                      ),
+                    ),
+                  )),
             ],
           ),
         ),

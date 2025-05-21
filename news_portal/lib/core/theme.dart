@@ -35,7 +35,7 @@ class AppTheme {
       onSurface: AppColors.lightText,
     ),
     scaffoldBackgroundColor: AppColors.lightBackground,
-    appBarTheme:const AppBarTheme(
+    appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.lightBackground,
       elevation: 0,
       iconTheme: IconThemeData(color: AppColors.lightText),
@@ -45,7 +45,7 @@ class AppTheme {
         fontWeight: FontWeight.bold,
       ),
     ),
-    textTheme:const TextTheme(
+    textTheme: const TextTheme(
       bodyLarge: TextStyle(color: AppColors.lightText),
       bodyMedium: TextStyle(color: AppColors.lightText),
       titleMedium: TextStyle(color: AppColors.lightSecondaryText),
@@ -71,7 +71,7 @@ class AppTheme {
       onSurface: AppColors.darkText,
     ),
     scaffoldBackgroundColor: AppColors.darkNavBar,
-    appBarTheme:const AppBarTheme(
+    appBarTheme: const AppBarTheme(
       color: AppColors.darkNavBar,
       // backgroundColor: AppColors.darkNavBar,
       elevation: 0,

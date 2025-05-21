@@ -4,11 +4,11 @@ import '../../controllers/get_article_controller.dart';
 import '../../models/article_model.dart';
 import '../Home/article_detail_page.dart';
 
-
 class BookmarkedArticlesPage extends StatelessWidget {
-  final GetArticleController articleController = Get.find<GetArticleController>();
+  final GetArticleController articleController =
+      Get.find<GetArticleController>();
 
-   BookmarkedArticlesPage({super.key});
+  BookmarkedArticlesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +17,7 @@ class BookmarkedArticlesPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Bookmarked Articles'),
         actions: [
           IconButton(
@@ -88,7 +89,8 @@ class BookmarkedArticlesPage extends StatelessWidget {
     );
   }
 
-  Widget _buildArticleCard(BuildContext context, ArticleModel article, ColorScheme colorScheme) {
+  Widget _buildArticleCard(
+      BuildContext context, ArticleModel article, ColorScheme colorScheme) {
     String formattedDate = '';
     if (article.publishDate != null) {
       try {
@@ -124,7 +126,8 @@ class BookmarkedArticlesPage extends StatelessWidget {
                     height: 150,
                     color: Colors.grey[800],
                     child: const Center(
-                      child: Icon(Icons.image_not_supported, size: 50, color: Colors.grey),
+                      child: Icon(Icons.image_not_supported,
+                          size: 50, color: Colors.grey),
                     ),
                   );
                 },
@@ -138,9 +141,11 @@ class BookmarkedArticlesPage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      if (article.category != null && article.category!.isNotEmpty)
+                      if (article.category != null &&
+                          article.category!.isNotEmpty)
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 4),
                           decoration: BoxDecoration(
                             color: colorScheme.primary.withOpacity(0.15),
                             borderRadius: BorderRadius.circular(4),

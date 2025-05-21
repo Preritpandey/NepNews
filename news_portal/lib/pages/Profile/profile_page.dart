@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:news_portal/author/author.dart';
 import 'package:news_portal/controllers/auth_controller.dart';
 import 'package:news_portal/controllers/theme_controller.dart';
+import 'package:news_portal/editor/editor_page.dart';
 import 'package:news_portal/pages/Home/home.dart';
 import 'package:news_portal/pages/auth/login_page.dart';
+
+import '../Home/home_page.dart';
 
 // ignore: must_be_immutable
 class ProfilePage extends StatelessWidget {
@@ -27,11 +31,6 @@ class ProfilePage extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        leading: IconButton(
-            onPressed: () {
-              Get.to(() => const Home());
-            },
-            icon: const Icon(Icons.arrow_back_ios)),
         elevation: 0,
       ),
       body: ListView(
@@ -64,7 +63,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  '${_authController.getUserName()}',
+                  '${_authController.getUserName() == null ? "name" : _authController.getUserName()}',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -82,7 +81,6 @@ class ProfilePage extends StatelessWidget {
           ),
           const SizedBox(height: 24),
 
-          // Settings Section
           Text(
             'Settings',
             style: TextStyle(
@@ -120,9 +118,10 @@ class ProfilePage extends StatelessWidget {
                   ),
                 )),
           ),
-
-          // Other Settings Options
-          const SizedBox(height: 8),
+          Divider(
+            height: 1,
+            color: theme.colorScheme.onSurface.withOpacity(0.5),
+          ),
           Container(
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
@@ -130,67 +129,103 @@ class ProfilePage extends StatelessWidget {
             ),
             child: Column(
               children: [
-                ListTile(
-                  leading: Icon(Icons.login, color: theme.colorScheme.primary),
-                  title: GestureDetector(
-                    onTap: () {
-                      Get.to(() => LoginPage());
-                    },
-                    child: Text(
+                GestureDetector(
+                  onTap: () {
+                    Get.to(() => LoginPage());
+                  },
+                  child: ListTile(
+                    leading:
+                        Icon(Icons.login, color: theme.colorScheme.primary),
+                    title: Text(
                       'Login',
                       style: TextStyle(
                         color: theme.colorScheme.onSurface,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
+                    trailing: Icon(Icons.chevron_right,
+                        color: theme.colorScheme.onSurface.withOpacity(0.5)),
                   ),
-                  trailing: Icon(Icons.chevron_right,
-                      color: theme.colorScheme.onSurface.withOpacity(0.5)),
                 ),
-                const Divider(height: 1),
-                // ListTile(
-                //   leading: Icon(Icons.language_outlined,
-                //       color: theme.colorScheme.primary),
-                //   title: Text(
-                //     'Language',
-                //     style: TextStyle(
-                //       color: theme.colorScheme.onSurface,
-                //       fontWeight: FontWeight.w500,
-                //     ),
-                //   ),
-                //   trailing: Icon(Icons.chevron_right,
-                //       color: theme.colorScheme.onSurface.withOpacity(0.5)),
-                // ),
-                const Divider(height: 1),
-                // ListTile(
-                //   leading: Icon(Icons.help_outline,
-                //       color: theme.colorScheme.primary),
-                //   title: Text(
-                //     'Help & Support',
-                //     style: TextStyle(
-                //       color: theme.colorScheme.onSurface,
-                //       fontWeight: FontWeight.w500,
-                //     ),
-                //   ),
-                //   trailing: Icon(Icons.chevron_right,
-                //       color: theme.colorScheme.onSurface.withOpacity(0.5)),
-                // ),
-                ListTile(
-                  leading: Icon(Icons.help_outline,
-                      color: theme.colorScheme.primary),
-                  title: Text(
-                    'Logout',
-                    style: TextStyle(
-                      color: theme.colorScheme.onSurface,
-                      fontWeight: FontWeight.w500,
+                Divider(
+                  height: 1,
+                  color: theme.colorScheme.onSurface.withOpacity(0.5),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    _authController.logout();
+                    Get.offAll(() => HomePage());
+                  },
+                  child: ListTile(
+                    leading: Icon(Icons.help_outline,
+                        color: theme.colorScheme.primary),
+                    title: Text(
+                      'Logout',
+                      style: TextStyle(
+                        color: theme.colorScheme.onSurface,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.logout_outlined),
+                      color: theme.colorScheme.onSurface.withOpacity(0.5),
+                      onPressed: () {
+                        _authController.logout();
+                      },
                     ),
                   ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.logout_outlined),
-                    color: theme.colorScheme.onSurface.withOpacity(0.5),
-                    onPressed: () {
-                      _authController.logout();
-                    },
+                ),
+                Divider(
+                  height: 1,
+                  color: theme.colorScheme.onSurface.withOpacity(0.5),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    if (_authController.getUserRole() == "editor") {
+                      Get.to(() => DraftArticlesScreen());
+                    } else {
+                      Get.snackbar("Access Denied",
+                          "You do not have access to this page");
+                    }
+                  },
+                  child: ListTile(
+                    leading: Icon(Icons.edit, color: theme.colorScheme.primary),
+                    title: Text(
+                      'Editor Dashboard',
+                      style: TextStyle(
+                        color: theme.colorScheme.onSurface,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    trailing: Icon(Icons.chevron_right,
+                        color: theme.colorScheme.onSurface.withOpacity(0.5)),
+                  ),
+                ),
+                Divider(
+                  height: 1,
+                  color: theme.colorScheme.onSurface.withOpacity(0.5),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    if (_authController.getUserRole() == "author") {
+                      Get.to(() => const AuthorNewsPage());
+                    } else {
+                      Get.snackbar("Access Denied",
+                          "You do not have access to this page");
+                    }
+                  },
+                  child: ListTile(
+                    leading:
+                        Icon(Icons.person, color: theme.colorScheme.primary),
+                    title: Text(
+                      'Author Dashboard',
+                      style: TextStyle(
+                        color: theme.colorScheme.onSurface,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    trailing: Icon(Icons.chevron_right,
+                        color: theme.colorScheme.onSurface.withOpacity(0.5)),
                   ),
                 ),
               ],

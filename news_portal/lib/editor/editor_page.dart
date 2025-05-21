@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:news_portal/pages/Home/home.dart';
+import 'package:news_portal/resources/app_text.dart';
 import '../controllers/draft_article_controller.dart';
 import '../models/draft_model.dart';
 
@@ -13,15 +15,21 @@ class DraftArticlesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.refresh),
+          onPressed: () => draftController.fetchDraftArticles(),
+        ),
+        automaticallyImplyLeading: false,
         title: const Text('Pending Articles',
             style: TextStyle(fontWeight: FontWeight.bold)),
         elevation: 0,
         centerTitle: true,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () => draftController.fetchDraftArticles(),
-          ),
+          TextButton(
+              onPressed: () {
+                Get.to(const Home());
+              },
+              child: const AppText(text: "Readers mode"))
         ],
       ),
       body: Obx(() {

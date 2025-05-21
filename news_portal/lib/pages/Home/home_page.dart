@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:news_portal/pages/Home/category_page.dart';
 import 'package:news_portal/pages/Horoscope/horoscope_grid.dart';
 import 'package:news_portal/widgets/article_search_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -34,12 +35,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: theme.colorScheme.background,
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            menuController.toggleMenu();
-          },
-          icon: Icon(Icons.menu, color: theme.colorScheme.onBackground),
-        ),
+        automaticallyImplyLeading: false,
         actions: [
           ArticleSearchWidget(),
         ],
@@ -62,7 +58,9 @@ class HomePage extends StatelessWidget {
                   ListTile(
                     leading: const TextHeading(text: 'Breaking News'),
                     trailing: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Get.to(() => CategoryPage());
+                      },
                       child: AppText(
                         text: 'View all',
                         color: theme.colorScheme.primary,
@@ -80,7 +78,7 @@ class HomePage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const DiscoverPage()),
+                              builder: (context) => CategoryPage()),
                         );
                       },
                       child: AppText(
@@ -90,44 +88,33 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: screenHeight * 0.6,
+                    height: screenHeight * 0.7,
                     child: TrendingNewsCard(),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 30),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 30),
                     child: SizedBox(
                       width: double.maxFinite,
-                      height: 30,
-                      child: TextButton.icon(
+                      child: ElevatedButton.icon(
                         onPressed: () {
                           Get.to(() => const HoroscopeGridScreen());
                         },
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 12),
-                          backgroundColor: Colors.deepPurple.shade50,
-                          foregroundColor: Colors.deepPurple,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          elevation: 1,
-                          shadowColor: Colors.deepPurple.shade100,
-                        ),
                         icon: SizedBox(
-                          height: 24,
-                          width: 24,
+                          height: 50,
+                          width: 50,
                           child: Image.asset('assets/horoscope.png'),
                         ),
                         label: const Text(
                           "See Horoscope",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 10,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_portal/pages/Home/article_detail_page.dart';
+import 'package:news_portal/pages/Home/home.dart';
 
 import '../../controllers/get_article_controller.dart';
 import '../../models/article_model.dart';
@@ -18,7 +19,7 @@ class CategoryPage extends StatelessWidget {
   final GetArticleController articleController =
       Get.put(GetArticleController());
 
-   CategoryPage({super.key});
+  CategoryPage({super.key});
 
   // Get unique categories from articles
   List<String> getCategories() {
@@ -35,6 +36,10 @@ class CategoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+            onPressed: () => Get.to(const Home()),
+            icon: Icon(Icons.arrow_back_ios)),
         elevation: 0,
         actions: [
           IconButton(
@@ -76,12 +81,7 @@ class CategoryPage extends StatelessWidget {
           children: [
             Container(
               decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.grey[300]!,
-                    width: 1.0,
-                  ),
-                ),
+                color: Theme.of(context).appBarTheme.backgroundColor,
               ),
               child: CategoryNavBar(
                 categories: categories,
@@ -145,35 +145,59 @@ class CategoryNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    // Get the primary and text colors from the theme
+    final primaryColor = theme.colorScheme.primary;
+    final textColor =
+        theme.textTheme.bodyLarge?.color ?? theme.colorScheme.onBackground;
+    final isDarkMode = theme.brightness == Brightness.dark;
+    final surfaceColor = theme.colorScheme.surface;
+
     return SizedBox(
       height: 48,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         itemCount: categories.length,
         itemBuilder: (context, index) {
           return Obx(() {
             final category = categories[index];
             final isSelected = controller.selectedCategory.value == category;
+
+            // Define colors based on theme and selection state
+            final backgroundColor = isSelected
+                ? (isDarkMode
+                    ? surfaceColor
+                    : theme.colorScheme.surface.withOpacity(0.9))
+                : (isDarkMode ? Colors.transparent : Colors.transparent);
+
+            final borderColor = isSelected ? primaryColor : Colors.transparent;
+
+            final textStyle = TextStyle(
+              color: isSelected ? primaryColor : textColor,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            );
+
             return GestureDetector(
               onTap: () => controller.changeCategory(category),
               child: Container(
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
+                margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
                 decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: isSelected ? Colors.black : Colors.transparent,
-                      width: 2.0,
-                    ),
-                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  color: backgroundColor,
+                  border: isSelected
+                      ? Border.all(color: primaryColor, width: 1.5)
+                      : null,
                 ),
                 child: Text(
                   category,
                   style: TextStyle(
-                    color: isSelected ? Colors.black : Colors.grey,
+                    color: isSelected ? primaryColor : textColor,
                     fontWeight:
                         isSelected ? FontWeight.bold : FontWeight.normal,
-                    fontSize: 16,
+                    fontSize: 14,
                   ),
                 ),
               ),
@@ -231,9 +255,16 @@ class ArticleCard extends StatelessWidget {
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
                     height: 120,
-                    color: Colors.grey[300],
-                    child: const Center(
-                      child: Icon(Icons.image_not_supported, size: 40),
+                    color: Theme.of(context).colorScheme.surface,
+                    child: Center(
+                      child: Icon(
+                        Icons.image_not_supported,
+                        size: 40,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withOpacity(0.6),
+                      ),
                     ),
                   );
                 },
@@ -241,13 +272,14 @@ class ArticleCard extends StatelessWidget {
                   if (loadingProgress == null) return child;
                   return Container(
                     height: 120,
-                    color: Colors.grey[200],
+                    color: Theme.of(context).colorScheme.surface,
                     child: Center(
                       child: CircularProgressIndicator(
                         value: loadingProgress.expectedTotalBytes != null
                             ? loadingProgress.cumulativeBytesLoaded /
                                 loadingProgress.expectedTotalBytes!
                             : null,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
                   );
@@ -265,13 +297,16 @@ class ArticleCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Colors.blue.withOpacity(0.1),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withOpacity(0.1),
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
                         article.category!,
-                        style: const TextStyle(
-                          color: Colors.blue,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
                         ),
@@ -282,9 +317,10 @@ class ArticleCard extends StatelessWidget {
                   // Article title
                   Text(
                     article.title ?? 'Untitled Article',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -296,7 +332,7 @@ class ArticleCard extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        color: Colors.grey[700],
+                        color: Theme.of(context).textTheme.titleMedium?.color,
                         fontSize: 14,
                       ),
                     ),
@@ -310,9 +346,11 @@ class ArticleCard extends StatelessWidget {
                       if (article.author != null)
                         Text(
                           'By ${article.author!.name ?? 'Unknown'}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 12,
+                            color:
+                                Theme.of(context).textTheme.bodyMedium?.color,
                           ),
                         ),
 
@@ -321,7 +359,8 @@ class ArticleCard extends StatelessWidget {
                         Text(
                           formattedDate,
                           style: TextStyle(
-                            color: Colors.grey[600],
+                            color:
+                                Theme.of(context).textTheme.titleMedium?.color,
                             fontSize: 12,
                           ),
                         ),
@@ -339,8 +378,16 @@ class ArticleCard extends StatelessWidget {
                             .map((keyword) => Chip(
                                   label: Text(
                                     keyword,
-                                    style: const TextStyle(fontSize: 10),
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.white
+                                          : Colors.black87,
+                                    ),
                                   ),
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.surface,
                                   materialTapTargetSize:
                                       MaterialTapTargetSize.shrinkWrap,
                                   padding: EdgeInsets.zero,
