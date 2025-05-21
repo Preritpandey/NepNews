@@ -14,7 +14,14 @@ const adRoutes = require("./routes/adRoutes");
 const userRoutes = require("./routes/userRoutes");
 const horoscopeRoutes = require("./routes/horoscopeRoutes");
 
+
+/* ---------- GLOBAL MIDDLEWARE (runs before any routes) ---------- */
+//yo global middleware chai json lai parse garna ko lagi error aai rako thiyo so banaako.
 const app = express();
+app.use(cors());
+app.use(express.json());                       // <-- must come BEFORE routes otherwise json parsing from body shows error dont know why
+app.use(express.urlencoded({ extended: true })); // if you ever accept form data
+
 
 app.use(
   session({

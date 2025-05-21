@@ -11,11 +11,14 @@ const uploads = require("../config/multer");
 const validCategories = ["education", "politics", "sports", "health", "entertainment", "other"];
 exports.createArticle = async (req, res) => {
   try {
-    // Assume `req.user` is attached by auth middleware with userId, role
+
+
+    //`req.user` is attached by auth middleware with userId, role
     const { title, content, category, keywords } = req.body;
     if (!validCategories.includes(category)) {
       return res.status(400).json({ msg: "Invalid category name" });
     }
+
     const authorId = req.user.userId;
     // ------ Image upload handled by Ayusha Karki ----- //
     const result = await cloudinary.uploader.upload(req.file.path);
