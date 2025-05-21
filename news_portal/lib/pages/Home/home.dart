@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_portal/pages/Home/category_page.dart';
+import 'package:news_portal/pages/Horoscope/horoscope_grid.dart';
 import 'package:news_portal/pages/bookmark/bookmark_page.dart';
 
 import '../../core/ScreenSizeConfig.dart';

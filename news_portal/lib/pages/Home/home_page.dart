@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:news_portal/pages/Horoscope/horoscope_grid.dart';
 import 'package:news_portal/widgets/article_search_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../controllers/hamburger_menu_controller.dart';
@@ -91,6 +92,41 @@ class HomePage extends StatelessWidget {
                   SizedBox(
                     height: screenHeight * 0.6,
                     child: TrendingNewsCard(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 30),
+                    child: SizedBox(
+                      width: double.maxFinite,
+                      height: 30,
+                      child: TextButton.icon(
+                        onPressed: () {
+                          Get.to(() => const HoroscopeGridScreen());
+                        },
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 12),
+                          backgroundColor: Colors.deepPurple.shade50,
+                          foregroundColor: Colors.deepPurple,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 1,
+                          shadowColor: Colors.deepPurple.shade100,
+                        ),
+                        icon: SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: Image.asset('assets/horoscope.png'),
+                        ),
+                        label: const Text(
+                          "See Horoscope",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),

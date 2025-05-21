@@ -148,33 +148,33 @@ class ProfilePage extends StatelessWidget {
                       color: theme.colorScheme.onSurface.withOpacity(0.5)),
                 ),
                 const Divider(height: 1),
-                ListTile(
-                  leading: Icon(Icons.language_outlined,
-                      color: theme.colorScheme.primary),
-                  title: Text(
-                    'Language',
-                    style: TextStyle(
-                      color: theme.colorScheme.onSurface,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  trailing: Icon(Icons.chevron_right,
-                      color: theme.colorScheme.onSurface.withOpacity(0.5)),
-                ),
+                // ListTile(
+                //   leading: Icon(Icons.language_outlined,
+                //       color: theme.colorScheme.primary),
+                //   title: Text(
+                //     'Language',
+                //     style: TextStyle(
+                //       color: theme.colorScheme.onSurface,
+                //       fontWeight: FontWeight.w500,
+                //     ),
+                //   ),
+                //   trailing: Icon(Icons.chevron_right,
+                //       color: theme.colorScheme.onSurface.withOpacity(0.5)),
+                // ),
                 const Divider(height: 1),
-                ListTile(
-                  leading: Icon(Icons.help_outline,
-                      color: theme.colorScheme.primary),
-                  title: Text(
-                    'Help & Support',
-                    style: TextStyle(
-                      color: theme.colorScheme.onSurface,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  trailing: Icon(Icons.chevron_right,
-                      color: theme.colorScheme.onSurface.withOpacity(0.5)),
-                ),
+                // ListTile(
+                //   leading: Icon(Icons.help_outline,
+                //       color: theme.colorScheme.primary),
+                //   title: Text(
+                //     'Help & Support',
+                //     style: TextStyle(
+                //       color: theme.colorScheme.onSurface,
+                //       fontWeight: FontWeight.w500,
+                //     ),
+                //   ),
+                //   trailing: Icon(Icons.chevron_right,
+                //       color: theme.colorScheme.onSurface.withOpacity(0.5)),
+                // ),
                 ListTile(
                   leading: Icon(Icons.help_outline,
                       color: theme.colorScheme.primary),

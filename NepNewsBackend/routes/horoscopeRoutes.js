@@ -1,10 +1,12 @@
-// routes.js or routes/horoscopeRoutes.js
 const express = require("express");
+const router = express.Router();
 const { getHoroscope } = require("../controllers/horoscopeController");
 
-const router = express.Router();
+router.get("/test", (req, res) => {
+  res.send("Horoscope test route is working");
+});
 
-// Define the route for generating horoscopes
-router.get("/horoscope/:sign/:period", getHoroscope);
+// Use the controller for real horoscope fetching
+router.get("/:sign/:period", getHoroscope);
 
 module.exports = router;

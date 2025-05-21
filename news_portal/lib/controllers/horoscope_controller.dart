@@ -1,4 +1,3 @@
-// lib/controllers/horoscope_controller.dart
 import 'package:get/get.dart';
 import 'package:news_portal/controllers/horoscope_service.dart';
 import '../models/horoscope_model.dart';

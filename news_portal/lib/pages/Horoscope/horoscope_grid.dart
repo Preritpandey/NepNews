@@ -1,4 +1,3 @@
-// lib/screens/horoscope_grid_screen.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_portal/pages/Horoscope/horoscope_detail_screen.dart';
@@ -12,82 +11,91 @@ class HoroscopeGridScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Daily Horoscope'),
-        backgroundColor: bluishGreen,
+        backgroundColor: transparent,
         elevation: 0,
       ),
-      backgroundColor: appBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
-              padding: EdgeInsets.only(bottom: 10),
-              child: AppText(
-                text: 'Select your zodiac sign',
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+            const AppText(
+              text: 'Select your zodiac sign',
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
             Expanded(
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 0.85,
-                  crossAxisSpacing: 20,
-                  mainAxisSpacing: 20,
-                ),
+              child: ListView.separated(
                 itemCount: zodiacSigns.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 16),
                 itemBuilder: (context, index) {
-                  return _buildZodiacCard(context, zodiacSigns[index]);
+                  final zodiac = zodiacSigns[index];
+                  return GestureDetector(
+                    onTap: () {
+                      Get.to(() => HoroscopeDetailScreen(sign: zodiac['name']));
+                    },
+                    child: Card(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      color: isDark ? Colors.grey[900] : Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 16, horizontal: 20),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 28,
+                              backgroundColor: isDark
+                                  ? bluishGreen.withOpacity(0.2)
+                                  : bluishGreen.withOpacity(0.1),
+                              child: Text(
+                                zodiac['icon'],
+                                style: const TextStyle(fontSize: 30),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  AppText(
+                                    text: zodiac['name'],
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.color,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  AppText(
+                                    text: zodiac['date'],
+                                    fontSize: 14,
+                                    color: Colors.amber[700],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Icon(Icons.arrow_forward_ios_rounded,
+                                size: 18, color: Colors.grey),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
                 },
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildZodiacCard(BuildContext context, Map<String, dynamic> zodiac) {
-    return GestureDetector(
-      onTap: () {
-        Get.to(() => HoroscopeDetailScreen(sign: zodiac['name']));
-      },
-      child: Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                zodiac['icon'],
-                style: const TextStyle(fontSize: 40),
-              ),
-              const SizedBox(height: 20),
-              AppText(
-                text: zodiac['name'],
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 4),
-              AppText(
-                text: zodiac['date'],
-                fontSize: 12,
-                color: Colors.yellow,
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
         ),
       ),
     );
