@@ -7,10 +7,16 @@ const articleSchema = new mongoose.Schema(
     content: { type: String, required: true },
     category: {
       type: String,
-      enum: ["Technology", "Health", "Education", "Entertainment", "Sports"], // Limit to 5 categories
-      required: true, // Ensure a category is selected
+      enum: [
+        "education",
+        "politics",
+        "sports",
+        "health",
+        "entertainment",
+        "other",
+      ],
+      required: [true, "Ad category is required"],
     },
-    keywords: [{ type: String }], // For easy filtering
     avatar: {
       type: String,
       required: [true, "Ad image URL is required"],
@@ -19,10 +25,11 @@ const articleSchema = new mongoose.Schema(
       type: String,
       required: [true, "Ad image URL is required"],
     },
+    keywords: [{ type: String }], // For easy filtering
     publishDate: { type: Date },
     status: {
       type: String,
-      enum: ["draft", "published","archived"],
+      enum: ["draft", "published"],
       default: "draft",
     },
     author: {

@@ -33,6 +33,7 @@ const adSchema = new mongoose.Schema(
         "politics",
         "sports",
         "health",
+        "entertainment",
         "other",
       ],
       required: [true, "Ad category is required"],
@@ -41,5 +42,5 @@ const adSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-adSchema.index({ title: 1}, { unique: true });
+adSchema.index({ title: 1 }, { unique: true });
 module.exports = mongoose.model("Ad", adSchema);

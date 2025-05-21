@@ -24,7 +24,7 @@ class CategoryMenu extends StatelessWidget {
 
     return Obx(() {
       return AnimatedPositioned(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         left: menuController.isMenuOpen.value ? 0 : -270,
         top: 0,
         bottom: 0,
@@ -32,7 +32,7 @@ class CategoryMenu extends StatelessWidget {
           width: 270,
           child: Material(
             elevation: 16,
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topRight: Radius.circular(16),
               bottomRight: Radius.circular(16),
             ),
@@ -43,7 +43,7 @@ class CategoryMenu extends StatelessWidget {
                 DrawerHeader(
                   decoration: BoxDecoration(
                     color: theme.colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(16),
                     ),
                   ),
@@ -118,12 +118,12 @@ class _AnimatedCategoryItemState extends State<AnimatedCategoryItem>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return AnimatedOpacity(
-      duration: Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 400),
       opacity: _visible ? 1 : 0,
       curve: Curves.easeOut,
       child: AnimatedSlide(
-        duration: Duration(milliseconds: 400),
-        offset: _visible ? Offset(0, 0) : Offset(-0.3, 0),
+        duration: const Duration(milliseconds: 400),
+        offset: _visible ? const Offset(0, 0) : const Offset(-0.3, 0),
         curve: Curves.easeOut,
         child: ListTile(
           leading: Icon(widget.icon, color: theme.iconTheme.color),
@@ -133,7 +133,7 @@ class _AnimatedCategoryItemState extends State<AnimatedCategoryItem>
                 ?.copyWith(fontWeight: FontWeight.w500),
           ),
           onTap: widget.onTap,
-          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           hoverColor: theme.colorScheme.primary.withOpacity(0.05),
         ),

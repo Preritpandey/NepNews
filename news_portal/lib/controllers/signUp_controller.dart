@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:news_portal/core/api_constants.dart';
 
 class SignupController extends GetxController {
   final nameController = TextEditingController();
@@ -11,9 +12,6 @@ class SignupController extends GetxController {
   final isLoading = false.obs;
   final emailError = RxnString();
   final obscurePassword = true.obs;
-
-  final String signupUrl = "http://localhost:8080/api/auth/register";
-  // final String signupUrl = "http://192.168.1.85:8080/api/auth/register";
 
   void registerUser() async {
     final name = nameController.text.trim();
@@ -41,7 +39,7 @@ class SignupController extends GetxController {
 
     try {
       final response = await http.post(
-        Uri.parse(signupUrl),
+        Uri.parse(signUpUrl),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
           "name": name,

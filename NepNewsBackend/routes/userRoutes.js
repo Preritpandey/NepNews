@@ -1,22 +1,16 @@
+// routes/userRoutes.js
 const express = require("express");
 const router = express.Router();
 const auth = require("../middlewares/authMiddleware");
-const { getAllUsers, updateUserRole, deleteUser, createUser } = require("../controllers/userController");
+const {
+  getAllUsers,
+  updateUserRole,
+} = require("../controllers/userController");
 
-// Ensure the functions are correctly imported
-console.log("auth type:", typeof auth);  // Should print "function"
-console.log("getAllUsers type:", typeof getAllUsers);  // Should print "function"
-
-// Get all users (Admin only)
+// Get all users (admin only)
 router.get("/", auth, getAllUsers);
 
-// Update user role (Admin only)
-router.put("/:email/role", auth, updateUserRole);
-
-// Delete a user (Admin only)
-router.delete("/:email", auth, deleteUser);
-
-// Create a new user (Admin only)
-router.post("/", auth, createUser);
+// Update user role (admin only)
+router.put("/:userId/role", auth, updateUserRole);
 
 module.exports = router;

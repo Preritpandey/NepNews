@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:news_portal/core/api_constants.dart';
 import 'dart:convert';
 
 import '../models/ads_data_model.dart';
@@ -10,10 +11,6 @@ class AdController extends GetxController {
   final RxBool isLoading = false.obs;
   final RxBool hasError = false.obs;
   final RxString errorMessage = ''.obs;
-
-  // API base URL
-  final String baseUrl = 'http://localhost:8080';
-  // final String baseUrl = 'http://192.168.1.85:8080';
 
   @override
   void onInit() {
@@ -28,7 +25,7 @@ class AdController extends GetxController {
       hasError.value = false;
       errorMessage.value = '';
 
-      final response = await http.get(Uri.parse('$baseUrl/ad'));
+      final response = await http.get(Uri.parse(getAdsUrl));
 
       if (response.statusCode == 200) {
         final List<dynamic> jsonData = json.decode(response.body);

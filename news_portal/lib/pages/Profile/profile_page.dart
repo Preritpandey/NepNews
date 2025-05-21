@@ -29,7 +29,7 @@ class ProfilePage extends StatelessWidget {
         ),
         leading: IconButton(
             onPressed: () {
-              Get.to(const Home());
+              Get.to(() => const Home());
             },
             icon: const Icon(Icons.arrow_back_ios)),
         elevation: 0,
@@ -64,7 +64,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Prit Pandey',
+                  '${_authController.getUserName()}',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -72,7 +72,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'pandeyprerit45@gmail.com',
+                  '${_authController.getUserEmail() == null ? "email" : _authController.getUserEmail()}',
                   style: TextStyle(
                     color: theme.colorScheme.onSurface.withOpacity(0.7),
                   ),
@@ -134,7 +134,7 @@ class ProfilePage extends StatelessWidget {
                   leading: Icon(Icons.login, color: theme.colorScheme.primary),
                   title: GestureDetector(
                     onTap: () {
-                      Get.to(LoginPage());
+                      Get.to(() => LoginPage());
                     },
                     child: Text(
                       'Login',

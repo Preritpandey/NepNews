@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:news_portal/pages/Home/category_page.dart';
+import 'package:news_portal/pages/bookmark/bookmark_page.dart';
 
 import '../../core/ScreenSizeConfig.dart';
 import '../../resources/constant.dart';
 import '../Browse/browse_page.dart';
 import '../Profile/profile_page.dart';
 import 'home_page.dart';
-import 'news_details_page.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -18,10 +19,9 @@ class HomeState extends State<Home> {
   int _selectedIndex = 0;
   final List<Widget> pages = [
     HomePage(),
-    const BrowsePage(),
-    const NewsDetailsPage(),
-    // const BookmarkPage(),
-     ProfilePage(),
+    CategoryPage(),
+    BookmarkedArticlesPage(),
+    ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
