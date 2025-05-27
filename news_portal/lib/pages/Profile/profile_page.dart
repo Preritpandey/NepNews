@@ -154,7 +154,7 @@ class ProfilePage extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     _authController.logout();
-                    Get.offAll(() => HomePage());
+                    Get.offAll(() => const Home());
                   },
                   child: ListTile(
                     leading: Icon(Icons.help_outline,

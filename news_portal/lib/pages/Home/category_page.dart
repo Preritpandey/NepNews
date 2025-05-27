@@ -3,8 +3,10 @@ import 'package:get/get.dart';
 import 'package:news_portal/pages/Home/article_detail_page.dart';
 import 'package:news_portal/pages/Home/home.dart';
 
+import '../../controllers/ads_controller.dart';
 import '../../controllers/get_article_controller.dart';
 import '../../models/article_model.dart';
+import '../../widgets/ad_card.dart'; // Add this import (adjust path as needed)
 
 class CategoryController extends GetxController {
   final RxString selectedCategory = 'All'.obs;
@@ -18,6 +20,8 @@ class CategoryPage extends StatelessWidget {
   final CategoryController categoryController = Get.put(CategoryController());
   final GetArticleController articleController =
       Get.put(GetArticleController());
+  final AdController adController =
+      Get.put(AdController()); // Add ad controller
 
   CategoryPage({super.key});
 
@@ -44,12 +48,15 @@ class CategoryPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: () => articleController.refreshArticles(),
+            onPressed: () {
+              articleController.refreshArticles();
+              adController.refreshAds(); // Refresh ads too
+            },
           ),
         ],
       ),
       body: Obx(() {
-        if (articleController.isLoading.value) {
+        if (articleController.isLoading.value || adController.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
 
@@ -66,7 +73,10 @@ class CategoryPage extends StatelessWidget {
                 Text(articleController.errorMessage.value),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: () => articleController.refreshArticles(),
+                  onPressed: () {
+                    articleController.refreshArticles();
+                    adController.refreshAds();
+                  },
                   child: const Text('Try Again'),
                 ),
               ],
@@ -92,6 +102,7 @@ class CategoryPage extends StatelessWidget {
               child: _buildCategoryContent(
                 categoryController.selectedCategory.value,
                 articleController,
+                adController,
               ),
             ),
           ],
@@ -100,8 +111,8 @@ class CategoryPage extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryContent(
-      String category, GetArticleController controller) {
+  Widget _buildCategoryContent(String category, GetArticleController controller,
+      AdController adController) {
     // Filter articles based on selected category
     List<ArticleModel> filteredArticles = [];
 
@@ -122,14 +133,76 @@ class CategoryPage extends StatelessWidget {
       );
     }
 
+    // Get ads for the current category, or general ads if no category-specific ads
+    List ads = adController.getAdsByCategory(category);
+    if (ads.isEmpty) {
+      ads = adController.ads.take(10).toList(); // Get first 10 ads as fallback
+    }
+
     return ListView.builder(
       padding: const EdgeInsets.all(16),
-      itemCount: filteredArticles.length,
+      itemCount: _calculateTotalItems(filteredArticles.length),
       itemBuilder: (context, index) {
-        final article = filteredArticles[index];
-        return ArticleCard(article: article);
+        // Calculate if this position should show an ad
+        // Ad appears after every 2 articles (positions 2, 5, 8, 11, etc.)
+        if (_shouldShowAd(index)) {
+          final adIndex = _getAdIndex(index);
+          if (adIndex < ads.length) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: AdCard(ad: ads[adIndex]),
+            );
+          } else {
+            // If we run out of ads, show a random ad or skip
+            if (ads.isNotEmpty) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: AdCard(ad: ads[adIndex % ads.length]),
+              );
+            }
+          }
+        }
+
+        // Show article
+        final articleIndex = _getArticleIndex(index);
+        if (articleIndex < filteredArticles.length) {
+          final article = filteredArticles[articleIndex];
+          return ArticleCard(article: article);
+        }
+
+        // Fallback (shouldn't reach here)
+        return const SizedBox.shrink();
       },
     );
+  }
+
+  // Calculate total items (articles + ads)
+  int _calculateTotalItems(int articleCount) {
+    // For every 2 articles, we add 1 ad
+    int adCount = articleCount ~/ 2;
+    return articleCount + adCount;
+  }
+
+  // Check if current index should show an ad
+  bool _shouldShowAd(int index) {
+    // Ad appears at positions: 2, 5, 8, 11, etc.
+    // Pattern: (index + 1) % 3 == 0
+    return (index + 1) % 3 == 0;
+  }
+
+  // Get the ad index based on the current position
+  int _getAdIndex(int index) {
+    // First ad at index 2 (ad index 0)
+    // Second ad at index 5 (ad index 1)
+    // Third ad at index 8 (ad index 2)
+    return (index + 1) ~/ 3 - 1;
+  }
+
+  // Get the article index based on the current position
+  int _getArticleIndex(int index) {
+    // Calculate how many ads appear before this position
+    int adsBeforeThisIndex = (index + 1) ~/ 3;
+    return index - adsBeforeThisIndex;
   }
 }
 

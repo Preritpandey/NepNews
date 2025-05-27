@@ -4,12 +4,10 @@ import '../core/api_constants.dart';
 import '../models/horoscope_model.dart';
 
 class HoroscopeService {
-  static const String baseUrl = 'http://192.168.1.105:8082/api/horoscope';
-
   Future<HoroscopeModel> getDailyHoroscope(String sign) async {
     try {
       final response = await http.get(
-        Uri.parse('$baseUrl/horoscope/$sign/daily'),
+        Uri.parse('$horoscopeUrl/$sign/daily'),
       );
 
       if (response.statusCode == 200) {

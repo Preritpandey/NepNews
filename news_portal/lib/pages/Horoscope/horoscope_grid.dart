@@ -7,7 +7,7 @@ import '../../models/horoscope_model.dart';
 import '../../resources/app_text.dart';
 
 class HoroscopeGridScreen extends StatelessWidget {
-  const HoroscopeGridScreen({Key? key}) : super(key: key);
+  const HoroscopeGridScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

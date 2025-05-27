@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.background, 
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: [
