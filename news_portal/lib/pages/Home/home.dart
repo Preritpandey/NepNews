@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:news_portal/pages/Home/category_page.dart';
-import 'package:news_portal/pages/Horoscope/horoscope_grid.dart';
 import 'package:news_portal/pages/bookmark/bookmark_page.dart';
-
 import '../../core/ScreenSizeConfig.dart';
 import '../../resources/constant.dart';
-import '../Browse/browse_page.dart';
 import '../Profile/profile_page.dart';
 import 'home_page.dart';
 

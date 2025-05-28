@@ -26,6 +26,7 @@ class AuthorNewsPageState extends State<AuthorNewsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         actions: [
           TextButton(
               onPressed: () => Get.to(const Home()),

@@ -9,7 +9,7 @@ import '../../resources/app_text.dart';
 class HoroscopeDetailScreen extends StatefulWidget {
   final String sign;
 
-  const HoroscopeDetailScreen({Key? key, required this.sign}) : super(key: key);
+  const HoroscopeDetailScreen({super.key, required this.sign});
 
   @override
   State<HoroscopeDetailScreen> createState() => _HoroscopeDetailScreenState();
@@ -30,16 +30,13 @@ class _HoroscopeDetailScreenState extends State<HoroscopeDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Find the zodiac sign details from the list
     final signInfo = zodiacSigns.firstWhere(
       (sign) => sign['name'] == widget.sign,
       orElse: () => {'name': widget.sign, 'icon': '', 'date': ''},
     );
 
-    // Get the current theme brightness
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    // Define colors based on theme
     final backgroundColor = isDarkMode ? Colors.black : Colors.grey[100];
     final cardColor = isDarkMode ? const Color(0xFF1A1A1A) : Colors.white;
     final primaryColor =
@@ -49,7 +46,7 @@ class _HoroscopeDetailScreenState extends State<HoroscopeDetailScreen> {
     final textColorSecondary = isDarkMode ? Colors.white70 : Colors.black54;
 
     return Scaffold(
-      extendBodyBehindAppBar: true, // Allow content behind the app bar
+      extendBodyBehindAppBar: true, 
       appBar: AppBar(
         title: Text(
           '${widget.sign} Horoscope',
@@ -83,7 +80,7 @@ class _HoroscopeDetailScreenState extends State<HoroscopeDetailScreen> {
         ),
         child: Obx(() {
           if (_controller.isLoading.value) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(color: Colors.white),
             );
           } else if (_controller.hasError.value) {

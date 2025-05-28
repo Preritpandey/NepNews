@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:news_portal/core/main_binding.dart';
+import 'package:news_portal/pages/OnBoarding/onboarding_page.dart';
+import 'package:news_portal/pages/Home/home.dart';
+import 'package:news_portal/controllers/theme_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'controllers/theme_controller.dart';
+
 import 'core/ScreenSizeConfig.dart';
 import 'core/theme.dart';
-import 'pages/Home/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final prefs = await SharedPreferences.getInstance();
-  await GetStorage.init(); // Initialize GetStorage
 
-  Get.put(ThemeController(prefs)); //GetX theme controller initialization
+  await GetStorage.init(); // Initialize GetStorage
+  final prefs = await SharedPreferences.getInstance();
+  Get.put(ThemeController(prefs)); // Initialize ThemeController
+
   runApp(const MyApp());
 }
 
@@ -23,6 +26,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeController = Get.find<ThemeController>();
+    final box = GetStorage();
+    final hasSeenOnboarding = box.read('onboarding_seen') ?? false;
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -40,7 +45,7 @@ class MyApp extends StatelessWidget {
               theme: AppTheme.lightTheme,
               darkTheme: AppTheme.darkTheme,
               themeMode: themeController.themeMode.value,
-              home: const Home(),
+              home: hasSeenOnboarding ? const Home() : OnboardingPage(),
             ),
           ),
         );

@@ -9,7 +9,7 @@ class ArticleSearchScreen extends StatelessWidget {
   final GetArticleController articleController =
       Get.put(GetArticleController());
 
-  ArticleSearchScreen({Key? key}) : super(key: key);
+  ArticleSearchScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
