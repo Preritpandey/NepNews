@@ -202,19 +202,17 @@ class TrendingNewsCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           // Navigate to article detail page
-          if (article.id != null) {
-            Get.to(() => ArticleDetailPage(articleId: article.id));
-          }
-        },
+          Get.to(() => ArticleDetailPage(articleId: article.id));
+                },
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // News Image
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: article.avatar != null && article.avatar!.isNotEmpty
+              child: article.avatar.isNotEmpty
                   ? Image.network(
-                      article.avatar!,
+                      article.avatar,
                       width: screenWidth * 0.3,
                       height: screenHeight * 0.14,
                       fit: BoxFit.cover,
@@ -241,7 +239,7 @@ class TrendingNewsCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Category
-                  if (article.category != null && article.category!.isNotEmpty)
+                  if (article.category.isNotEmpty)
                     Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 4),
@@ -250,7 +248,7 @@ class TrendingNewsCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: AppText(
-                        text: article.category!,
+                        text: article.category,
                         color: theme.colorScheme.primary,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
@@ -259,7 +257,7 @@ class TrendingNewsCard extends StatelessWidget {
                   const SizedBox(height: 8),
                   // News Title
                   AppText(
-                    text: article.title ?? 'Untitled Article',
+                    text: article.title,
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: theme.colorScheme.onSurface,
@@ -273,9 +271,10 @@ class TrendingNewsCard extends StatelessWidget {
                         radius: 10,
                         backgroundColor:
                             theme.colorScheme.primary.withOpacity(0.2),
-                        child: article.author?.name != null
+                        // ignore: unnecessary_null_comparison
+                        child: article.author.name != null
                             ? Text(
-                                article.author!.name![0],
+                                article.author.name[0],
                                 style: TextStyle(
                                   fontSize: 10,
                                   color: theme.colorScheme.primary,
@@ -290,7 +289,7 @@ class TrendingNewsCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 6),
                       AppText(
-                        text: article.author?.name ?? 'Unknown Author',
+                        text: article.author.name,
                         fontSize: 11,
                         color: theme.colorScheme.onSurface.withOpacity(0.7),
                       ),

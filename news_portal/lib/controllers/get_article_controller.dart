@@ -238,7 +238,7 @@ class GetArticleController extends GetxController {
 
     // Filter articles by title containing the search query
     final results = articles.where((article) {
-      return article.title?.toLowerCase().contains(query) ?? false;
+      return article.title.toLowerCase().contains(query);
     }).toList();
 
     searchResults.value = results;

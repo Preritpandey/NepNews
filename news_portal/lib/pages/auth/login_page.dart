@@ -83,12 +83,15 @@ class LoginPage extends StatelessWidget {
                         authController.validateAndLogin();
                       },
                     )),
-              AppText(text: "Don't have and account?"),
+              const AppText(text: "Don't have and account?"),
               TextButton(
                   onPressed: () {
                     Get.to(SignupPage());
                   },
-                  child: Text("signup"))
+                  child: const AppText(
+                    text: "signup",
+                    color: darkBlue,
+                  ))
             ],
           ),
         ),

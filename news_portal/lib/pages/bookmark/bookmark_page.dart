@@ -115,9 +115,9 @@ class BookmarkedArticlesPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (article.avatar != null && article.avatar!.isNotEmpty)
+            if (article.avatar.isNotEmpty)
               Image.network(
-                article.avatar!,
+                article.avatar,
                 height: 150,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -141,8 +141,7 @@ class BookmarkedArticlesPage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      if (article.category != null &&
-                          article.category!.isNotEmpty)
+                      if (article.category.isNotEmpty)
                         Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 4),
@@ -151,7 +150,7 @@ class BookmarkedArticlesPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
-                            article.category!,
+                            article.category,
                             style: TextStyle(
                               color: colorScheme.primary,
                               fontWeight: FontWeight.w600,
@@ -173,7 +172,7 @@ class BookmarkedArticlesPage extends StatelessWidget {
 
                   // Title
                   Text(
-                    article.title ?? 'Untitled Article',
+                    article.title,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
@@ -184,9 +183,9 @@ class BookmarkedArticlesPage extends StatelessWidget {
                   const SizedBox(height: 8),
 
                   // Content Preview
-                  if (article.content != null && article.content!.isNotEmpty)
+                  if (article.content.isNotEmpty)
                     Text(
-                      article.content!,
+                      article.content,
                       style: TextStyle(
                         fontSize: 14,
                         color: colorScheme.onSurface.withOpacity(0.8),
@@ -200,35 +199,34 @@ class BookmarkedArticlesPage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      if (article.author != null)
-                        Expanded(
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 12,
-                                backgroundColor: colorScheme.primary,
-                                child: Text(
-                                  article.author!.name![0].toUpperCase(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10,
-                                  ),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 12,
+                              backgroundColor: colorScheme.primary,
+                              child: Text(
+                                article.author.name[0].toUpperCase(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
                                 ),
                               ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  'By ${article.author!.name}',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                'By ${article.author.name}',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
                                 ),
+                                overflow: TextOverflow.ellipsis,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
+                      ),
                       IconButton(
                         icon: const Icon(Icons.bookmark_remove),
                         onPressed: () {

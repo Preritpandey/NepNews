@@ -7,7 +7,7 @@ class ArticleDetailPage extends StatelessWidget {
   final GetArticleController articleController =
       Get.find<GetArticleController>();
 
-  ArticleDetailPage({required this.articleId});
+  ArticleDetailPage({super.key, required this.articleId});
 
   @override
   Widget build(BuildContext context) {
@@ -72,13 +72,13 @@ class ArticleDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (article.avatar != null && article.avatar!.isNotEmpty)
+            if (article.avatar.isNotEmpty)
               ClipRRect(
                 borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(12),
                     bottomRight: Radius.circular(12)),
                 child: Image.network(
-                  article.avatar!,
+                  article.avatar,
                   height: 250,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -103,8 +103,7 @@ class ArticleDetailPage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      if (article.category != null &&
-                          article.category!.isNotEmpty)
+                      if (article.category.isNotEmpty)
                         Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 6),
@@ -113,7 +112,7 @@ class ArticleDetailPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
-                            article.category!,
+                            article.category,
                             style: TextStyle(
                               color: colorScheme.primary,
                               fontWeight: FontWeight.w600,
@@ -135,7 +134,7 @@ class ArticleDetailPage extends StatelessWidget {
 
                   // Title
                   Text(
-                    article.title ?? 'Untitled Article',
+                    article.title,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
@@ -145,46 +144,45 @@ class ArticleDetailPage extends StatelessWidget {
                   const SizedBox(height: 20),
 
                   // Author
-                  if (article.author != null)
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: colorScheme.primary,
-                          child: Text(
-                            article.author!.name![0].toUpperCase(),
-                            style: const TextStyle(color: Colors.white),
-                          ),
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: colorScheme.primary,
+                        child: Text(
+                          article.author.name[0].toUpperCase(),
+                          style: const TextStyle(color: Colors.white),
                         ),
-                        const SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                      ),
+                      const SizedBox(width: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'By ${article.author.name}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                              color: colorScheme.onBackground,
+                            ),
+                          ),
+                          if (article.editor != null)
                             Text(
-                              'By ${article.author!.name}',
+                              'Edited by ${article.editor!.name}',
                               style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14,
-                                color: colorScheme.onBackground,
+                                fontSize: 12,
+                                color: colorScheme.onSurface.withOpacity(0.6),
                               ),
                             ),
-                            if (article.editor != null)
-                              Text(
-                                'Edited by ${article.editor!.name}',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: colorScheme.onSurface.withOpacity(0.6),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: 24),
 
                   // Content
-                  if (article.content != null && article.content!.isNotEmpty)
+                  if (article.content.isNotEmpty)
                     Text(
-                      article.content!,
+                      article.content,
                       style: TextStyle(
                         fontSize: 16,
                         height: 1.6,
@@ -194,7 +192,7 @@ class ArticleDetailPage extends StatelessWidget {
                   const SizedBox(height: 24),
 
                   // Keywords
-                  if (article.keywords != null && article.keywords!.isNotEmpty)
+                  if (article.keywords.isNotEmpty)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -210,7 +208,7 @@ class ArticleDetailPage extends StatelessWidget {
                         Wrap(
                           spacing: 8,
                           runSpacing: 8,
-                          children: article.keywords!
+                          children: article.keywords
                               .map(
                                 (keyword) => Chip(
                                   label: Text(keyword),
@@ -241,22 +239,20 @@ class ArticleDetailPage extends StatelessWidget {
                       fontSize: 12,
                     ),
                   ),
-                  if (article.createdAt != null)
-                    Text(
-                      'Created: ${_formatDateTime(article.createdAt!)}',
-                      style: TextStyle(
-                        color: colorScheme.onSurface.withOpacity(0.6),
-                        fontSize: 12,
-                      ),
+                  Text(
+                    'Created: ${_formatDateTime(article.createdAt)}',
+                    style: TextStyle(
+                      color: colorScheme.onSurface.withOpacity(0.6),
+                      fontSize: 12,
                     ),
-                  if (article.updatedAt != null)
-                    Text(
-                      'Last updated: ${_formatDateTime(article.updatedAt!)}',
-                      style: TextStyle(
-                        color: colorScheme.onSurface.withOpacity(0.6),
-                        fontSize: 12,
-                      ),
+                  ),
+                  Text(
+                    'Last updated: ${_formatDateTime(article.updatedAt)}',
+                    style: TextStyle(
+                      color: colorScheme.onSurface.withOpacity(0.6),
+                      fontSize: 12,
                     ),
+                  ),
                 ],
               ),
             ),

@@ -6,7 +6,7 @@ import 'package:news_portal/pages/Home/home.dart';
 import '../../controllers/ads_controller.dart';
 import '../../controllers/get_article_controller.dart';
 import '../../models/article_model.dart';
-import '../../widgets/ad_card.dart'; // Add this import (adjust path as needed)
+import '../../widgets/ad_card.dart';
 
 class CategoryController extends GetxController {
   final RxString selectedCategory = 'All'.obs;
@@ -20,8 +20,7 @@ class CategoryPage extends StatelessWidget {
   final CategoryController categoryController = Get.put(CategoryController());
   final GetArticleController articleController =
       Get.put(GetArticleController());
-  final AdController adController =
-      Get.put(AdController()); // Add ad controller
+  final AdController adController = Get.put(AdController());
 
   CategoryPage({super.key});
 
@@ -30,7 +29,7 @@ class CategoryPage extends StatelessWidget {
     final Set<String> uniqueCategories = {'All'};
     for (var article in articleController.articles) {
       if (article.category.isNotEmpty) {
-        uniqueCategories.add(article.category!);
+        uniqueCategories.add(article.category);
       }
     }
     return uniqueCategories.toList();
@@ -43,7 +42,7 @@ class CategoryPage extends StatelessWidget {
         automaticallyImplyLeading: false,
         leading: IconButton(
             onPressed: () => Get.to(const Home()),
-            icon: Icon(Icons.arrow_back_ios)),
+            icon: const Icon(Icons.arrow_back_ios)),
         elevation: 0,
         actions: [
           IconButton(
@@ -244,7 +243,6 @@ class CategoryNavBar extends StatelessWidget {
                     : theme.colorScheme.surface.withOpacity(0.9))
                 : (isDarkMode ? Colors.transparent : Colors.transparent);
 
-            final borderColor = isSelected ? primaryColor : Colors.transparent;
 
             final textStyle = TextStyle(
               color: isSelected ? primaryColor : textColor,
@@ -286,9 +284,9 @@ class ArticleCard extends StatelessWidget {
   final ArticleModel article;
 
   const ArticleCard({
-    Key? key,
+    super.key,
     required this.article,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -319,9 +317,9 @@ class ArticleCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Article image
-            if (article.avatar != null && article.avatar!.isNotEmpty)
+            if (article.avatar.isNotEmpty)
               Image.network(
-                article.avatar!,
+                article.avatar,
                 height: 200,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -365,7 +363,7 @@ class ArticleCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Category badge
-                  if (article.category != null && article.category!.isNotEmpty)
+                  if (article.category.isNotEmpty)
                     Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 4),
@@ -377,7 +375,7 @@ class ArticleCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
-                        article.category!,
+                        article.category,
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.bold,
@@ -389,7 +387,7 @@ class ArticleCard extends StatelessWidget {
 
                   // Article title
                   Text(
-                    article.title ?? 'Untitled Article',
+                    article.title,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
@@ -399,9 +397,9 @@ class ArticleCard extends StatelessWidget {
                   const SizedBox(height: 8),
 
                   // Article content preview
-                  if (article.content != null && article.content!.isNotEmpty)
+                  if (article.content.isNotEmpty)
                     Text(
-                      article.content!,
+                      article.content,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -416,16 +414,15 @@ class ArticleCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       // Author info
-                      if (article.author != null)
-                        Text(
-                          'By ${article.author!.name ?? 'Unknown'}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12,
-                            color:
-                                Theme.of(context).textTheme.bodyMedium?.color,
-                          ),
+                      Text(
+                        'By ${article.author.name}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                          color:
+                              Theme.of(context).textTheme.bodyMedium?.color,
                         ),
+                      ),
 
                       // Publish date
                       if (formattedDate.isNotEmpty)
@@ -441,13 +438,13 @@ class ArticleCard extends StatelessWidget {
                   ),
 
                   // Keywords
-                  if (article.keywords != null && article.keywords!.isNotEmpty)
+                  if (article.keywords.isNotEmpty)
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Wrap(
                         spacing: 4,
                         runSpacing: 4,
-                        children: article.keywords!
+                        children: article.keywords
                             .map((keyword) => Chip(
                                   label: Text(
                                     keyword,

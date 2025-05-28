@@ -37,7 +37,6 @@ class _HoroscopeDetailScreenState extends State<HoroscopeDetailScreen> {
 
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    final backgroundColor = isDarkMode ? Colors.black : Colors.grey[100];
     final cardColor = isDarkMode ? const Color(0xFF1A1A1A) : Colors.white;
     final primaryColor =
         const Color(0xFF1E88E5); // Blue accent color from screenshot
@@ -46,7 +45,7 @@ class _HoroscopeDetailScreenState extends State<HoroscopeDetailScreen> {
     final textColorSecondary = isDarkMode ? Colors.white70 : Colors.black54;
 
     return Scaffold(
-      extendBodyBehindAppBar: true, 
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(
           '${widget.sign} Horoscope',
@@ -86,11 +85,9 @@ class _HoroscopeDetailScreenState extends State<HoroscopeDetailScreen> {
           } else if (_controller.hasError.value) {
             return _buildErrorWidget(Colors.white, primaryColor);
           } else if (_controller.currentHoroscope.value == null) {
-            return Center(
-              child: Text(
-                'No horoscope available',
-                style: TextStyle(color: Colors.white),
-              ),
+            return const Center(
+              child:
+                  AppText(text: 'No horoscope available', color: Colors.white),
             );
           }
 
@@ -378,7 +375,7 @@ class _HoroscopeDetailScreenState extends State<HoroscopeDetailScreen> {
 
           // Additional content cards - similar to news items in screenshot
           const SizedBox(height: 20),
-          AppText(
+          const AppText(
             text: 'Horoscope Highlights',
             fontSize: 20,
             fontWeight: FontWeight.bold,

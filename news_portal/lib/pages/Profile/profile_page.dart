@@ -7,11 +7,10 @@ import 'package:news_portal/editor/editor_page.dart';
 import 'package:news_portal/pages/Home/home.dart';
 import 'package:news_portal/pages/auth/login_page.dart';
 
-import '../Home/home_page.dart';
 
 // ignore: must_be_immutable
 class ProfilePage extends StatelessWidget {
-  AuthController _authController = Get.put(AuthController());
+  final AuthController _authController = Get.put(AuthController());
   ProfilePage({super.key});
 
   @override
@@ -63,7 +62,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  '${_authController.getUserName() == null ? "name" : _authController.getUserName()}',
+                  _authController.getUserName() ?? "name",
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -71,7 +70,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${_authController.getUserEmail() == null ? "email" : _authController.getUserEmail()}',
+                  _authController.getUserEmail() ?? "email",
                   style: TextStyle(
                     color: theme.colorScheme.onSurface.withOpacity(0.7),
                   ),
